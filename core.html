@@ -1,0 +1,413 @@
+<h1>Core Characteristics</h1>
+
+<section class="normative">
+    <h2>Method Name</h2>
+
+    <p>
+        The method name that identifies this DID method SHALL be: <code>webs</code>.
+    </p>
+    <blockquote>
+        Note: when pronounced aloud, "webs" SHOULD become two syllables: the word "web" and
+        the letter "s" (which stands for "secure"). Separating the final letter this way
+        emphasizes that the method offers a security upgrade analogous to the one that HTTPS
+        gives to HTTP.
+    </blockquote>
+    <p>
+        A DID that uses this method MUST begin with the following prefix: <code>did:webs:</code>.
+        Per the DID specification, this string MUST be in lowercase. The remainder of the DID,
+        after the prefix, is the <dfn>method-specific identifier</dfn> (<dfn>MSI</dfn>) described
+        <a href="#method-specific-identifier">below</a>.
+    </p>
+</section>
+
+<section class="normative">
+    <h2>Target System(s)</h2>
+
+    <p>
+        As with <code>did:web</code>, this method reads data from whatever web server is referenced
+        when the (host+)domain portion of one of its DIDs is resolved through the Domain Name System (DNS).
+    </p>
+    <p>
+        However, this method introduces an important nuance about the target system. In many DID
+        methods, this system is a verifiable data registry &mdash; besides publishing data,
+        its security attributes make that data trustworthy. In this DID method, the target system's
+        role is more limited. It is expected to serve data about the DID, and to follow acknowledged
+        cybersecurity best practices to preserve good hygiene. However, the integrity of the data is
+        guaranteed by the DID value itself, typically in conjunction with a digitally signed key event
+        log (KEL).
+    </p>
+    <p>
+        These trust mechanisms &mdash; the integrity checks built into the DID value, and the workings of
+        the KEL &mdash; are defined by KERI. KERI is a complex technology, far too rich to explain in
+        this DID method. However, the subset of KERI features needed for most <code>did:webs</code> use
+        cases is quite small, with limited dependencies, and is summarized in Appendix A. The rest of
+        this spec will assume a working knowledge of the concepts there.
+    </p>
+    <p>
+        A target system cannot forge or tamper with data protected by KERI, and if it serves an outdated copy,
+        the attempt to be duplicitous is often detectable. Thus, any given target system in isolation
+        can be viewed by this method as a dumb, untrusted server of content. It is the combination
+        of target systems and a few KERI mechanisms, <em>together</em>, that constitutes this method's
+        verifiable data registry.
+    </p>
+</section>
+
+<section class="normative">
+    <h2>Method-Specific Identifier</h2>
+    <p>
+        There are two forms of method-specific identifier (MSI) for <code>did:webs</code>. One is
+        resolvable; the other is autonomic. The resolvable form is more common and intuitive.
+    </p>
+    <h3>Resolvable Form</h3>
+    <p>
+        The resolvable form is constructed by transforming an input called the DID doc URL (DDURL).
+        This is an HTTPS URL that references a DID doc (either directly, or ultimately, via redirects).
+        This transformation must be reversible, because resolving the DID requires clients to fetch
+        DID docs from the associated DDURL.
+    </p>
+    <p>
+        The DDURL MUST NOT include a query string (although it could redirect to a URL
+        that contains one). The DDURL MUST NOT include relative path components ("./" or "../").
+        The DDURL MUST NOT include multiple consecutive slashes. The DDURL MUST NOT include
+        a fragment OR redirect to a URL that includes a fragment. It MUST return a resource
+        that the web server identifies in headers as IANA media type<code>application/json</code>.
+        The DDURL and its corresponding X509 certificate(s) have some security requirements
+        described<a href="#security-considerations">elsewhere</a>.
+    </p>
+    <p>
+        The "https://" prefix on this URL is removed. If the path portion of the URL
+        consists exactly of "/.well-known/did.json", this suffix is deleted. If the URL
+        ends in a slash, the final slash is removed. All remaining slashes in the URL
+        are replaced with colons. If the URL ends with ".json", this suffix is deleted.
+        If the URL includes a port, the colon that delimits the port number MUST be
+        percent-encoded so colons in the MSI map only to slashes.
+    </p>
+    <p>TODO: what about intl chars? Does DID spec allow them like URL spec does?
+    What about localhost vs. 127.0.0.1 vs. ::1?</p>
+    <pre class="example" title="sample DDURL &rarr; MSI &rarr; DID transformations">
+        https://example.com/a/b.json &rarr; example.com:a:b &rarr; did:webs:example.com:a:b
+        https://192.168.1.55:8080/a/b &rarr; 192.168.1.55%3A8080:a:b &rarr; did:webs:192.168.1.55%3A8080:a:b
+    </pre>
+    <h3>Autonomic Form</h3>
+    <p>
+        Although URLs are wonderfully useful, they are also notoriously unstable. A DID defined
+        by a URL can disappear (or acquire an entirely new value with identical keys) due to
+        URL revisions outside the scope of control of the DID owner -- and the DID owner might not
+        even be aware. A DID URL can be reused, including by hackers. In addition, the same
+        content can be hosted at more than one URL (due to redirects, CDNs, load balancers, NAT,
+        IPv4 vs. IPv6, symbolic links, /etc/hosts files, intranet DNS overrides, or just redundant
+        publication). This can create interpretation challenges for DIDs based on URLs.
+    </p>
+    <p>
+        To avoid ambiguity, the <code>did:webs</code> method adds an additional form of MSI.
+        This is a special CESR-encoded string datatype that KERI calls an AID (autonomic
+        identifier). An AID uniquely and stably identifies a DID and its DID doc, regardless
+        of where the DID doc is hosted. It is stored in the top-level <code>id</code> property
+        of its associated DID doc. A typical AID value looks like this:
+    </p>
+    <p>
+        Internally, AIDs don't carry information about how they can be resolved. They are thus
+        very similar to URNs (although they have additional cryptographic properties). An AID
+        can be used to build a did:webs value: Therefore,
+        an doesn't typically show up in the DID value, but it is examined by systems that
+        process the DID. Across all time, all did:webs DID docs that have the same AID are
+        describing the same DID, and must be cryptographically consistent with one another. On the other hand, DID docs with different AIDs intend to
+        describe different DIDs, even if they are accessed via the same URL (e.g., at different
+        times). This makes accidental or deliberate collisions clear, clarifies when different
+        DIDs are valid synonyms, and makes internal processing deterministic and independent of
+        hosted context.
+    </p>
+    <p>
+        The AID for a given did:webs is stored in the top-level <code>id</code> property of
+        its DID doc. All external references to a did:webs are tbuilt on web-oriented URLs, but
+        internal processing uses the internal identifier.
+    </p>
+</section>
+
+<section class="normative">
+    <h2>Resolution Process</h2>
+    <p>
+        Before a <code>did:webs</code> value can be resolved, it must be converted back to a DDURL.
+        This is done by replacing the "did:webs:" prefix with https://", converting a percent-
+        encoded port delimiter back to a colon, and replacing all other colons with slashes.
+        In addition, if the DID includes no path, then "/.well-known/did.json" is appended.
+    </p>
+    <p>
+        An HTTP GET is now performed on the DDURL to fetch a DID doc. This operation MUST follow
+        both temporary and permanent redirects, but MUST break redirect cycles and MUST NOT allow
+        excessive redirects. The final URL once all redirects have been followed is called the end URL.
+        If GETting the end URL returns HTTP status code 404, if the end url contains a path, and if
+        the end url does not end in ".json", then a client MUST append ".json" to the end URL and
+        make a second attempt to GET the resource with the revised URL.
+    </p>
+    <p>
+        Unlike <code>did:web</code>, the resolution process is not assumed to produce valid
+        output simply because a DID doc is returned. The top-level <code>id</code> property
+        in the doc contains a KERI AID rather than the value of the DID itself. DID doc is analyzed, and If the DID is a A second GET MUST also be performed. This one
+        fetches the KEL. The URL
+        for the KEL is generated as follows:
+    </p>
+    <ol>
+        <li>Start with the final URL that successfully fetched a DID doc after all redirects were followed.</li>
+        <li>If this URL ends with ".json", change it to end with ".kel.json". Otherwise, just append ".kel".</li>
+    </ol>
+    <p>
+        When a DID is converted back into a DDURL for resolution to a DID doc,
+
+</section>
+
+<section class="normative">
+    <h2>Generation Method</h2>
+
+    <p>The unique <em>numeric basis</em> underlying a Peer DID MUST be generated in one of the following ways:</p>
+
+    <h3>Method 0: inception key without doc</h3>
+    <p>If <code>numalgo</code> == <code>0</code>, a single keypair is chosen, having all possible privileges with
+        respect
+        to the DID. The public key value for this pair is the numeric basis of the DID. The genesis version of the DID
+        doc is considered to be empty, granting all privileges to this key (and algorithmic derivations thereof, to
+        provide key agreement versus signing and so forth). The DID doc offers no endpoint. This makes the DID
+        functionally equivalent to a did:key value, and visually similar, except that a peer DID will have the numeric
+        algorithm as a prefix, before the multibase encoded, multicodec-encoded public key. For example,
+        <code>did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH</code> is equivalent to
+        <code>did:peer:<span style="color:blue">0</span>z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH</code>. The
+        did:peer version differs
+        in that it is upgradeable to a dynamically updatable DID with full DID doc and endpoints, simply using deltas,
+        as long as the first delta is authenticated by the inception key.
+    </p>
+
+    <h3>Method 1: genesis doc</h3>
+    <ul>
+        <li>Create a <dfn>genesis version</dfn> of JSON text of the DID doc for the DID. The genesis version MUST define
+            a single key with the <a>register</a> privilege. This <dfn>inception key</dfn> is the key that creates the
+            DID and authenticates when exchanging it with the first peer. It SHOULD also include enough state that
+            subsequent evolutions to the doc are authorized; otherwise, the doc is static, suitable only for
+            <a href="#layers-of-support">Layer 2 use</a>. It MUST NOT include the
+            DID itself (either the root <code>id</code> property or its value). This lets the doc be created without
+            knowing the DID's value in advance. Suppressing the DID value creates a <dfn>stored variant</dfn> of peer
+            DID doc data, as opposed to the <dfn>resolved variant</dfn> that would have an actual DID value in the root
+            <code>id</code> property. (In either the stored or resolved variant of the doc, anywhere else that the DID
+            value would appear, it should appear as a relative reference rather than an absolute value. For example,
+            each<code>controller</code> property of a <a href="#verificationMethod">verificationMethod that is owned by
+                this DID would say <code>"controller": "#id"</code></a>.)
+        </li>
+        <li>Calculate the SHA256 [[!RFC4634]] hash of the bytes of the <a>stored variant</a> of the <a>genesis
+                version</a> of the DID doc, and make this value the new DID's <a>numeric basis</a>.
+        </li>
+    </ul>
+    <p>By hashing the stored variant, we avoid the circular problem of including the DID in the data that's being
+        hashed. This means that a peer DID doc must be resolved by converting a <a>stored variant</a> of DID doc
+        data into a <a>resolved variant</a> by inserting the value of the DID being resolved.</p>
+    <p>By deriving the numeric basis of the DID from the <a>genesis version</a> of the DID doc, the DID can begin its
+        lifecycle with any number of keys and endpoints, including protective M-of-N policies. The <a>inception key</a>
+        is the part of the genesis state that's true bedrock; all other information is optional and can be thought of
+        as a sort of <em>pre-rotation</em> or<em>pre-evolution</em>, initiated by the inception key, to a more complex
+        state.
+    </p>
+    <p>
+        The root of trust for peer DIDs is the entropy in the <a>inception key</a>. The inception key MUST be new for
+        each DID; it MUST NOT ever be reused--and it must be the case that anyone observing the public half of the
+        inception key cannot somehow derive or steal the private half. This guarantees that nobody other than the holder
+        of the inception key could have created the genesis version of the DID doc. Because only the inception key has
+        the privilege of sharing the DID doc with a peer, no other key holder can establish the relationship contrary to
+        the intent of the inception key holder. This gives peer DIDs a <dfn>self-certifying</dfn> property that is vital
+        to cybersecurity of all DIDs. Any DID method that does not guarantee the chain of custody of the DID between
+        when it is created and when it is shared (e.g., written to a ledger or given to a peer) lacks this quality and
+        is susceptible to attacks early in the DID's lifecycle. See <a target="_blank"
+            href="https://github.com/openssi/peer-did-method-spec/issues/112">this github issue</a> for more discussion.
+    </p>
+
+    <h3>Method 2: multiple inception key without doc</h3>
+    <p>If <code>numalgo</code> == <code>2</code>, the generation mode is similar to Method 0 (and therefore also
+        did:key)
+        with the ability to specify additional keys in the generated DID Document. This method is necessary when both an
+        encryption
+        key and a signing key are required.</p>
+
+    <pre class="example" class="ABNF" title="ABNF for peer DIDs">
+peer-did-method-2 = "did:peer:2" 1*element 
+element = "." ( purposecode transform encnumbasis / service )
+purposecode = "A" / "E" / "V" / "I" / "D" / "S" 
+keypurpose = 
+transform = "z"
+encnumbasis = 46*BASE58BTC
+service = 1*B64URL
+    </pre>
+
+    <ul>
+        <li>Start with the did prefix
+            <pre>did:peer:2</pre>
+        </li>
+        <li>Construct a multibase encoded, multicodec-encoded form of each public key to be included.</li>
+        <li>Prefix each encoded key with a period character (.) and single character from the purpose codes table below.
+        </li>
+        <li>Append the encoded key to the DID.</li>
+        <li>Encode and append a service type to the end of the peer DID if desired as described below.</li>
+    </ul>
+    <p>Service encoding</p>
+    <ul>
+        <li>Start with the JSON structure for your service.</li>
+        <li>Replace common strings in key names and type value with abbreviations from the abbreviations table below.
+        </li>
+        <li>Convert to string, and remove unnecessary whitespace, such as spaces and newlines.</li>
+        <li>Base64URL Encode String (Padding <bold>MUST</bold> be removed as the "=" character is, per the DID Core Specification, not permitted in a DID)</li>
+        <li>Prefix encoded service with a period character (.) and S</li>
+    </ul>
+
+    <p>Service decoding</p>
+    <ul>
+        <li>Remove the period (.) and S prefix</li>
+        <li>Base64URL Decode String</li>
+        <li>Parse as JSON.</li>
+        <li>Replace abbreviations in key names and type value with common names from the abbreviations table below.</li>
+        <li>Add id attribute according to the form
+            <pre><did>#service<type></li>
+	</ul>
+	
+	<p>Common String Abbreviations</p>
+	<table>
+		<tr><th>Common String</th><th>Abbreviation</th></tr>
+		<tr><td>type</td><td>t</td></tr>
+		<tr><td>DIDCommMessaging</td><td>dm</td></tr>
+		<tr><td>serviceEndpoint</td><td>s</td></tr>
+		<tr><td>routingKeys</td><td>r</td></tr>
+        <tr><td>accept</td><td>a</td></tr>
+	</table>
+	
+	
+	<p>Purpose Code List</p>
+	<ul>
+		<li><b>A</b> - Assertion</li>
+		<li><b>E</b> - Encryption (Key Agreement)</li>
+		<li><b>V</b> - Verification</li>
+		<li><b>I</b> - Capability Invocation</li>
+		<li><b>D</b> - Capability Delegation</li>
+		<li><b>S</b> - Service</li>
+	</ul>
+
+	<pre class="example nohighlight" title="Example Multi-key Peer DID" id="multi-key-creation">
+		Encoded Encryption Key: .Ez6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH
+		Encoded Signing Key: .VzXwpBnMdCm1cLmKuzgESn29nqnonp1ioqrQMRHNsmjMyppzx8xB2pv7cw8q1PdDacSrdWE3dtB9f7Nxk886mdzNFoPtY
+		Service Block:
+		{
+			"type": "DIDCommMessaging",
+			"serviceEndpoint": "https://example.com/endpoint",
+			"routingKeys": ["did:example:somemediator#somekey"],
+            "accept": ["didcomm/v2", "didcomm/aip2;env=rfc587"]
+		}
+		Service Block, after whitespace removal and common word substitution:
+		{"t":"dm","s":"https://example.com/endpoint","r":["did:example:somemediator#somekey"],"a":["didcomm/v2","didcomm/aip2;env=rfc587"]}
+		Encoded Service Endpoint: .SeyJ0IjoiZG0iLCJzIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9lbmRwb2ludCIsInIiOlsiZGlkOmV4YW1wbGU6c29tZW1lZGlhdG9yI3NvbWVrZXkiXSwiYSI6WyJkaWRjb21tL3YyIiwiZGlkY29tbS9haXAyO2Vudj1yZmM1ODciXX0
+		Method 2 peer DID: did:peer:2.Ez6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH.VzXwpBnMdCm1cLmKuzgESn29nqnonp1ioqrQMRHNsmjMyppzx8xB2pv7cw8q1PdDacSrdWE3dtB9f7Nxk886mdzNFoPtY.SeyJ0IjoiZG0iLCJzIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9lbmRwb2ludCIsInIiOlsiZGlkOmV4YW1wbGU6c29tZW1lZGlhdG9yI3NvbWVrZXkiXSwiYSI6WyJkaWRjb21tL3YyIiwiZGlkY29tbS9haXAyO2Vudj1yZmM1ODciXX0
+    </pre>
+
+
+            <p>When Resolving the peer DID into a DID Document, the process is reversed.</p>
+            <ul>
+                <li>Split the DID string into element.</li>
+                <li>Extract element purpose and decode each key or service.</li>
+                <li>Insert each key or service into the document according to the designated purpose.</li>
+            </ul>
+
+            <pre class="example" title="Example Multi-key Peer DID" id="multi-key-creation">
+{
+   "@context": "https://w3id.org/did/v1",
+   "id": "did:peer:2.Ez6LSbysY2xFMRpGMhb7tFTLMpeuPRaqaWM1yECx2AtzE3KCc.Vz6MkqRYqQiSgvZQdnBytw86Qbs2ZWUkGv22od935YF4s8M7V.Vz6MkgoLTnTypo3tDRwCkZXSccTPHRLhF4ZnjhueYAFpEX6vg.SeyJ0IjoiZG0iLCJzIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9lbmRwb2ludCIsInIiOlsiZGlkOmV4YW1wbGU6c29tZW1lZGlhdG9yI3NvbWVrZXkiXSwiYSI6WyJkaWRjb21tL3YyIiwiZGlkY29tbS9haXAyO2Vudj1yZmM1ODciXX0",
+   "authentication": [
+       {
+           "id": "did:peer:2.Ez6LSbysY2xFMRpGMhb7tFTLMpeuPRaqaWM1yECx2AtzE3KCc.Vz6MkqRYqQiSgvZQdnBytw86Qbs2ZWUkGv22od935YF4s8M7V.Vz6MkgoLTnTypo3tDRwCkZXSccTPHRLhF4ZnjhueYAFpEX6vg.SeyJ0IjoiZG0iLCJzIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9lbmRwb2ludCIsInIiOlsiZGlkOmV4YW1wbGU6c29tZW1lZGlhdG9yI3NvbWVrZXkiXSwiYSI6WyJkaWRjb21tL3YyIiwiZGlkY29tbS9haXAyO2Vudj1yZmM1ODciXX0#6MkqRYqQiSgvZQdnBytw86Qbs2ZWUkGv22od935YF4s8M7V",
+           "type": "Ed25519VerificationKey2020",
+           "controller": "did:peer:2.Ez6LSbysY2xFMRpGMhb7tFTLMpeuPRaqaWM1yECx2AtzE3KCc.Vz6MkqRYqQiSgvZQdnBytw86Qbs2ZWUkGv22od935YF4s8M7V.Vz6MkgoLTnTypo3tDRwCkZXSccTPHRLhF4ZnjhueYAFpEX6vg.SeyJ0IjoiZG0iLCJzIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9lbmRwb2ludCIsInIiOlsiZGlkOmV4YW1wbGU6c29tZW1lZGlhdG9yI3NvbWVrZXkiXSwiYSI6WyJkaWRjb21tL3YyIiwiZGlkY29tbS9haXAyO2Vudj1yZmM1ODciXX0",
+           "publicKeyMultibase": "z6MkqRYqQiSgvZQdnBytw86Qbs2ZWUkGv22od935YF4s8M7V"
+       },
+       {
+           "id": "did:peer:2.Ez6LSbysY2xFMRpGMhb7tFTLMpeuPRaqaWM1yECx2AtzE3KCc.Vz6MkqRYqQiSgvZQdnBytw86Qbs2ZWUkGv22od935YF4s8M7V.Vz6MkgoLTnTypo3tDRwCkZXSccTPHRLhF4ZnjhueYAFpEX6vg.SeyJ0IjoiZG0iLCJzIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9lbmRwb2ludCIsInIiOlsiZGlkOmV4YW1wbGU6c29tZW1lZGlhdG9yI3NvbWVrZXkiXSwiYSI6WyJkaWRjb21tL3YyIiwiZGlkY29tbS9haXAyO2Vudj1yZmM1ODciXX0#6MkgoLTnTypo3tDRwCkZXSccTPHRLhF4ZnjhueYAFpEX6vg",
+           "type": "Ed25519VerificationKey2020",
+           "controller": "did:peer:2.Ez6LSbysY2xFMRpGMhb7tFTLMpeuPRaqaWM1yECx2AtzE3KCc.Vz6MkqRYqQiSgvZQdnBytw86Qbs2ZWUkGv22od935YF4s8M7V.Vz6MkgoLTnTypo3tDRwCkZXSccTPHRLhF4ZnjhueYAFpEX6vg.SeyJ0IjoiZG0iLCJzIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9lbmRwb2ludCIsInIiOlsiZGlkOmV4YW1wbGU6c29tZW1lZGlhdG9yI3NvbWVrZXkiXSwiYSI6WyJkaWRjb21tL3YyIiwiZGlkY29tbS9haXAyO2Vudj1yZmM1ODciXX0",
+           "publicKeyMultibase": "z6MkgoLTnTypo3tDRwCkZXSccTPHRLhF4ZnjhueYAFpEX6vg"
+       }
+   ],
+   "keyAgreement": [
+       {
+           "id": "did:peer:2.Ez6LSbysY2xFMRpGMhb7tFTLMpeuPRaqaWM1yECx2AtzE3KCc.Vz6MkqRYqQiSgvZQdnBytw86Qbs2ZWUkGv22od935YF4s8M7V.Vz6MkgoLTnTypo3tDRwCkZXSccTPHRLhF4ZnjhueYAFpEX6vg.SeyJ0IjoiZG0iLCJzIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9lbmRwb2ludCIsInIiOlsiZGlkOmV4YW1wbGU6c29tZW1lZGlhdG9yI3NvbWVrZXkiXSwiYSI6WyJkaWRjb21tL3YyIiwiZGlkY29tbS9haXAyO2Vudj1yZmM1ODciXX0#6LSbysY2xFMRpGMhb7tFTLMpeuPRaqaWM1yECx2AtzE3KCc",
+           "type": "X25519KeyAgreementKey2020",
+           "controller": "did:peer:2.Ez6LSbysY2xFMRpGMhb7tFTLMpeuPRaqaWM1yECx2AtzE3KCc.Vz6MkqRYqQiSgvZQdnBytw86Qbs2ZWUkGv22od935YF4s8M7V.Vz6MkgoLTnTypo3tDRwCkZXSccTPHRLhF4ZnjhueYAFpEX6vg.SeyJ0IjoiZG0iLCJzIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9lbmRwb2ludCIsInIiOlsiZGlkOmV4YW1wbGU6c29tZW1lZGlhdG9yI3NvbWVrZXkiXSwiYSI6WyJkaWRjb21tL3YyIiwiZGlkY29tbS9haXAyO2Vudj1yZmM1ODciXX0",
+           "publicKeyMultibase": "z6LSbysY2xFMRpGMhb7tFTLMpeuPRaqaWM1yECx2AtzE3KCc"
+       }
+   ],
+   "service": [
+       {
+           "id": "did:peer:2.Ez6LSbysY2xFMRpGMhb7tFTLMpeuPRaqaWM1yECx2AtzE3KCc.Vz6MkqRYqQiSgvZQdnBytw86Qbs2ZWUkGv22od935YF4s8M7V.Vz6MkgoLTnTypo3tDRwCkZXSccTPHRLhF4ZnjhueYAFpEX6vg.SeyJ0IjoiZG0iLCJzIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9lbmRwb2ludCIsInIiOlsiZGlkOmV4YW1wbGU6c29tZW1lZGlhdG9yI3NvbWVrZXkiXSwiYSI6WyJkaWRjb21tL3YyIiwiZGlkY29tbS9haXAyO2Vudj1yZmM1ODciXX0#didcommmessaging-0",
+           "type": "DIDCommMessaging",
+           "serviceEndpoint": "https://example.com/endpoint",
+           "routingKeys": [
+               "did:example:somemediator#somekey"
+           ],
+           "accept": [
+                "didcomm/v2", "didcomm/aip2;env=rfc587"
+           ]
+       }
+   ]
+}
+	</pre>
+
+            <h3>Method 3: DID Shortening with SHA-256 Hash</h3>
+            <p>If <code>numalgo</code> == <code>3</code>, the generation mode is similar to Method 2, but with a shorter
+                DID
+                identifier derived from a SHA-256 hash of the original identifier. The benefit of using Method 3 over Method to is the ability to have smaller size didcomm messages as did:peer2. dids tend to be verbose in nature. Method 3 peer dids can only be used after a peer did method 2 has been exchange with the other party and thus can map the shortened did to the longform one. In order to send a message encrypted with method 3 you first MUST send a discover-feature message (using the method 2 as the `to` field) to make sure that the receiving agent is capable of resolving method 3 dids.</p>
+            <pre class="example" class="ABNF" title="ABNF for peer DIDs">
+peer-did-method-3 = "did:peer:3." 64*HEXDIG
+</pre>
+            <ul>
+                <li>Start with the DID generated using Method 2.</li>
+                <li>Take the SHA-256 hash of the generated DID (excluding the "did:peer:2" prefix).</li>
+                <li>Encode the hash using lowercase hexadecimal encoding.</li>
+                <li>Construct the final Method 3 DID by concatenating the prefix "did:peer:3" with the hex-encoded hash.
+                </li>
+            </ul>
+            <p>For example, if the Method 2 DID is:</p>
+            <pre>did:peer:2.Ez6LSbysY2xFMRpGMhb7tFTLMpeuPRaqaWM1yECx2AtzE3KCc.Vz6MkqRYqQiSgvZQdnBytw86Qbs2ZWUkGv22od935YF4s8M7V.Vz6MkgoLTnTypo3tDRwCkZXSccTPHRLhF4ZnjhueYAFpEX6vg.SeyJ0IjoiZG0iLCJzIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9lbmRwb2ludCIsInIiOlsiZGlkOmV4YW1wbGU6c29tZW1lZGlhdG9yI3NvbWVrZXkiXSwiYSI6WyJkaWRjb21tL3YyIiwiZGlkY29tbS9haXAyO2Vudj1yZmM1ODciXX0</pre>
+            <p>First, remove the prefix "did:peer:2":</p>
+            <pre>Ez6LSbysY2xFMRpGMhb7tFTLMpeuPRaqaWM1yECx2AtzE3KCc.Vz6MkqRYqQiSgvZQdnBytw86Qbs2ZWUkGv22od935YF4s8M7V.Vz6MkgoLTnTypo3tDRwCkZXSccTPHRLhF4ZnjhueYAFpEX6vg.SeyJ0IjoiZG0iLCJzIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9lbmRwb2ludCIsInIiOlsiZGlkOmV4YW1wbGU6c29tZW1lZGlhdG9yI3NvbWVrZXkiXSwiYSI6WyJkaWRjb21tL3YyIiwiZGlkY29tbS9haXAyO2Vudj1yZmM1ODciXX0</pre>
+            <p>Take the SHA-256 hash of the remaining string, and convert the hash to lowercase hexadecimal encoding:
+            </p>
+            <pre>8a33de52d9e9e9cfd5c5fd8a7e5da5d3c73208bfc5e5fd5a4eb4af3f3b3f3a3a</pre>
+            <p>Finally, concatenate the prefix "did:peer:3" with the hex-encoded hash:</p>
+            <pre>did:peer:3.8a33de52d9e9e9cfd5c5fd8a7e5da5d3c73208bfc5e5fd5a4eb4af3f3b3f3a3a</pre>
+</section>
+
+<section class="informative">
+    <h2>Recognizing and handling peer DIDs</h2>
+
+    <p>Correctly recognizing and handling peer DIDs as strings is a <a>Layer 1</a> feature.
+        A valid <code>peer</code> DID might be:</p>
+
+    <pre class="example nohighlight" title="A typical peer DID" id="typical-did">
+did:peer:1zQmZMygzYqNwU6Uhmewx5Xepf2VLp5S4HLSwwgf2aiKZuwa
+    </pre>
+
+    <p>Peer DIDs consist entirely of printable ASCII characters and in this version of the spec are exactly 57 or 58
+        characters long. They have no whitespace, and the only punctuation they use is the <code>:</code> character.
+        When
+        rendering in columns with a constrained width, they could be hyphenated one or more times as needed; the hyphens
+        would not be confused with meaningful delimiters, and the final character of the DID would be easy to find.
+        They could also be rendered in a short form with the middle of the long base58 section elided, if it is not
+        necessary to compare them with precision: <code>did:peer:1z6Tx...WzJJq</code>. The ellipsis should not obscure
+        the prefix or the initial or final few characters of <code>encnumbasis</code>, to preserve enough info for
+        casual distinction. This might be a useful rendering in log files, for example.
+    </p>
+
+    <p>A convenient regex to match <code>peer</code> DIDs is:</p>
+
+    <pre class="example nohighlight" title="Matching regex" id="matching-regex">
+^did:peer:(([01](z)([1-9a-km-zA-HJ-NP-Z]{46,47}))|(2((\.[AEVID](z)([1-9a-km-zA-HJ-NP-Z]{46,47}))+(\.(S)[0-9a-zA-Z=]*)?)))$
+    </pre>
+
+    <p>A match against this regex places <code>numalgo</code> (the algorithm for choosing a numeric basis) in
+        capture group 1, <code>transform</code> in capture group 2, and <code>encnumbasis</code> in capture group 3.
+    </p>
+
+    <p>A few peer DID values are reserved and convey special meaning. See <a href="#reserved-values">Reserved Values</a>
+        in the appendix.
+    </p>
+</section>
