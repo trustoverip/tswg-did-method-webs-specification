@@ -1,0 +1,183 @@
+<h1>KERI Fundamentals</h1>
+
+<section class="informative">
+    <p>
+        <dfn>KERI</dfn> (<dfn>Key Event Receipt Infrastructure</dfn>) is a methodology for managing
+        cryptographic keys, plus the identifiers and verifiable data structures that depend on them.
+        KERI was first described in an <a href="https://arxiv.org/abs/1907.02143">academic paper</a>,
+        and is now a <a href="https://weboftrust.github.io/ietf-keri/draft-ssmith-keri.html">draft
+        IETF RFC</a>. The open source community that develops KERI-related technologies can be found at
+        https://github.com/WebOfTrust.
+    </p>
+    <p>
+        In KERI, an <dfn>autonomic identifier</dfn> (<dfn>AID</dfn>) is a globally unique string that
+        is bound to cryptographic keys in a special way. AIDs have all the properties that DIDs require,
+        plus a few that give them unusually special security and decentralization.
+    </p>
+    <dl>
+        <dt>Key Event Log</dt>
+        <dd>
+            <p>
+                The binding between an AID and its cryptographic keys is proved by a data structure
+                called a <dfn>key event log</dfn> (<dfn>KEL</dfn>). This data structure has certain
+                blockchain-like properties. However, a KEL differs from blockchain technology in at
+                least two important ways:
+            </p>
+            <ol>
+                <li>
+                    It records the history of a single AID with a single owner, instead of an
+                    arbitrarily large collection updated by the public. This makes it tiny (a few
+                    KB), fast, cheap, and trivially scalable.
+                </li>
+                <li>
+                    It is fully self-certifying, meaning its correctness can be proved by direct
+                    inspection, without a consensus algorithm or assumptions about trust in an external
+                    data source or its governance.
+                </li>
+            </ol>
+            <p>
+                Because of these properties, a KEL can be published anywhere, without special
+                guarantees from its storage mechanism. Also, since KELs can be shared directly
+                by the owner of an AID, and can be deleted from a particular location as needed,
+                they avoid thorny regulatory issues like GDPR's right of erasure.
+            </p>
+            <p>
+                A KEL allows the state of the AID to evolve. Importantly, it can record changes
+                to key types and cryptographic algorithms. This lets an AID adapt itself to
+                more than one blockchain ecosystem over its lifecycle. It also lets an AID adopt
+                quantum-safe mechanisms without having to upgrade a whole blockchain ecosystem;
+                AIDs are not locked into current approaches.
+            </p>
+        </dd>
+        <dt>Derived from Public Key</dt>
+        <dd>
+            <p>
+                The KEL begins with an <dfn>inception event</dfn>. This event derives the AID value
+                from the initial public key that will be used to control it. Conceptually: <code>derive(
+                initial_pub_key ) &rarr; AID</code>. Forcing a relationship between AID and key in this
+                way eliminates an early chain-of-custody risk that plagues many DID methods, which allow
+                an attacker to create a DID without a key-owner's knowledge, using compromised keys. It
+                is similar to techniques used by <code>did:key</code>, <code>did:peer</code>, <code>
+                did:sov</code>, and <code>did:v1</code>.
+            </p>
+            <p>
+                The simplest AIDs (called <dfn>direct mode</dfn> AIDs in KERI) have no additional input to
+                the derivation function, and a degenerate KEL that can hold only the inception event. This KEL
+                is entirely derivable from the AID itself, and thus requires no external data. Direct mode
+                AIDs are ideal for ephemeral use cases and are excellent analogs (and convenient
+                interop tools) to <code>did:key</code> and <code>did:peer</code> with <code>numalgo=0</code>
+                (see [[[transformations]]].) However, this is not the only option. KERI offers richer choices
+                that are especially valuable if an AID is intended to have a long lifespan.
+            </p>
+        </dd>
+        <dt>Pre-rotation</dt>
+        <dd>
+            <p>
+                Optionally, the inception event of an AID can also reference the hash of the <em>next</em>
+                key that will be used to control the AID. This changes how the AID is derived: <code>derive(
+                initial_public_key, next_key_hash )</code>. KERI calls this feature <dfn>pre-rotation</dfn>;
+                AIDs that use it are called <dfn>transferrable</dfn> AIDs because their control can be
+                transferred to new keys. AIDs that do not use pre-rotation cannot change their keys, and
+                are thus thus <dfn>non-transferrable</dfn>.
+                </p>
+            <p>
+                Pre-rotation has profound security benefits. If a malicious party steals the private key for
+                an AID with this feature, they only accomplish <em>temporary</em> mischief, because the
+                already-existing KEL contains a commitment to future state. This prevents them from rotating
+                the stolen AID's key to an arbitrary value of their choosing. And as soon as the AID owner
+                suspects a compromise, they can do a valid rotation that locks the attacker out again.
+            </p>
+        </dd>
+        <dt>Weighted Multisig</dt>
+        <dd>
+            <p>
+                KELs can enforce the choice to distribute control among multiple key-holders. This includes
+                simple M-of-N rules like "3 of 5 keys must sign to change the AID's state," but also more
+                sophisticated configurations: "Acme Corp's AID is controlled by the keys of 4 of 7 board members,
+                or by the keys of the CEO and 2 board members, or by the keys of the CEO and the Chief Counsel."
+            </p>
+            <p>
+                The security and recovery benefits of this feature are obvious when an AID references
+                organizational identity. However, even individuals can benefit from this, when stakes are high.
+                They simply store different keys on different devices, and then configure how their devices
+                constitute a management quorum. This decreases risks from lost phones, for example.
+            </p>
+        </dd>
+        <dt>Witnesses</dt>
+        <dd>
+            <p>
+                In addition, KELs allow an AID owner to declare that an AID has <dfn>witnesses</dfn>. This
+                choice also changes how the AID value is derived: <code>derive( initial_public_key, next_key_hash,
+                witnesses )</code>. Witnesses are independent, highly decentralized parties (web sites,
+                blockchains, etc.) that each publish a copy of the KEL.
+            </p>
+            <p>
+                Witnesses do not coordinate or come to consensus with one another, and they need not be
+                deeply trustworthy; merely by existing, they improve trust. This is because anyone changing
+                an AID's key state or its set of witnesses (including the AID's legitimate owner) has to report
+                those changes to the witnesses that are currently active, to produce a valid evolution of the
+                KEL. The AID owner and all witnesses thus hold one another accountable. Further, it becomes
+                possible to distinguish between duplicity and imperfect replication of state.
+            </p>
+        </dd>
+        <dt>Transaction Event Log</dt>
+        <dd>
+        <dd>
+            <p>
+                KERI supports an official mechanism for binding an identifier to important, non-repudible
+                actions that must relate with deterministic order to the key rotation events in the KEL.
+                This <dfn>transaction event log</dfn> (<dfn>TEL</dfn>) is how an AID can tell the world
+                it has issued and revoked credentials, started or stopped listening on a service endpoint,
+                and so forth. TELs are self-certifying, just like KELs, but are also published by witnesses
+                to enhance discoverability and accountability.
+            </p>
+        </dd>
+        <dt>Web Independence</dt>
+        <dd>
+            <p>
+                Although <em>this DID method</em> depends on web technology, <em>KERI itself</em> does not.
+                It's as easy to create AIDs on IOT devices as it is on the web. AIDs offer the same features
+                regardless of their origin, and besides HTTP, they are shareable over Lo-Ra, BlueTooth, NFC,
+                Low Earth Orbit satellite protocols, service buses on medical devices, and so forth. Thus,
+                KERI's AIDs offer a bridge between a web-centric DID method and lower-level IOT ecosystems.
+            </p>
+        </dd>
+        <dt>Flexible Serialization</dt>
+        <dd>
+            <p>
+                KERI uses <a href="https://weboftrust.github.io/ietf-cesr/draft-ssmith-cesr.html"><dfn>CESR
+                </dfn></a> (<dfn>Composable Event Streaming Representation</dfn>) to serialize
+                data. This is a deep subject all by itself, but at a high level, it means two things:
+                </p>
+            <ul>
+                <li>
+                    JSON, CBOR, and MsgPack are all valid and equivalent ways to represent a KERI data
+                    structure. Further, JSON, CBOR, and MsgPack can be freely mixed/combined, because
+                    CESR makes each chunk of content self-describing, <em>and a digital signature on
+                    a CESR data structure is stable no matter which of the other formats is used</em>.
+                    The practical effect is that developers get the best of both worlds: they can
+                    produce and consume data structures mostly using whatever toolset they like, they
+                    can displayed and debug data structures in a human-friendly form, and they can store
+                    or transmit data in its tersest form, <em>all without changing the signature</em>.
+                </li>
+                <li>
+                    Cryptographic primitives such as keys and hashes are structured strings with a recognizable
+                    data type prefix. This means they are very terse, and there is no need for the key encoding
+                    methods that have produced such variety in other DID methods (JWK versus ...).
+                </li>
+            </p>
+        </dd>
+    </dl>
+
+    <p>
+        Despite this rich set of features, KERI imposes only light dependencies on developers.
+        The cryptography it uses is familiar and battle-hardened &mdash; exactly what you'd find
+        in standard toolkits for big numbers and elliptic curves. Libraries exist in javascript,
+        rust, and python.
+    </p>
+
+    <p>
+
+    </p>
+
+</section>
