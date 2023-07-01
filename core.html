@@ -139,35 +139,59 @@
 </section>
 
 <section class="normative">
-    <h2>Resolution Process</h2>
+    <h2>Key Material and Document Handling</h2>
     <p>
-        Before a <code>did:webs</code> DID can undergo standard resolution, it must be converted
-        back to a DDURL. This is done by replacing the "did:webs:" prefix with https://", converting
-        a percent-encoded port delimiter back to a colon, and replacing all other colons with slashes.
-        In addition, if the DID includes no path, then "/.well-known/did.json" is appended.
+        DID docs for this method are pure JSON. They may be processed as JSON-LD by prepending
+        an <code>@context</code> if consumers of the documents wish.
     </p>
     <p>
-        An HTTP GET is now performed on the DDURL to fetch a DID doc. This operation MUST follow
-        both temporary and permanent redirects, but MUST break redirect cycles and MUST NOT allow
-        excessive redirects. The final URL once all redirects have been followed is called the
-        <dfn>terminal URL</dfn>. If GETting the terminal URL returns HTTP status code 404, if the
-        terminal url contains a path, and if the terminal url does not end in ".json", then a client
-        MUST append ".json" to the terminal URL and make a second attempt to GET the resource with
-        the revised URL.
+        DID URLs in DID docs MUST be absolute and MUST use the <a>stable</a> form of the DID's MSI.
     </p>
-    <p>
-        Unlike <code>did:web</code>, the resolution process is not assumed to produce valid
-        output simply because a DID doc is returned. The top-level <code>id</code> property
-        in the doc contains a KERI AID rather than the value of the DID itself. DID doc is analyzed, and If the DID is a A second GET MUST also be performed. This one
-        fetches the KEL. The URL
-        for the KEL is generated as follows:
-    </p>
-    <ol>
-        <li>Start with the final URL that successfully fetched a DID doc after all redirects were followed.</li>
-        <li>If this URL ends with ".json", change it to end with ".kel.json". Otherwise, just append ".kel".</li>
-    </ol>
-    <p>
-        When a DID is converted back into a DDURL for resolution to a DID doc,
-
 </section>
 
+<section class="normative">
+    <h2>DID Method Operations</h2>
+    <section class="normative">
+        <h3>Create (Register)</h3>
+        <p>Creating a DID involves these steps:</p>
+        <ol>
+            <p>Create a KERI AID. This process is documented in KERI materials.</p>
+            <p>Choose a <a>DDURL</a> where the DID doc for the DID will be published.</p>
+            <p>Append <code>.kel</code> to the DDURL and publish the KEL of the AID at this location.</p>
+            <p>Derive the DID doc from the KEL and publish it at the DDURL.</p>
+        </ol>
+    </section>
+    <section class="normative">
+        <h3>Read (Resolve)</h3>
+        <p>
+            Before a <code>did:webs</code> DID can undergo standard resolution, it must be converted
+            back to a DDURL. This is done by replacing the "did:webs:" prefix with https://", converting
+            a percent-encoded port delimiter back to a colon, and replacing all other colons with slashes.
+            In addition, if the DID includes no path, then "/.well-known/did.json" is appended.
+        </p>
+        <p>
+            An HTTP GET is now performed on the DDURL to fetch a DID doc. This operation MUST follow
+            both temporary and permanent redirects, but MUST break redirect cycles and MUST NOT allow
+            excessive redirects. The final URL once all redirects have been followed is called the
+            <dfn>terminal URL</dfn>. If GETting the terminal URL returns HTTP status code 404, if the
+            terminal url contains a path, and if the terminal url does not end in ".json", then a client
+            MUST append ".json" to the terminal URL and make a second attempt to GET the resource with
+            the revised URL.
+        </p>
+        <p>
+            Unlike <code>did:web</code>, the resolution process is not assumed to produce valid
+            output simply because a DID doc is returned. The top-level <code>id</code> property
+            in the doc contains a KERI AID rather than the value of the DID itself. DID doc is analyzed, and If the DID is a A second GET MUST also be performed. This one
+            fetches the KEL. The URL
+            for the KEL is generated as follows:
+        </p>
+        <ol>
+            <li>Start with the final URL that successfully fetched a DID doc after all redirects were followed.</li>
+            <li>If this URL ends with ".json", change it to end with ".kel.json". Otherwise, just append ".kel".</li>
+        </ol>
+        <p>
+            When a DID is converted back into a DDURL for resolution to a DID doc,
+
+    </section>
+
+</section>
