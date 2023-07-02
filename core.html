@@ -158,7 +158,7 @@
             <p>Create a KERI AID. This process is documented in KERI materials.</p>
             <p>Choose a <a>DDURL</a> where the DID doc for the DID will be published.</p>
             <p>Append <code>.kel</code> to the DDURL and publish the KEL of the AID at this location.</p>
-            <p>Derive the DID doc from the KEL and publish it at the DDURL.</p>
+            <p>Derive the DID doc from the KEL and publish it at the DDURL. TODO: how!</p>
         </ol>
     </section>
     <section class="normative">
@@ -181,7 +181,8 @@
         <p>
             Unlike <code>did:web</code>, the resolution process is not assumed to produce valid
             output simply because a DID doc is returned. The top-level <code>id</code> property
-            in the doc contains a KERI AID rather than the value of the DID itself. DID doc is analyzed, and If the DID is a A second GET MUST also be performed. This one
+            in the doc contains a KERI AID rather than the value of the DID itself. DID doc is
+            analyzed, and If the DID is a A second GET MUST also be performed. This one
             fetches the KEL. The URL
             for the KEL is generated as follows:
         </p>
@@ -191,7 +192,30 @@
         </ol>
         <p>
             When a DID is converted back into a DDURL for resolution to a DID doc,
-
+        </p>
     </section>
-
+    TODO: what about OOBIs?
+    TODO: what about resolution against a previous version
+    TODO: what args are valid in DID URL?
+    TODO: service endpoints
+    <section class="normative">
+        <h3>Update</h3>
+        <p>This operation is not possible if the AID uses <a>direct mode</a>. Otherwise:</p>
+        <ol>
+            <li>Modify the AID's key state or its <a>witnesses</a> (resulting in an updated <a>KEL</a>,
+                and/or its transaction history (resulting in an updated <a>TEL</a>), using
+                KERI mechanisms. This may involve notifying witnesses.
+            </li>
+            <li>Re-derive the DID doc.</li>
+            <li>Republish the KEL and the TEL on the website.</li>
+        </ol>
+    </section>
+    <section class="normative">
+        <h3>Deactivate</h3>
+        <p>
+            This operation is only possible if the AID is <a>transferrable</a>. Simply use KERI to
+            rotate the key to null (notifying <a>witnesses</a> if applicable). This signals the end
+            of the identifier's lifecycle to all stakeholders.
+        </p>
+    </section>
 </section>
