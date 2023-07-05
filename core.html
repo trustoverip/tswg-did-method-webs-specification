@@ -15,8 +15,8 @@
     <p>
         A DID that uses this method MUST begin with the following prefix: <code>did:webs:</code>.
         Per the DID specification, this string MUST be lower-case. The remainder of the DID,
-        after the prefix, is the case-sensitive <dfn>method-specific identifier</dfn>
-        (<dfn>MSI</dfn>) described <a href="#method-specific-identifier">below</a>.
+        after the prefix, is the case-sensitive <a>method-specific identifier</a>
+        (<a>MSI</a>) described <a href="#method-specific-identifier">below</a>.
     </p>
 </section>
 
@@ -101,8 +101,8 @@
         publication). This can create interpretation challenges for DIDs based on URLs.
     </p>
     <p>
-        To avoid ambiguity, the <code>did:webs</code> method adds an additional form of MSI.
-        This is a special <a>CESR</a>-encoded string datatype that KERI calls an <a>AID</a> (
+        To avoid ambiguity, the <code>did:webs</code> method adds an additional, <dfn>stable</dfn>
+        form of MSI. This is a special <a>CESR</a>-encoded string datatype that KERI calls an <a>AID</a> (
         <a>autonomic identifier</a>). An AID uniquely and stably identifies a DID and its DID
         doc, regardless of where the DID doc is hosted. The DID doc for any <code>did:webs</code>
         DID MUST store the stable form of the MSI in its top-level <code>id</code> property.

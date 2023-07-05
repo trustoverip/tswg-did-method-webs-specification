@@ -1,6 +1,6 @@
-<h1>Transformations</h1>
-
 <section class="normative">
+<h2>Transformations</h2>
+
     <p>
         Some DIDs created with other DID methods can be deterministically transformed into a
         <code>did:webs</code>. This allows identifiers to function transparently in more than
@@ -8,7 +8,7 @@
         lesser extent, equivalency transformations may also be possible the other direction,
         although potential lossiness in security is a concern.
     </p>
-    <h2><code>did:key</code></h2>
+    <h3><code>did:key</code></h3>
     <p>
         A <code>did:key</code> can be transformed into a <code>did:webs</code> by using its public key as
         the sole input to an <a>inception event</a> for a KERI <a>direct mode</a> AID. Essentially this
@@ -30,7 +30,7 @@
         Therefore, this transformation is discouraged as an interop strategy, even if the AID has
         nothing but an inception event.
     </p>
-    <h2><code>did:peer</code></h2>
+    <h3><code>did:peer</code></h3>
     <p>
         Since <code>did:peer</code> with <code>numalgo=0</code> exactly matches the format, semantics,
         and intent of <code>did:key</code>, such peer DIDs have exactly the same transformation
@@ -45,7 +45,7 @@
         they are <a>transferrable</a> yet lack a <em>next</em> key to satisfies KERI's pre-rotation
         feature.
     </p>
-    <h2>Other DIDs using KERI AIDs as MSI</h2>
+    <h3>Other DIDs using KERI AIDs as MSI</h3>
     <p>
         Any DID method that uses uses a KERI <a>AID</a> as its <a>MSI</a> is trivially and losslessly
         transformable in both directions, since the <code>did:webs</code> method defines all DID docs with the same AID to be
@@ -53,7 +53,7 @@
         on a DID method for environments using extremely constrained hardware or exotic
         transport protocols, for example.
     </p>
-    <h2>Additional DID methods</h2>
+    <h3>Additional DID methods</h3>
     <p>
         A <code>did:webs</code> may also be transformable to or from other DID types as well (e.g.,
         ones using a blockchain as a VDR). However, caveats apply:
@@ -79,3 +79,4 @@
             </td>
         </tr>
     </table>
+</section>
