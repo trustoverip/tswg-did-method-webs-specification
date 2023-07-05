@@ -118,8 +118,7 @@
         Stable DIDs don't carry information about how they can be resolved. They are thus
         very similar to URNs, and have limited utility for a party who has never resolved them
         before. However, they can be resolved if the controller of the DID passes resolution
-        material directly to the resolver (see <a href="#resolution-process">Resolution
-        Process</a>). Systems that process <code>did:webs</code> MAY also store them as a
+        material directly to the resolver (see <a href="#read">Read (Resolve)</a>). Systems that process <code>did:webs</code> MAY also store them as a
         placeholder, to be resolved later. Since the AIDs in stable DIDs lack any dependence
         on web technologies for resolution and discovery, they form the basis of a potential
         interoperability strategy with a DID method that works over other protocols.
@@ -162,7 +161,7 @@
         </ol>
     </section>
     <section class="normative">
-        <h3>Read (Resolve)</h3>
+        <h3 id="read">Read (Resolve)</h3>
         <p>
             Before a <code>did:webs</code> DID can undergo standard resolution, it must be converted
             back to a DDURL. This is done by replacing the "did:webs:" prefix with https://", converting
