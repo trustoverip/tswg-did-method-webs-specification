@@ -1,8 +1,7 @@
-<h1>Core Characteristics</h1>
+<h2>Core Characteristics</h2>
 
-<section class="normative">
-    <h2>Method Name</h2>
-
+<section>
+    <h3>Method Name</h3>
     <p>
         The method name that identifies this DID method SHALL be: <code>webs</code>.
     </p>
@@ -20,8 +19,8 @@
     </p>
 </section>
 
-<section class="normative">
-    <h2>Target System(s)</h2>
+<section>
+    <h3>Target System(s)</h3>
 
     <p>
         As with <code>did:web</code>, this method reads data from whatever web server is referenced
@@ -53,8 +52,8 @@
     </p>
 </section>
 
-<section class="normative">
-    <h2>Method-Specific Identifier</h2>
+<section>
+    <h3>Method-Specific Identifier</h3>
     <p>
         There are two forms of <dfn>method-specific identifier</dfn> (<dfn>MSI</dfn>) for
         <code>did:webs</code>. One is <em>resolvable</em>; the other is <em>stable</em>.
@@ -137,8 +136,8 @@
     </p>
 </section>
 
-<section class="normative">
-    <h2>Key Material and Document Handling</h2>
+<section>
+    <h3>Key Material and Document Handling</h3>
     <p>
         DID docs for this method are pure JSON. They may be processed as JSON-LD by prepending
         an <code>@context</code> if consumers of the documents wish.
@@ -148,10 +147,10 @@
     </p>
 </section>
 
-<section class="normative">
-    <h2>DID Method Operations</h2>
+<section>
+    <h3>DID Method Operations</h3>
     <section class="normative">
-        <h3>Create (Register)</h3>
+        <h4>Create (Register)</h4>
         <p>Creating a DID involves these steps:</p>
         <ol>
             <p>Create a KERI AID. This process is documented in KERI materials.</p>
@@ -161,7 +160,7 @@
         </ol>
     </section>
     <section class="normative">
-        <h3 id="read">Read (Resolve)</h3>
+        <h4 id="read">Read (Resolve)</h4>
         <p>
             Before a <code>did:webs</code> DID can undergo standard resolution, it must be converted
             back to a DDURL. This is done by replacing the "did:webs:" prefix with https://", converting
@@ -200,7 +199,7 @@
     TODO: security and privacy considerations, from did:web
     TODO: read did:web DNS sections
     <section class="normative">
-        <h3>Update</h3>
+        <h4>Update</h4>
         <p>This operation is not possible if the AID uses <a>direct mode</a>. Otherwise:</p>
         <ol>
             <li>Modify the AID's key state or its <a>witnesses</a> (resulting in an updated <a>KEL</a>,
@@ -212,7 +211,7 @@
         </ol>
     </section>
     <section class="normative">
-        <h3>Deactivate</h3>
+        <h4>Deactivate</h4>
         <p>
             This operation is only possible if the AID is <a>transferrable</a>. Simply use KERI to
             rotate the key to null (notifying <a>witnesses</a> if applicable). This signals the end
