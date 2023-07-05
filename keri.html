@@ -11,7 +11,7 @@
     </p>
     <p>
         In KERI, an <dfn>autonomic identifier</dfn> (<dfn>AID</dfn>) is a globally unique string that
-        is bound to cryptographic keys in a special way. AIDs have all the properties that DIDs require,
+        is bound to cryptographic keys in a special way. AIDs have most of the properties that DIDs require,
         plus a few that give them unusually special security and decentralization.
     </p>
     <dl>
@@ -30,7 +30,7 @@
                     KB), fast, cheap, and trivially scalable.
                 </li>
                 <li>
-                    It is fully self-certifying, meaning its correctness can be proved by direct
+                    It is fully <dfn>self-certifying</dfn>, meaning its correctness can be proved by direct
                     inspection, without a consensus algorithm or assumptions about trust in an external
                     data source or its governance.
                 </li>
@@ -46,7 +46,7 @@
                 to key types and cryptographic algorithms. This lets an AID adapt itself to
                 more than one blockchain ecosystem over its lifecycle. It also lets an AID adopt
                 quantum-safe mechanisms without having to upgrade a whole blockchain ecosystem;
-                AIDs are not locked into current approaches.
+                AIDs are not locked into the cryptography used to create them.
             </p>
         </dd>
         <dt>Derived from Public Key</dt>
@@ -55,16 +55,16 @@
                 The KEL begins with an <dfn>inception event</dfn>. This event derives the AID value
                 from the initial public key that will be used to control it. Conceptually: <code>derive(
                 initial_pub_key ) &rarr; AID</code>. Forcing a relationship between AID and key in this
-                way eliminates an early chain-of-custody risk that plagues many DID methods, which allow
-                an attacker to create a DID without a key-owner's knowledge, using compromised keys. It
+                way eliminates an early chain-of-custody risk that plagues many DID methods (an
+                attacker creates a DID without a key-owner's knowledge, using compromised keys). It
                 is similar to techniques used by <code>did:key</code>, <code>did:peer</code>, <code>
                 did:sov</code>, and <code>did:v1</code>.
             </p>
             <p>
                 The simplest AIDs (called <dfn>direct mode</dfn> AIDs in KERI) have no additional input to
-                the derivation function, and a degenerate KEL that can hold only the inception event. This KEL
-                is entirely derivable from the AID itself, and thus requires no external data. Direct mode
-                AIDs are ideal for ephemeral use cases and are excellent analogs (and convenient
+                the derivation function, and expose a degenerate KEL that can hold only the inception event.
+                This KEL is entirely derivable from the AID itself, and thus requires no external data. Direct
+                mode AIDs are ideal for ephemeral use cases and are excellent analogs (and convenient
                 interop tools) to <code>did:key</code> and <code>did:peer</code> with <code>numalgo=0</code>
                 (see [[[transformations]]].) However, this is not the only option. KERI offers richer choices
                 that are especially valuable if an AID is intended to have a long lifespan.
@@ -84,7 +84,7 @@
                 Pre-rotation has profound security benefits. If a malicious party steals the private key for
                 an AID with this feature, they only accomplish <em>temporary</em> mischief, because the
                 already-existing KEL contains a commitment to future state. This prevents them from rotating
-                the stolen AID's key to an arbitrary value of their choosing. And as soon as the AID owner
+                the stolen AID's key to an arbitrary value of their choosing. As soon as the AID owner
                 suspects a compromise, they can do a valid rotation that locks the attacker out again.
             </p>
         </dd>
@@ -128,8 +128,8 @@
                 actions that must relate with deterministic order to the key rotation events in the KEL.
                 This <dfn>transaction event log</dfn> (<dfn>TEL</dfn>) is how an AID can tell the world
                 it has issued and revoked credentials, started or stopped listening on a service endpoint,
-                and so forth. TELs are self-certifying, just like KELs, but are also published by witnesses
-                to enhance discoverability and accountability.
+                and so forth. TELs are <a>self-certifying</a>, just like KELs, but are also published by
+                witnesses to enhance discoverability and accountability.
             </p>
         </dd>
         <dt>Web Independence</dt>
@@ -154,16 +154,19 @@
                     JSON, CBOR, and MsgPack are all valid and equivalent ways to represent a KERI data
                     structure. Further, JSON, CBOR, and MsgPack can be freely mixed/combined, because
                     CESR makes each chunk of content self-describing, <em>and a digital signature on
-                    a CESR data structure is stable no matter which of the other formats is used</em>.
+                    a CESR data structure is stable no matter which format is used</em>.
                     The practical effect is that developers get the best of both worlds: they can
                     produce and consume data structures mostly using whatever toolset they like, they
                     can displayed and debug data structures in a human-friendly form, and they can store
                     or transmit data in its tersest form, <em>all without changing the signature</em>.
                 </li>
                 <li>
-                    Cryptographic primitives such as keys and hashes are structured strings with a recognizable
-                    data type prefix. This means they are very terse, and there is no need for the key encoding
-                    methods that have produced such variety in other DID methods (JWK versus ...).
+                    Cryptographic primitives such as keys, hashes, and signatures are structured strings
+                    with a recognizable data type prefix and a standard representation. This means they are
+                    very terse, and there is no need for the variety of representation methods that create
+                    interoperability challenges in other DID methods (<code>publicKeyJwk</code> versus
+                    <code>publicKeyMultibase</code> versus other; see <a href="https://www.w3.org/TR/did-core/#verification-material">
+                    section 5.2 of the DID spec</a>).
                 </li>
             </p>
         </dd>
@@ -172,12 +175,9 @@
     <p>
         Despite this rich set of features, KERI imposes only light dependencies on developers.
         The cryptography it uses is familiar and battle-hardened &mdash; exactly what you'd find
-        in standard toolkits for big numbers and elliptic curves. Libraries exist in javascript,
-        rust, and python.
-    </p>
-
-    <p>
-
+        in standard toolkits for big numbers and elliptic curves. For example, the python
+        implementation uses just the <code>pysodium</code>, <code>blake3</code>, and <code>
+        cryptography</code> packages. Libraries for KERI exist in javascript, rust, and python.
     </p>
 
 </section>
