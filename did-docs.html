@@ -1,27 +1,25 @@
-<h1>DID docs</h1>
+<h2>DID docs</h2>
 
-<p>A special, ultra-simple form of DID doc is supported.</p>
+<p>
+    DID docs in this method are generated or derived from the key state of the
+    corresponding AID. If the AID in question is <a>non-transferrable</a>, then
+    the DID doc is generated algorithmically from the DID value itself, and
+    nothing else. If the AID is <a>transferrable</a>, then the <a>KEL</a> and
+    the <a>TEL</a> are also required inputs to the generation algorithm.
+</p>
 
-<section>
-    <h2>Backing Storage</h2>
+<p>
+    DID docs are processable as pure JSON. Parties who wish to process them as
+    JSON-LD can do so by referencing <a href="https://example.com/context">this @context</a>.
+</p>
 
-</section>
+<p>
+    The algorithm for transforming an AID to a DID doc begins with the same algorithm
+    as the did:key method. TODO: add info from TEL for service endpoints and
+    other keys.
+</p>
 
-<section>
-    <h2><code><dfn>verificationMethod</dfn></code></h2>
-
-</section>
-
-<section>
-    <h2><code><dfn>authentication</dfn></code></h2>
-</section>
-
-<section>
-    <h2><code><dfn>authorization</dfn></code></h2>
-
-</section>
-
-<section>
-    <h2><code><dfn>service</dfn></code></h2>
-
-</section>
+<p>
+    Hashes, cryptographic keys, and signatures are represented as CESR strings. This is an
+    approach similar to multibase, making them self-describing and terse.
+</p>
