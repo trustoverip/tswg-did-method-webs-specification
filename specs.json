@@ -1,0 +1,36 @@
+
+{
+  "specs": [
+    {
+      "title": "DID Method did:webs Specification",
+      "spec_directory": "./spec",
+      "output_path": "./docs",
+      "markdown_paths": [
+        "header.md",
+        "abstract.md",
+        "status_copyright_toc.md",
+        "introduction.md",
+        "requirements_notations_conventions.md",
+        "terminology.md",
+        "core.md",
+        "diddocs.md",
+        "keri.md",
+        "transforms.md",
+        "iana_considerations.md",
+        "security_considerations.md",
+        "privacy_considerations.md",
+        "normative_references.md",
+        "informative_references.md",
+        "acknowledgements_authors.md"
+      ],
+      "logo": "https://raw.githubusercontent.com/dhh1128/did-method-webs/main/logo.png",
+      "logo_link": "https://github.com/dhh1128/did-method-webs",
+      "katex": true,
+      "source": {
+        "host": "github",
+        "account": "dhh1128",
+        "repo": "did-method-webs"
+      }
+    }
+  ]
+}
