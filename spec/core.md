@@ -19,8 +19,8 @@ DID, after the prefix, is the case-sensitive [[ref: method-specific identifier]]
 As with `did:web`, this method reads data from whatever web server is referenced
 when the (host+)domain portion of one of its DIDs is resolved through the Domain
 Name System (DNS). In fact, a `did:webs` can be resolved to a [[ref: DIDDoc]]
-using a simple text transformation to an HTTPS URL in exactly the same way as a
-`did:web`. Thus, a `did:web` and `did:webs` with the same [[ref: method-specific
+using a simple text transformation to an HTTPS URL in the same way as a
+`did:web`. By design, a `did:web` and `did:webs` with the same [[ref: method-specific
 identifier]] will return the same DIDDoc.
 
 ::: todo
@@ -61,10 +61,10 @@ the "s" in `did:webs`.
 The `did:webs` method specific identifier should be considered to have two
 parts, a fully qualified domain name with an optional path (identical to
 `did:web`), plus a KERI AID (autonomic identifier) that is always the final
-component of the path. A KERI AID is a unique-identifier derived from the
+component of the path. A KERI AID is a unique identifier derived from the
 inception event of a KERI identifier--the first item in the [[ref: KEL]]. Any
 KERI identifier (DIDs or AIDs) that reference the same AID must, by definition,
-refer to the same KEL, and hence, be the same identifier. An `did:webs` DIDs
+refer to the same KEL, and hence, be the same identifier. Any `did:webs` DIDs
 that have the same AID are by definition, synonyms of one another.
 
 The fully qualified domain name is secured by a TLS/SSL certificate with an
@@ -187,6 +187,11 @@ resolution uncertainty.
   - If possible, the controller of the DID MAY use web redirects to allow
     resolution of the old location of the DID to the new location.
 
+The purpose of the history of "official" (according to the controller) locations
+for the DIDDocs is so that if the DID has been put in long lasting documents,
+and its URL instantiation is redirected or disappears, the controller can
+explicitly indicate that the new DID is equivalent to the old one.
+
 If the previously published location of a `did:webs` is not redirected, an
 entity trying to resolve the DID MAY be able to find the data for the DID
 somewhere else using just the AID. Since the AID is globally unique and
@@ -194,11 +199,18 @@ references the same identifier, regardless of the rest of the string that is the
 full `did:webs`, web searching could yield either the current location of the
 DIDDoc, or a copy of the DID that may be useful. For example, even the [Internet
 Archive: Wayback Machine](https://archive.org/web) could be used to find a copy
-of the DIDDoc and KEL at some point in the past, that may be sufficient for the
+of the DIDDoc and KEL at some point in the past that may be sufficient for the
 purposes of the entity trying to resolve the DID. This specification does not
 rely on the Wayback Machine, but it might be a useful DID resolver tool.
 
-The DIDDoc, KEL and other files related to the DID may be cop
+The DIDDoc, KEL and other files related to a DID may be copied to other web
+location. For example, someone might want to keep a cache of DIDs they use, or
+an entity might want to run a registry of "useful" DIDs for a cooperating group.
+While the combination of DIDDoc and KEL make the DID and DIDDoc verifiable, just
+as when published in their "intended" location, the absence of DIDs equivalent to those locations
+in the DIDDoc (`id` or `AlsoKnownAs`) means that the controller of the DID is
+not self-asserting any sort of tie between the DID and the location to which the
+DID-related documents have been copied.
 
 ### Identifiers in a `did:webs` DIDDoc
 
@@ -226,8 +238,7 @@ Creating a DID involves these steps:
 - Create a KERI AID and add the appropriate KERI events that will (at least)
   produce the DIDDoc. That process is described in the [DIDDoc and KEL](#)
   generation section of this specification.
-- Choose the web URL where the DID doc for the DID will be published, including
-  the last element of the path, which MUST be the AID.
+- Add the AID as the last element of the web URL for the DID.
 - Derive the DIDDoc by processing the [[ref: KEL]].
 - Create the AID folder on the web server at the selected location, and place
 the DIDDoc and KEL files into that folder.
@@ -252,10 +263,10 @@ verify the validity of the KEL itself, and of the DIDDoc.
 
 #### Update
 
-Updates are made to the AID by adding KERI events to the [[ref: KEL]]. Some of
-those events may cause the DIDDoc to be updated. Once a set of events have been
-applied, derive the DIDDoc from the KEL and republish both documents to the web
-server, overwriting the existing files.
+If an AID is updateable, updates are made to the AID by adding KERI events to
+the [[ref: KEL]]. Some of those events may cause the DIDDoc to be updated. Once
+a set of events have been applied, derive the DIDDoc from the KEL and republish
+both documents to the web server, overwriting the existing files.
 
 #### Deactivate
 

@@ -18,12 +18,6 @@ web is not practical (e.g., IOT, Lo-Ra, BlueTooth, NFC), the method builds on a
 foundation that fully supports those environments, making future interop of
 identifiers between web and non-web an easy step.
 
-`did:webs` takes advantage of its web basis to introduce two conventions that
-extend the usefulness of the DID Method. First, DID URLs path are used as Web
-URL paths from the DID root to access files that each have an associated
-signature file. Second, the path `whois` off of the DID may contain any number
-of verifiable credentials who's subject is `did:webs` DID.
-
 All DID methods make tradeoffs. The ones in `did:webs` result in a method that
 is cheap, easy to implement, and scalable. No exotic or unproven cryptography is
 required. Deployment is straight forward. Cryptographic trust is strongly
