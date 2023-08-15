@@ -41,7 +41,7 @@ In addition, KELs allow an AID owner to declare that an AID has [[ref: witnesses
 
 Witnesses do not coordinate or come to consensus with one another, and they need not be deeply trustworthy; merely by existing, they improve trust. This is because anyone changing an AID's key state or its set of witnesses (including the AID's legitimate owner) has to report those changes to the witnesses that are currently active, to produce a valid evolution of the KEL. The AID owner and all witnesses thus hold one another accountable. Further, it becomes possible to distinguish between duplicity and imperfect replication of state.
 
-[[def: Transaction Event Log]]
+[[def: Transaction Event Log, TEL]]
 
 KERI supports an official mechanism for binding an identifier to important, non-repudible actions that must relate with deterministic order to the key rotation events in the KEL. This [[ref: transaction event log]] ([[ref: TEL]]) is how an AID can tell the world it has issued and revoked credentials, started or stopped listening on a service endpoint, and so forth. TELs are <a>self-certifying</a>, just like KELs, but are also published by witnesses to enhance discoverability and accountability.
 
