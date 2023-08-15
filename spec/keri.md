@@ -2,7 +2,9 @@
 
 [[ref: KERI]] ([[ref: Key Event Receipt Infrastructure]]) is a methodology for managing cryptographic keys, plus the identifiers and verifiable data structures that depend on them. KERI was first described in an [academic paper](https://arxiv.org/abs/1907.02143), and is now a [draft IETF RFC](https://weboftrust.github.io/ietf-keri/draft-ssmith-keri.html). The open source community that develops KERI-related technologies can be found at https://github.com/WebOfTrust.
 
-In KERI, an [[ref: autonomic identifier]] ([[ref: AID]]) is a globally unique string that is bound to cryptographic keys in a special way. AIDs have most of the properties that DIDs require, plus a few that give them unusually special security and decentralization.
+[[def: Autonomic Identifier, AID]]
+
+A globally unique string that is bound to cryptographic keys in a special way. AIDs and the associated structures, the [[ref: KEL]] and [[ref: TEL]], have most of the properties that DIDs require, plus a few that give them unusually special security and decentralization.
 
 [[def: Key Event Log, KEL]]
 
