@@ -2,7 +2,9 @@
 
 [[ref: KERI]] ([[ref: Key Event Receipt Infrastructure]]) is a methodology for managing cryptographic keys, plus the identifiers and verifiable data structures that depend on them. KERI was first described in an [academic paper](https://arxiv.org/abs/1907.02143), and is now a [draft IETF RFC](https://weboftrust.github.io/ietf-keri/draft-ssmith-keri.html). The open source community that develops KERI-related technologies can be found at https://github.com/WebOfTrust.
 
-In KERI, an [[ref: autonomic identifier]] ([[ref: AID]]) is a globally unique string that is bound to cryptographic keys in a special way. AIDs have most of the properties that DIDs require, plus a few that give them unusually special security and decentralization.
+[[def: Autonomic Identifier, AID]]
+
+A globally unique string that is bound to cryptographic keys in a special way. AIDs and the associated structures, the [[ref: KEL]] and [[ref: TEL]], have most of the properties that DIDs require, plus a few that give them unusually special security and decentralization.
 
 [[def: Key Event Log, KEL]]
 
@@ -39,7 +41,7 @@ In addition, KELs allow an AID owner to declare that an AID has [[ref: witnesses
 
 Witnesses do not coordinate or come to consensus with one another, and they need not be deeply trustworthy; merely by existing, they improve trust. This is because anyone changing an AID's key state or its set of witnesses (including the AID's legitimate owner) has to report those changes to the witnesses that are currently active, to produce a valid evolution of the KEL. The AID owner and all witnesses thus hold one another accountable. Further, it becomes possible to distinguish between duplicity and imperfect replication of state.
 
-[[def: Transaction Event Log]]
+[[def: Transaction Event Log, TEL]]
 
 KERI supports an official mechanism for binding an identifier to important, non-repudible actions that must relate with deterministic order to the key rotation events in the KEL. This [[ref: transaction event log]] ([[ref: TEL]]) is how an AID can tell the world it has issued and revoked credentials, started or stopped listening on a service endpoint, and so forth. TELs are <a>self-certifying</a>, just like KELs, but are also published by witnesses to enhance discoverability and accountability.
 
