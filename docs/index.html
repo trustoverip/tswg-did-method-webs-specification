@@ -68,28 +68,28 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
 <p>This document specifies a <a path-0="w3c-ccg.github.io"path-1="did-spec"path-2="#specific-did-method-schemes"href="https://w3c-ccg.github.io/did-spec/#specific-did-method-schemes" >DID
 Method</a>,
 <code>did:webs</code>, that is web-based but also highly and innovatively secure. Like its
-predecessor, <a path-0="w3c-ccg.github.io"path-1="did-method-web"path-2=""href="https://w3c-ccg.github.io/did-method-web/" ><code>did:web</code></a>, the
+interoperable cousin, <a path-0="w3c-ccg.github.io"path-1="did-method-web"path-2=""href="https://w3c-ccg.github.io/did-method-web/" ><code>did:web</code></a>, the
 <code>did:webs</code> method uses websites and popular, mature tooling to publish DIDs and
 make them discoverable. Unlike <code>did:web</code>, this method’s trust is not rooted in
-DNS, webmasters, X509, and certificate authorities. Instead, it derives from
-meticulous usage of cryptographic keys by those who control identifiers.</p>
-<p>The <code>did:webs</code> method does not need blockchains for trust. However, it can
-reference arbitrary blockchains as an extra, optional publication mechanism.
-This offers an interoperability bridge from (or between) blockchain ecosystems.
-Also, without directly supporting environments where the web is not practical
-(e.g., IOT, Lo-Ra, BlueTooth, NFC), the method builds on a foundation that fully
-supports those environments, making future interop of identifiers between web
-and non-web an easy step.</p>
+DNS, webmasters, X509, and certificate authorities. Instead, it uses <a class="term-reference" href="#term:keri">KERI</a> to provide a secure chain of cryptographic keys events by those who
+control the identifier.</p>
+<p>The <code>did:webs</code> method does not need blockchains for trust. However, its use of
+KERI allows for the referencing of arbitrary blockchains as an extra, optional
+publication mechanism. This offers an interoperability bridge from (or between)
+blockchain ecosystems. Also, without directly supporting environments where the
+web is not practical (e.g., IOT, Lo-Ra, BlueTooth, NFC), the method builds on a
+foundation that fully supports those environments, making future interop of
+identifiers between web and non-web an easy step.</p>
 <p>All DID methods make tradeoffs. The ones in <code>did:webs</code> result in a method that
 is cheap, easy to implement, and scalable. No exotic or unproven cryptography is
-required. Deployment is trivial. Cryptographic trust is strongly decentralized,
-and governance is transparent. Regulatory quandaries vanish. Any tech community
-or legal jurisdiction can use it. However, <code>did:webs</code> <em>does</em> depend on the web
-for publication and discovery. This may color its decentralization and privacy.
-It adds a new component to the tech stack, imposing a modest learning curve as a
-result. For users, the method also raises the bar of accountability,
-thoughtfulness, and autonomy; this can be viewed as either a drawback or a
-benefit (or both).</p>
+required. Deployment is straight forward. Cryptographic trust is strongly
+decentralized, and governance is transparent. Regulatory challenges around
+blockchain vanish. Any tech community or legal jurisdiction can use it. However,
+<code>did:webs</code> <em>does</em> depend on the web for publication and discovery. This may
+color its decentralization and privacy. iFor its security, it adds <a class="term-reference" href="#term:keri">KERI</a>,
+imposing a modest learning curve as a result. For users, the method also raises
+the bar of accountability, thoughtfulness, and autonomy; this can be viewed as
+either a drawback or a benefit (or both).</p>
 <h2 id="status-of-this-memo"><a class="toc-anchor" href="#status-of-this-memo" >§</a> Status of This Memo</h2>
 <p>This is document describes the specification for the <code>did:webs</code> DID Method.</p>
 <p>Information about the current status of this document, any errata,
@@ -121,7 +121,7 @@ NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”
 described in BCP 14 [RFC2119] [RFC8174] when, and only when, they
 appear in all capitals, as shown here.</p>
 <h2 id="terminology"><a class="toc-anchor" href="#terminology" >§</a> Terminology</h2>
-<div id="todo-1" class="notice todo"><a class="notice-link" href="#todo-1">TODO</a></div>
+<div id="todo-2485" class="notice todo"><a class="notice-link" href="#todo-2485">TODO</a></div>
 <dl>
 <dt><span id="term:ddurls"><span id="term:ddurl">DDURL</span></span></dt>
 <dd>DIDDoc Uniform Resource Locator</dd>
@@ -142,155 +142,237 @@ DID, after the prefix, is the case-sensitive <a class="term-reference" href="#te
 <h3 id="target-systems"><a class="toc-anchor" href="#target-systems" >§</a> Target System(s)</h3>
 <p>As with <code>did:web</code>, this method reads data from whatever web server is referenced
 when the (host+)domain portion of one of its DIDs is resolved through the Domain
-Name System (DNS).</p>
+Name System (DNS). In fact, a <code>did:webs</code> can be resolved to a <a class="term-reference" href="#term:diddoc">DIDDoc</a>
+using a simple text transformation to an HTTPS URL in the same way as a
+<code>did:web</code>. By design, a <code>did:web</code> and <code>did:webs</code> with the same <a class="term-reference" href="#term:method-specific">method-specific</a> will return the same DIDDoc.</p>
+<div id="todo-2486" class="notice todo"><a class="notice-link" href="#todo-2486">TODO</a><p>We need to rename the “KEL” as used here as we need a single file that contains
+what KERI calls the KEL and the TEL.</p>
+</div>
 <p>However, this method introduces an important nuance about the target system. In
 many DID methods, the target system equals a <a class="term-reference" href="#term:verifiable-data-registry">verifiable data registry</a> —
 besides publishing data, its security attributes make that data trustworthy. In
 this DID method, the target system’s role is more limited. It is expected to
 serve data about the DID, and to follow acknowledged cybersecurity best
 practices to preserve good hygiene. However, the authenticity of data is
-guaranteed by the DID value itself, typically in conjunction with a digitally
-signed JSON data structure called a <a class="term-reference" href="#term:key-event-log">key event log</a> (<a class="term-reference" href="#term:kel">KEL</a>).</p>
-<p>These trust mechanisms — the integrity checks built into the DID value, and the
-workings of the KEL — are defined by <a class="term-reference" href="#term:keri">KERI</a>. KERI is a complex technology,
-far too rich to explain here. However, the subset of KERI features needed for
-most <code>did:webs</code> use cases is modest, with limited dependencies. These basics are
-summarized in <a href="#keri-fundamentals" >KERI Fundamentals</a>. The rest of this spec
-assumes a working knowledge of the concepts there.</p>
+guaranteed by the DID value itself, in conjunction with a digitally signed JSON
+data structure called a <a class="term-reference" href="#term:key-event-log">key event log</a> (<a class="term-reference" href="#term:kel">KEL</a>)  These trust
+mechanisms — the integrity checks built into the DID value, and the workings of
+the <a class="term-reference" href="#term:kel">KEL</a> — are defined by <a class="term-reference" href="#term:keri">KERI</a>. The set of KERI features needed
+for most <code>did:webs</code> use cases is modest, with limited dependencies. These basics
+are summarized in the <a href="#keri-fundamentals" >KERI Fundamentals</a> section of this
+specification. The rest of this spec assumes a working knowledge of the concepts
+there. The inclusion of KERI in <code>did:webs</code> enables a number of capabilities for
+securing a <code>did:webs</code> identifier, including multi-signature support and the
+creation of pre-rotated keys to prevent loss of control of the identifier if the
+current private key is compromised.</p>
 <p>A target system cannot forge or tamper with data protected by KERI, and if it
 deliberately serves an outdated copy, the duplicity is often detectable. Thus,
 any given target system in isolation can be viewed by this method as a dumb,
-untrusted server of content. It is the combination of target systems and a few
+untrusted server of content. It is the combination of target systems and some
 KERI mechanisms, <em>together</em>, that constitutes this method’s verifiable data
-registry.</p>
+registry. In short, verifying the DIDDoc by processing the KEL using KERI puts
+the “s” in <code>did:webs</code>.</p>
 <h3 id="method-specific-identifier"><a class="toc-anchor" href="#method-specific-identifier" >§</a> Method-Specific Identifier</h3>
-<p>There are two forms of <a class="term-reference" href="#term:method-specific-identifier">method-specific identifier</a> (<a class="term-reference" href="#term:msi">MSI</a>) for
-<code>did:webs</code>. One is <em>resolvable</em>; the other is <em>stable</em>. The resolvable form is
-more common and intuitive.</p>
-<h3 id="resolvable-form"><a class="toc-anchor" href="#resolvable-form" >§</a> Resolvable Form</h3>
-<p>A <a class="term-reference" href="#term:resolvable">resolvable</a> MSI is constructed by transforming an input called the
-<a class="term-reference" href="#term:did-doc-url">DID doc URL</a> (<a class="term-reference" href="#term:ddurl">DDURL</a>). This MUST be an HTTPS URL that references
-a DID doc (either directly, or ultimately, via redirects). The transformation to
-MSI must be reversible back to DDURL, because resolving the DID requires clients
-to fetch DID docs from the MSI.</p>
-<p>The DDURL MUST NOT include a query string (although it could redirect to a URL
-that contains one). The DDURL MUST NOT include relative path components (“./” or
-“…/”). The DDURL MUST NOT include multiple consecutive slashes once the path
-portion begins. The DDURL MUST NOT include a fragment OR redirect to a URL that
-includes a fragment. It MUST return a resource that the web server identifies in
-headers as IANA media type <code>application/json</code>. The DDURL and its corresponding
-X509 certificate(s) also have some security requirements described
-<a href="#security_considerations" >elsewhere</a>.</p>
-<p>The transformation begins by removing the “https://” prefix from this URL. If
-the path portion of the URL consists exactly of “/.well-known/did.json”, this
-suffix is also removed. If the URL ends in a slash, the final slash is removed.
-All remaining slashes in the URL are replaced with colons. If the URL ends with
-“.json”, this suffix is deleted. If the URL includes a port, the colon that
-delimits the port number MUST be percent-encoded so colons in the MSI map only
-to slashes.</p>
-<blockquote>
+<p>The <code>did:webs</code> method specific identifier should be considered to have two
+parts, a fully qualified domain name with an optional path (identical to
+<code>did:web</code>), plus a KERI AID (autonomic identifier) that is always the final
+component of the path. A KERI AID is a unique identifier derived from the
+inception event of a KERI identifier–the first item in the <a class="term-reference" href="#term:kel">KEL</a>. Any
+KERI identifier (DIDs or AIDs) that reference the same AID must, by definition,
+refer to the same KEL, and hence, be the same identifier. Any <code>did:webs</code> DIDs
+that have the same AID are by definition, synonyms of one another.</p>
+<p>The fully qualified domain name is secured by a TLS/SSL certificate with an
+optional path. The formal rules describing valid domain name syntax are
+described in [RFC1035], [RFC1123], and [RFC2181]. The fully qualified domain
+name MUST match the common name used in the SSL/TLS certificate, and MUST NOT
+include IP addresses. A port MAY be included and the colon MUST be percent
+encoded to prevent a conflict with paths. Directories and subdirectories MAY
+optionally be included, delimited by colons rather than slashes.</p>
+<p>After the fully qualified domain name and optional path in a <code>did:webs</code> is a
+final path component, a colon and the AID. To be compatible with <code>did:web</code>, the
+AID is “just a path”, the final (and perhaps only) path element. The presence of
+the required AID as a path element means that a <code>did:webs</code> always has a path,
+and so the “no path” version of a <code>did:web</code> that implicitly uses the
+<code>.well-known</code> folder is not supported by <code>did:webs</code>. Any <code>did:webs</code> can be
+expressed as a <code>did:web</code> but the inverse is not true–a <code>did:webs</code> MUST include
+an AID.</p>
+<p>As with <code>did:web</code>, the DIDDoc is found by transforming the DID to an
+HTTPS URL as follows:</p>
+<ul>
+<li>Replace <code>did:webs</code> with <code>https://</code></li>
+<li>Replace the &quot;<code>:</code>&quot;s in the method-specific identifier with path separators, &quot;‘/’&quot;s</li>
+<li>Convert the optional port percent encoding (“<code>%3A</code>”`) to a colon.</li>
+<li>Append “<code>/did.json</code>” to the resulting string.</li>
+</ul>
+<p>A GET on that URL MUST return the DIDDoc.</p>
+<p>Another transformation produces a second URL that is used to retrieve the KERI KEL:</p>
+<ul>
+<li>Replace the trailing “<code>/did.json</code>” with “<code>/did.kel</code>”.</li>
+</ul>
+<p>A GET on that URL MUST return the KEL for the AID in the <code>did:webs</code> identifier.</p>
+<p>After retrieval, the KEL SHOULD BE processed using KERI rules by anyone
+resolving the DIDDoc to verify it’s contents. Further, KERI-aware applications
+MAY use the KEL to make use of additional capabilities enabled by the use of
+KERI. Capabilities beyond the verification of the KEL and DIDDoc are outside of
+the scope of this specification.</p>
+<p>The following are some <code>did:webs</code> DIDs and their corresponding DIDDoc and KEL
+URLs, based on the examples from the [DID Web Specification], but with the (faked) AID
+(<code>12124313423525</code>) added:</p>
+<ul>
+<li><code>did:webs:w3c-ccg.github.io:12124313423525</code>
+<ul>
+<li>DIDDoc URL: <a path-0="w3c-ccg.github.io"path-1="12124313423525"path-2="did.json"href="https://w3c-ccg.github.io/12124313423525/did.json" ><span>https://w3c-ccg.github.io/12124313423525/did.json</span></a></li>
+<li>KEL URL: <a path-0="w3c-ccg.github.io"path-1="12124313423525"path-2="did.kel"href="https://w3c-ccg.github.io/12124313423525/did.kel" ><span>https://w3c-ccg.github.io/12124313423525/did.kel</span></a></li>
+</ul>
+</li>
+<li><code>did:webs:w3c-ccg.github.io:user:alice:12124313423525</code>
+<ul>
+<li>DIDDoc URL: <a path-0="w3c-ccg.github.io"path-1="user"path-2="alice"path-3="12124313423525"path-4="did.json"href="https://w3c-ccg.github.io/user/alice/12124313423525/did.json" ><span>https://w3c-ccg.github.io/user/alice/12124313423525/did.json</span></a></li>
+<li>KEL URL: <a path-0="w3c-ccg.github.io"path-1="user"path-2="alice"path-3="12124313423525"path-4="did.kel"href="https://w3c-ccg.github.io/user/alice/12124313423525/did.kel" ><span>https://w3c-ccg.github.io/user/alice/12124313423525/did.kel</span></a></li>
+</ul>
+</li>
+<li><code>did:webs:example.com%3A3000:user:alice:12124313423525</code>
+<ul>
+<li>DIDDoc URL: <a path-0="example.com:3000"path-1="user"path-2="alice"path-3="12124313423525"path-4="did.json"href="https://example.com:3000/user/alice/12124313423525/did.json" ><span>https://example.com:3000/user/alice/12124313423525/did.json</span></a></li>
+<li>KEL URL: <a path-0="example.com:3000"path-1="user"path-2="alice"path-3="12124313423525"path-4="did.kel"href="https://example.com:3000/user/alice/12124313423525/did.kel" ><span>https://example.com:3000/user/alice/12124313423525/did.kel</span></a></li>
+</ul>
+</li>
+</ul>
+<p>The <code>did:web</code> version of the DIDs are the same (minus the <code>s</code>) and point
+to the same <code>did.json</code> file, but have no knowledge of the <code>did.kel</code> file.</p>
+<div id="todo-2487" class="notice todo"><a class="notice-link" href="#todo-2487">TODO</a><blockquote>
 <p>TODO: what about intl chars? Does DID spec allow them like URL spec does? What
 about localhost vs. 127.0.0.1 vs. ::1?</p>
 </blockquote>
-<p>Sample DDURL → MSI → DID transformations:</p>
-<pre><code>https://example.com/a/b.json → example.com:a:b → did:webs:example.com:a:b
-https://192.168.1.55:8080/a/b → 192.168.1.55%3A8080:a:b → did:webs:192.168.1.55%3A8080:a:b
-</code></pre>
-<h3 id="stable-form"><a class="toc-anchor" href="#stable-form" >§</a> Stable Form</h3>
-<p>Although URLs are wonderfully useful, they are also notoriously unstable. A DID
-defined by a URL can disappear (or acquire an entirely new value with identical
-keys) due to URL revisions outside the scope of control of the DID owner – and
-the DID owner might not even be aware. A DID URL can be reused, including by
-hackers. In addition, the same content can be hosted at more than one URL (due
-to redirects, CDNs, load balancers, NAT, IPv4 vs. IPv6, symbolic links,
-/etc/hosts files, intranet DNS overrides, or just redundant publication). This
-can create interpretation challenges for DIDs based on URLs.</p>
-<p>To avoid ambiguity, the <code>did:webs</code> method adds an additional, <a class="term-reference" href="#term:stable">stable</a>
-form of MSI. This is a special <a class="term-reference" href="#term:cesr">CESR</a>-encoded string datatype that KERI
-calls an <a class="term-reference" href="#term:aid">AID</a> ( <a class="term-reference" href="#term:autonomic-identifier">autonomic identifier</a>). An AID uniquely and stably
-identifies a DID and its DID doc, regardless of where the DID doc is hosted. The
-DID doc for any <code>did:webs</code> DID MUST store the stable form of the MSI in its
-top-level <code>id</code> property.</p>
-<p>In stable form, <code>did:webs</code> MSIs are simply the AID, with no further information.
-Combining such an MSI with the prefix produces a <a class="term-reference" href="#term:stable-did">stable DID</a> that look
-like this:</p>
-<pre class="example" title="sample AID → DID transformation">        EmkPreYpZfFk66jpf3uFv7vklXKhzBrAqjsKAn2EDIPM → did:webs:EmkPreYpZfFk66jpf3uFv7vklXKhzBrAqjsKAn2EDIPM
-    </pre>
-<p>Stable DIDs don’t carry information about how they can be resolved. They are
-thus very similar to URNs, and have limited utility for a party who has never
-resolved them before. However, they can be resolved if the controller of the DID
-passes resolution material directly to the resolver (see <a href="#read" >Read
-(Resolve)</a>). Systems that process <code>did:webs</code> MAY also store them as a
-placeholder, to be resolved later. Since the AIDs in stable DIDs lack any
-dependence on web technologies for resolution and discovery, they form the basis
-of a potential interoperability strategy with a DID method that works over other
-protocols.</p>
-<p>Across all time, all <code>did:webs</code> DID docs that are identified by the same AID (or
-stable DID) MUST be understood to characterize the same DID, and implementations
-of this method MUST require them to be logically consistent with one another. On
-the other hand, DID docs identified by different AIDs MUST be understood to
-characterize different DIDs, even if they are accessed via the same URL (e.g.,
-at different times). This makes accidental or deliberate collisions into errors.
-Implementations MUST treat them as such (e.g., alerting the user that the
-non-stable form of the DID is ambiguous). It also creates the possibility to
-publish the same DID in different places; the non-stable forms of each DID are
-just synonyms. Internal processing of DID docs (which uses only the stable form)
-is deterministic and independent of context that a DID owner may not control.</p>
+</div>
+<div id="todo-2488" class="notice todo"><a class="notice-link" href="#todo-2488">TODO</a><p>TODO: Consider merging this and the next section and propose that an entity
+SHOULD only publish one “current” <code>did:webs</code>, with defined support for redirects
+Copies of a the <code>did:webs</code> data should be just that – copies.</p>
+</div>
+<p>Since an AID is a unique identifier that is inextricably bound to the KEL from
+which it is associated, any <code>did:webs</code> DIDs that have the same AID component
+MUST return an equivalent, although not necessarily identical, DIDDoc and KEL.
+Notably, as defined in the <a href="#identifiers-in-a-didwebs-diddoc" >next section</a>, the
+<code>id</code> field in the DIDDoc will differ based the web location of the DIDDoc. As
+well, different versions of the DIDDoc and KEL may reside in different locations
+depending on the replication capabilities of the controlling entity. If the KELs
+differ for <code>did:webs</code> DIDs with the same AID, the smaller KEL MUST be a prefix
+of the larger KEL (e.g., the only difference in the KELs be extra events in one
+of the KELs, not yet reflected in the other). If the KELs diverge from one other
+(e.g., one is not a subset of the other), both the KELs and the DIDs MUST be
+considered invalid.</p>
+<p>The web supports a number of ways to redirect users. Please the section on
+<a href="#" >Handling Web Redirections</a> later in this specification.</p>
+<p>KERI anticipates the possibility of a duplicitous actor with an AID that forks a
+KEL and shares different versions of the KEL containing different events, such
+as publishing different versions of the KEL on different web servers. The
+verification of the KEL MAY provide mechanisms for detecting such behavior, such
+as KERI witnesses and watchers.</p>
+<h3 id="handling-web-redirection"><a class="toc-anchor" href="#handling-web-redirection" >§</a> Handling Web Redirection</h3>
+<p>A <code>did:webs</code> is intended to be a “stable” (long-lasting) identifier that can be
+put into documents, such as verifiable credentials, that are intended to be
+useful for a very long time – generations. However, the web is not a very
+stable place, and documents are moved around and copied frequently. When two or
+more companies merge, often the web presence of some of the merged entities
+“disappears”. It may not be possible to retain a permanent <code>did:webs</code> web
+location.</p>
+<p>When a <code>did:webs</code> moves, its AID does not change. The same KEL is used to verify
+the DIDDoc. Were the AID to change, it would be an altogether new DID,
+unconnected to the first DID. So if a resolver can find a newly named DID that
+uses the same AID, and the KEL verifies the DID, then they have resolved the
+DID. In fact, a <code>did:webs</code> could be moved to use another DID method that uses
+the AID for uniqueness and KEL for validity.</p>
+<p>The following are the capabilities in <code>did:webs</code> to help in the face of
+resolution uncertainty.</p>
+<ul>
+<li>The <code>did:webs</code> is bound to its location via an event recording in the KEL, and
+as the <code>id</code> in the DIDDoc.</li>
+<li>When a <code>did:webs</code> is permanently moved to some other location, an event in the
+KEL records the change.
+<ul>
+<li>The <code>id</code> in the DIDDoc is set to the new location.</li>
+<li>An <code>AlsoKnownAs</code> entry is added to the DIDDoc for the old location.</li>
+<li>If possible, the controller of the DID MAY use web redirects to allow
+resolution of the old location of the DID to the new location.</li>
+</ul>
+</li>
+</ul>
+<p>The purpose of the history of “official” (according to the controller) locations
+for the DIDDocs is so that if the DID has been put in long lasting documents,
+and its URL instantiation is redirected or disappears, the controller can
+explicitly indicate that the new DID is equivalent to the old one.</p>
+<p>If the previously published location of a <code>did:webs</code> is not redirected, an
+entity trying to resolve the DID MAY be able to find the data for the DID
+somewhere else using just the AID. Since the AID is globally unique and
+references the same identifier, regardless of the rest of the string that is the
+full <code>did:webs</code>, web searching could yield either the current location of the
+DIDDoc, or a copy of the DID that may be useful. For example, even the <a path-0="archive.org"path-1="web"href="https://archive.org/web" >Internet
+Archive: Wayback Machine</a> could be used to find a copy
+of the DIDDoc and KEL at some point in the past that may be sufficient for the
+purposes of the entity trying to resolve the DID. This specification does not
+rely on the Wayback Machine, but it might be a useful DID resolver tool.</p>
+<p>The DIDDoc, KEL and other files related to a DID may be copied to other web
+location. For example, someone might want to keep a cache of DIDs they use, or
+an entity might want to run a registry of “useful” DIDs for a cooperating group.
+While the combination of DIDDoc and KEL make the DID and DIDDoc verifiable, just
+as when published in their “intended” location, the absence of DIDs equivalent to those locations
+in the DIDDoc (<code>id</code> or <code>AlsoKnownAs</code>) means that the controller of the DID is
+not self-asserting any sort of tie between the DID and the location to which the
+DID-related documents have been copied.</p>
+<h3 id="identifiers-in-a-didwebs-diddoc"><a class="toc-anchor" href="#identifiers-in-a-didwebs-diddoc" >§</a> Identifiers in a <code>did:webs</code> DIDDoc</h3>
+<p>Within the DIDDoc of a <code>did:webs</code> DID, the following rules are followed:</p>
+<ul>
+<li>The <code>id</code> field in the root of the DIDDoc is the <code>did:webs</code> DID, reflecting the current combined web location and AID of the identifier.</li>
+<li>The <code>alsoKnownAs</code> field in the root of the DIDDoc MAY contain other synonym resolvable <code>did:webs</code> DIDs. The <code>alsoKnownAs</code> field MAY contain <code>did:web</code> versions of the <code>did:webs</code> DID(s).</li>
+<li><code>id</code> items elsewhere in the DIDDoc MUST use the relative form of the identifier, e.g., <code>&quot;id&quot; : &quot;#&lt;identifier&gt;&quot;</code>.</li>
+</ul>
 <h3 id="key-material-and-document-handling"><a class="toc-anchor" href="#key-material-and-document-handling" >§</a> Key Material and Document Handling</h3>
 <p>DID docs for this method are pure JSON. They may be processed as JSON-LD by
 prepending an <code>@context</code> if consumers of the documents wish.</p>
-<p>DID URLs in DID docs MUST be absolute and MUST use the <a class="term-reference" href="#term:stable">stable</a> form of the
-DID’s MSI.</p>
+<p>The KELs are also pure JSON and are processed per the KERI specification rules.</p>
 <h3 id="did-method-operations"><a class="toc-anchor" href="#did-method-operations" >§</a> DID Method Operations</h3>
 <h4 id="create-register"><a class="toc-anchor" href="#create-register" >§</a> Create (Register)</h4>
 <p>Creating a DID involves these steps:</p>
-<p>Create a KERI AID. This process is documented in KERI materials.</p>
-<p>Choose a <a class="term-reference" href="#term:ddurl">DDURL</a> where the DID doc for the DID will be published.</p>
-<p>Append <code>.kel</code> to the DDURL and publish the KEL of the AID at this location.</p>
-<p>Derive the DID doc from the KEL and publish it at the DDURL. TODO: how!</p>
+<ul>
+<li>Choose the web URL where the DID doc for the DID will be published, excluding
+the last element that will be the AID, once defined.</li>
+<li>Create a KERI AID and add the appropriate KERI events that will (at least)
+produce the DIDDoc. That process is described in the <a href="#" >DIDDoc and KEL</a>
+generation section of this specification.</li>
+<li>Add the AID as the last element of the web URL for the DID.</li>
+<li>Derive the DIDDoc by processing the <a class="term-reference" href="#term:kel">KEL</a>.</li>
+<li>Create the AID folder on the web server at the selected location, and place
+the DIDDoc and KEL files into that folder.</li>
+</ul>
+<p>Of course, the web server that serves the files when asked might be a simple
+file server (as implied above) or an active component that retrieves them
+dynamically. Further, the publisher of the files placed on the web can use
+capabilities like [CDNs] to distribute the files.</p>
+<p>Likewise, an active component might be used by the controller of the DID to
+automate the process of publishing and updating the DIDDoc and KEL.</p>
 <h4 id="read-resolve"><a class="toc-anchor" href="#read-resolve" >§</a> Read (Resolve)</h4>
 <p>Before a <code>did:webs</code> DID can undergo standard resolution, it must be converted
-back to a DDURL. This is done by replacing the “did:webs:” prefix with
-https://&quot;, converting a percent-encoded port delimiter back to a colon, and
-replacing all other colons with slashes. In addition, if the DID includes no
-path, then “/.well-known/did.json” is appended.</p>
-<p>An HTTP GET is now performed on the DDURL to fetch a DID doc. This operation
-MUST follow both temporary and permanent redirects, but MUST break redirect
-cycles and MUST NOT allow excessive redirects. The final URL once all redirects
-have been followed is called the <a class="term-reference" href="#term:terminal-url">terminal URL</a>. If GETting the terminal
-URL returns HTTP status code 404, if the terminal url contains a path, and if
-the terminal url does not end in “.json”, then a client MUST append “.json” to
-the terminal URL and make a second attempt to GET the resource with the revised
-URL.</p>
-<p>Unlike <code>did:web</code>, the resolution process is not assumed to produce valid output
-simply because a DID doc is returned. The top-level <code>id</code> property in the doc
-contains a KERI AID rather than the value of the DID itself. DID doc is
-analyzed, and If the DID is a A second GET MUST also be performed. This one
-fetches the KEL. The URL for the KEL is generated as follows:</p>
-<ol>
-<li>Start with the final URL that successfully fetched a DID doc after all
-redirects were followed.</li>
-<li>If this URL ends with “.json”, change it to end with “.kel.json”. Otherwise,
-just append “.kel”.</li>
-</ol>
-<p>When a DID is converted back into a DDURL for resolution to a DID doc,</p>
-<p>TODO: what about OOBIs? TODO: what about resolution against a previous version
-TODO: what args are valid in DID URL? TODO: service endpoints TODO: security and
-privacy considerations, from did:web TODO: read did:web DNS sections</p>
+back to an HTTPS URL <a href="#method-specific-identifier" >as described above</a>. The
+reader then does a GET on both the URL for the DIDDoc (ending in <code>/did.json</code>)
+and on the URL for the KEL (ending in <code>/did.kel</code>)</p>
+<p>On receipt of the two documents, the KEL is processed using [KERI Rules] to
+verify the validity of the KEL itself, and of the DIDDoc.</p>
 <h4 id="update"><a class="toc-anchor" href="#update" >§</a> Update</h4>
-<p>This operation is not possible if the AID uses <a class="term-reference" href="#term:direct-mode">direct mode</a>. Otherwise:</p>
-<ol>
-<li>Modify the AID’s key state or its <a class="term-reference" href="#term:witnesses">witnesses</a> (resulting in an updated
-<a class="term-reference" href="#term:kel">KEL</a>, and/or its transaction history (resulting in an updated
-<a class="term-reference" href="#term:tel">TEL</a>), using KERI mechanisms. This may involve notifying witnesses.</li>
-<li>Re-derive the DID doc.</li>
-<li>Republish the KEL and the TEL on the website.</li>
-</ol>
+<p>If an AID is updateable, updates are made to the AID by adding KERI events to
+the <a class="term-reference" href="#term:kel">KEL</a>. Some of those events may cause the DIDDoc to be updated. Once
+a set of events have been applied, derive the DIDDoc from the KEL and republish
+both documents to the web server, overwriting the existing files.</p>
 <h4 id="deactivate"><a class="toc-anchor" href="#deactivate" >§</a> Deactivate</h4>
-<p>This operation is only possible if the AID is <a class="term-reference" href="#term:transferrable">transferrable</a>. Simply use
-KERI to rotate the key to null (notifying <a class="term-reference" href="#term:witnesses">witnesses</a> if applicable). This
-signals the end of the identifier’s lifecycle to all stakeholders.</p>
+<p>Execute a KERI event that has the effect of rotating the key(s) to null. Once
+the deactivation events have been applied, derive the DIDDoc from the KEL and
+republish both documents to the web server, overwriting the existing files.</p>
+<p>A controller may choose to simply remove the DID folder and files from the web
+server on which it has been published. This is considered to a bad approach, as
+those resolving the DID will not be able to determine if the web service is
+offline or the DID has been deactivated. It is a much better practice to rotate
+the keys to null and continuing to publish the DIDDoc and KEL.</p>
 <h2 id="did-docs"><a class="toc-anchor" href="#did-docs" >§</a> DID docs</h2>
+<h3 id="introduction-2"><a class="toc-anchor" href="#introduction-2" >§</a> Introduction</h3>
 <p>DID docs in this method are generated or derived from the key state of the
 corresponding AID. If the AID in question is <a class="term-reference" href="#term:non-transferrable">non-transferrable</a>, then the
 DID doc is generated algorithmically from the DID value itself, and nothing
@@ -303,9 +385,492 @@ algorithm as the did:key method. TODO: add info from TEL for service endpoints
 and other keys.</p>
 <p>Hashes, cryptographic keys, and signatures are represented as CESR strings. This
 is an approach similar to multibase, making them self-describing and terse.</p>
+<h3 id="did-doc-from-the-keri-kel"><a class="toc-anchor" href="#did-doc-from-the-keri-kel" >§</a> DID doc from the KERI KEL</h3>
+<p>The key event log <a class="term-reference" href="#term:kel">KEL</a> represents a cryptographic chain
+of custody from the <a class="term-reference" href="#term:aid">AID</a> itself down to the current set of signing keys and next rotation key commitments.  When generating a
+DID Document an implementation must “walk the KEL” (follow the chain of key events) to determine the current key state.  Due to the fact that the KERI protocol
+allows for non-establishment event (events that don’t change key state) to be intermixed in a KEL with establishment
+events (those that change key state), the last event may not be an establishment event and thus can not be relied on to
+provide key information.  In addition, the current set of witnesses is calculated from the initial set declared in the
+inception event and “adds” and “cuts” declared in rotation events.</p>
+<p>In KERI the calculated values that result from walking the KEL is refered to as the “current key state” and is expressed
+in the Key State Notice (KSN) record.  An example of a KSN can be seen here:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"v"</span><span class="token operator">:</span> <span class="token string">"KERI10JSON000274_"</span><span class="token punctuation">,</span>
+    <span class="token property">"i"</span><span class="token operator">:</span> <span class="token string">"EeS834LMlGVEOGR8WU3rzZ9M6HUv_vtF32pSXQXKP7jg"</span><span class="token punctuation">,</span>
+    <span class="token property">"s"</span><span class="token operator">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
+    <span class="token property">"t"</span><span class="token operator">:</span> <span class="token string">"ksn"</span><span class="token punctuation">,</span>
+    <span class="token property">"p"</span><span class="token operator">:</span> <span class="token string">"ESORkffLV3qHZljOcnijzhCyRT0aXM2XHGVoyd5ST-Iw"</span><span class="token punctuation">,</span>
+    <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"EtgNGVxYd6W0LViISr7RSn6ul8Yn92uyj2kiWzt51mHc"</span><span class="token punctuation">,</span>
+    <span class="token property">"f"</span><span class="token operator">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
+    <span class="token property">"dt"</span><span class="token operator">:</span> <span class="token string">"2021-11-04T12:55:14.480038+00:00"</span><span class="token punctuation">,</span>
+    <span class="token property">"et"</span><span class="token operator">:</span> <span class="token string">"ixn"</span><span class="token punctuation">,</span>
+    <span class="token property">"kt"</span><span class="token operator">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
+    <span class="token property">"k"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">"DTH0PwWwsrcO_4zGe7bUR-LJX_ZGBTRsmP-ZeJ7fVg_4"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"nt"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"n"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">"E6qpfz7HeczuU3dAd1O9gPPS6-h_dCxZGYhU8UaDY2pc"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"bt"</span><span class="token operator">:</span> <span class="token string">"3"</span><span class="token punctuation">,</span>
+    <span class="token property">"b"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">"BGKVzj4ve0VSd8z_AmvhLg4lqcC_9WYX90k03q-R_Ydo"</span><span class="token punctuation">,</span>
+      <span class="token string">"BuyRFMideczFZoapylLIyCjSdhtqVb31wZkRKvPfNqkw"</span><span class="token punctuation">,</span>
+      <span class="token string">"Bgoq68HCmYNUDgOz4Skvlu306o_NY-NrYuKAVhk3Zh9c"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"c"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"ee"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"s"</span><span class="token operator">:</span> <span class="token string">"0"</span><span class="token punctuation">,</span>
+      <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"ESORkffLV3qHZljOcnijzhCyRT0aXM2XHGVoyd5ST-Iw"</span><span class="token punctuation">,</span>
+      <span class="token property">"br"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">"ba"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">"di"</span><span class="token operator">:</span> <span class="token string">""</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Using this key state as reference, we can identify the fields from the current key state that will translate to values
+in the DID Document.  The following table lists the values from the example KSN and their associated values in a DID Document:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Key State Field</th>
+<th style="text-align:left">Definition</th>
+<th style="text-align:left">DID Document Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>i</code></td>
+<td style="text-align:left">The AID value</td>
+<td style="text-align:left">The value after the last “:” in the DID (both subject and controller)</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>k</code></td>
+<td style="text-align:left">The current set of public signing keys</td>
+<td style="text-align:left">Verification Methods with associated authentication and assertion verification relationships</td>
+</tr>
+</tbody>
+</table>
+<p>In several cases above, the value from the key state is not enough by itself to populate the DID Document.  The following
+sections detail the algorithm to follow for each case.</p>
+<h4 id="aid-value"><a class="toc-anchor" href="#aid-value" >§</a> AID Value</h4>
+<p>The <a class="term-reference" href="#term:aid">AID</a> value is the single string representation of the identfier.  The algorithm used to generate the AID depends on
+the type of AID.  If the AID is transferable (supports key rotation) the AID is generated by taking a cryptographic
+digest of the inception event of the KEL of the AID.  If the AID is non-transferable (does not support key rotation) the
+AID is generated by taking a cryptographic digest of the first (and only) public key of the identifier. See the <a class="term-reference" href="#term:keri-fundamentals">KERI Fundamentals</a> section for more details.</p>
+<p>The value from the <code>i</code> field MUST be the value after the last <code>:</code> in the method specific identifier (MSI) of the DID.  The
+rest of the MSI is generated using the rules defined in the DID Web Specification regarding hostname, port and path:</p>
+<p>The method specific identifier MUST match the common name used in the SSL/TLS certificate, and it MUST NOT include IP
+addresses. A port MAY be included and the colon MUST be percent encoded to prevent a conflict with paths.
+Directories and subdirectories MAY optionally be included, delimited by colons rather than slashes.</p>
+<p>webs-did = “did:webs:” domain-name “:” aid</p>
+<p>webs-did = “did:webs:” domain-name * (“:” path) “:” aid</p>
+<h4 id="also-known-as-dids"><a class="toc-anchor" href="#also-known-as-dids" >§</a> Also Known as DIDs</h4>
+<p>It is anticipated that implementations of this DID method will be able to serve the same AID as multiple DIDs, all of which are synonymous for each other.  Any implementation will be able to provide the URL endpoint required to serve any AID it is serving as a did:webs DID as for did:web resolution.  Likewise, any implementation should be able to service any AID it is service as a did:webs DID as a did:keri DID as well.  Finally, the same AID may be served under multiple domains at the same time and they should be considered the same DID since the AID portion of the DIDs are the same.</p>
+<p>For each synonymous DID defined above (we need a way in KERI to declare other domains it is being served under, unless this is an implementation specific detail) an entry in the <code>alsoKnownAs</code> array in the DID Document should be created.  For the DID <code>did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M</code> the follow <code>alsoKnownAs</code> entry could be created:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"alsoKnownAs"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+    <span class="token string">"did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+    <span class="token string">"did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h4 id="current-set-of-public-signing-keys"><a class="toc-anchor" href="#current-set-of-public-signing-keys" >§</a> Current Set of Public Signing Keys</h4>
+<p>KERI identifiers express public signing keys as Composable Event Streaming Representation (CESR) encoded strings in the
+<code>k</code> field of establishment events and the key state notice.  CESR encoding encapsulates all the information needed to
+determine the cryptographic algorithm used to generate the key pair.  For each key listed in the array value of the <code>k</code> field
+a cooresponding Verification Method will be generated in the DID Document.  The ‘type’ field  in the verification method for each
+public key will be determined by the algorithm used to generate the public key.  At the time of this writing, KERI currently
+supports public key generation for Ed25519, Secp256k1 and Secp256r1 keys however the protocol allows for others to be added at any time.
+We must define the subset of public key algorithms for KERI AIDs that this specification will accept so we can define mappings to existing verification method types as registered in the DID Specification Registries.  As KERI evolves with more algorithms, new verification method types must be registered in the DID Specification Registries and added to this specification.</p>
+<p>The <code>controller</code> field of the verification method must be the value of the <code>id</code> field of DID Document. (Does the method spec need to specify this?)</p>
+<p>The <code>id</code> field of the verification method must conforms to the rules of DID URL syntax and use the KERI key CESR value as the anchor refernce in the url.  For example, the key <code>DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK</code> in the DID Document for the AID <code>EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2</code> becomes:</p>
+<pre><code>did:webs:example.com:EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2#DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK
+</code></pre>
+<h5 id="ed25519"><a class="toc-anchor" href="#ed25519" >§</a> Ed25519</h5>
+<p>Ed25519 public keys must be converted to a verification method with a type of <code>Ed25519VerificationKey2020</code> with a cooresponding <code>publicKeyMultibase</code> field whose value is generated by decoding the CESR representation of the public key out of the KEL into its binary form and re-encoding is as multibase. For example, a KERI AID with only the following inception event in its KEL:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"v"</span><span class="token operator">:</span> <span class="token string">"KERI10JSON0001ad_"</span><span class="token punctuation">,</span>
+  <span class="token property">"t"</span><span class="token operator">:</span> <span class="token string">"icp"</span><span class="token punctuation">,</span>
+  <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2"</span><span class="token punctuation">,</span>
+  <span class="token property">"i"</span><span class="token operator">:</span> <span class="token string">"EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2"</span><span class="token punctuation">,</span>
+  <span class="token property">"s"</span><span class="token operator">:</span> <span class="token string">"0"</span><span class="token punctuation">,</span>
+  <span class="token property">"kt"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token property">"k"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">]</span>
+  <span class="token comment">// ...  </span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>would result in a DID Document with the following verification methods array:</p>
+<pre class="language-json"><code class="language-json">  <span class="token property">"verificationMethod"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"did:webs:example.com:EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2#DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK"</span><span class="token punctuation">,</span>
+      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"Ed25519VerificationKey2020"</span><span class="token punctuation">,</span>
+      <span class="token property">"controller"</span><span class="token operator">:</span> <span class="token string">"did:webs:example.com:EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2"</span><span class="token punctuation">,</span>
+      <span class="token property">"publicKeyMultibase"</span><span class="token operator">:</span> <span class="token string">"zFC8PE5Ney3ScmNawy1e1bzXJZQmN7ENGDRy1iPuBPUtr"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+</code></pre>
+<h5 id="secp256k1"><a class="toc-anchor" href="#secp256k1" >§</a> Secp256k1</h5>
+<p>Secp256k1 public keys must be converted to a verification method with a type of <code>EcdsaSecp256k1VerificationKey2019</code> with a cooresponding <code>publicKeyJwk</code> field whose value is generated by decoding the CESR representation of the public key out of the KEL and into its binary form and generating the mapping representation of the key in JSON Web Key form.</p>
+<p>TODO: Add example of Secp256k1 key in a KEL and the resultant verification method</p>
+<h5 id="verification-relationships"><a class="toc-anchor" href="#verification-relationships" >§</a> Verification Relationships</h5>
+<p>KERI AID public keys can be use to sign a variety of data.  This includes but is not limited to logging into a website, challenge-response exchanges and credential issuances.  It follows that for each public key in <code>k</code> two verification relationships must be generated in the DID Document.  One verification relationshp of type <code>authentication</code> and one verfication relationship of type <code>assertionMethod</code>.  The <code>authentication</code> verification relationship defines that the DID subject can authenticate using each key and the <code>assertionMethod</code> verification relationship defines that the DID subject can express claims with each key (should we address multisig and thresholds here?).</p>
+<h4 id="keri-service-endpoints"><a class="toc-anchor" href="#keri-service-endpoints" >§</a> KERI Service Endpoints</h4>
+<p>In KERI, service endpoints are defined by 2 sets of signed data that follow the Best Available DAta - Read, Update, Nullify (BADA-RUN) (ref?) rules for data processing.  Detailing the rules of BADA-RUN is beyond the scope of this document but to summarize, the protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.</p>
+<p>The two data sets used to define service endpoints are called Location Schemes and Endpoint Role Authorizations and are expressed in KERI <code>rpy</code> events.  Location Schemes define URLs for any URL scheme that an AID has exposed.  For example, the following <code>rpy</code> method declares that the AID <code>EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1</code> exposes the URL <code>http://localhost:3902</code> for scheme <code>http</code>:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"v"</span><span class="token operator">:</span> <span class="token string">"KERI10JSON0000fa_"</span><span class="token punctuation">,</span>
+    <span class="token property">"t"</span><span class="token operator">:</span> <span class="token string">"rpy"</span><span class="token punctuation">,</span>
+    <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"EOGL1KGpOnRaZDIB11uZDCkhHs52_MtMXHd7EqUqwtA3"</span><span class="token punctuation">,</span>
+    <span class="token property">"dt"</span><span class="token operator">:</span> <span class="token string">"2022-01-20T12:57:59.823350+00:00"</span><span class="token punctuation">,</span>
+    <span class="token property">"r"</span><span class="token operator">:</span> <span class="token string">"/loc/scheme"</span><span class="token punctuation">,</span>
+    <span class="token property">"a"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"eid"</span><span class="token operator">:</span> <span class="token string">"EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1"</span><span class="token punctuation">,</span>
+      <span class="token property">"scheme"</span><span class="token operator">:</span> <span class="token string">"http"</span><span class="token punctuation">,</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://127.0.0.1:3901/"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+</code></pre>
+<p>Endpoint Role Authorizations associate a role for one AID in relation to another AID.  Endpoint role authorizations are expressed in KERI <code>pry</code> events with the following structure:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"v"</span><span class="token operator">:</span> <span class="token string">"KERI10JSON000116_"</span><span class="token punctuation">,</span>
+    <span class="token property">"t"</span><span class="token operator">:</span> <span class="token string">"rpy"</span><span class="token punctuation">,</span>
+    <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"EBiVyW6jPOeHX5briFYMQ4CefzqIZHgl-rrcXqj_t9ex"</span><span class="token punctuation">,</span>
+    <span class="token property">"dt"</span><span class="token operator">:</span> <span class="token string">"2022-01-20T12:57:59.823350+00:00"</span><span class="token punctuation">,</span>
+    <span class="token property">"r"</span><span class="token operator">:</span> <span class="token string">"/end/role/add"</span><span class="token punctuation">,</span>
+    <span class="token property">"a"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"cid"</span><span class="token operator">:</span> <span class="token string">"EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1"</span><span class="token punctuation">,</span>
+      <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"agent"</span><span class="token punctuation">,</span>
+      <span class="token property">"eid"</span><span class="token operator">:</span> <span class="token string">"EOGL1KGpOnRaZDIB11uZDCkhHs52_MtMXHd7EqUqwtA3"</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>The AID listed in <code>cid</code> is the source of the authorization, the <code>role</code> is the role and the AID listed in the <code>eid</code> field is the target of the authorization.  So in this example, <code>EOGL1KGpOnRaZDIB11uZDCkhHs52_MtMXHd7EqUqwtA3</code> is being authorized as an Agent for <code>EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1</code>.</p>
+<p>The current set of endpoint roles in KERI is contained in the following table:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Role</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>controller</code></td>
+<td style="text-align:left">The association of the key controller of an AID.  These are always self-referential.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>witness</code></td>
+<td style="text-align:left">A witness for an AID.  This role is already cryptographically committed to the KEL of the source AID and thus does not require and explicit <code>rpy</code> authroization event.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>registrar</code></td>
+<td style="text-align:left">Currently unused.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>watcher</code></td>
+<td style="text-align:left">A componenet serving as a Watcher as defined by the KERI protocol (beyond the scope of this document).</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>judge</code></td>
+<td style="text-align:left">Currently unused.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>juror</code></td>
+<td style="text-align:left">Currently unused.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>peer</code></td>
+<td style="text-align:left">Currently unused.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mailbox</code></td>
+<td style="text-align:left">A component authorized to serve as a store and forward mailbox for the source identifier.  This component usually provides a persistent internet connection for AID controllers that are usually off line.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>agent</code></td>
+<td style="text-align:left">A component authorized to serve as an agent running with persistent internet connection.  Provides more funcitonality than a <code>mailbox</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="keri-service-endpoints-as-services"><a class="toc-anchor" href="#keri-service-endpoints-as-services" >§</a> KERI Service Endpoints as Services</h5>
+<p>As defined above in <a href="#KERI-Service-Endpoints" >KERI Service Endpoints</a> service endpoints roles beyond <code>witness</code> can be defined using Location Scheme and Endpoint Authorization records in KERI.  This section will map the current roles in KERI to service <code>type</code> values in resulting DID Documents and propose a new role in KERI to map to the existing <code>DIDCommMessaging</code> service type declared in DID Specification Registries (ref?).</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"service"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span><span class="token string">"#Bgoq68HCmYNUDgOz4Skvlu306o_NY-NrYuKAVhk3Zh9c"</span><span class="token punctuation">,</span>
+        <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"DIDCommMessaging"</span><span class="token punctuation">,</span> 
+        <span class="token property">"serviceEndpoint"</span><span class="token operator">:</span> <span class="token string">"https://bar.example.com"</span>
+      <span class="token punctuation">}</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span><span class="token string">"#BuyRFMideczFZoapylLIyCjSdhtqVb31wZkRKvPfNqkw"</span><span class="token punctuation">,</span>
+        <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"KERIAgent"</span><span class="token punctuation">,</span> 
+        <span class="token property">"serviceEndpoint"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">"tcp"</span><span class="token operator">:</span> <span class="token string">"tcp://bar.example.com:5542"</span><span class="token punctuation">,</span>
+          <span class="token property">"https"</span><span class="token operator">:</span> <span class="token string">"https://bar.example.com"</span> 
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>TODO:  Detail the transformation</p>
+<h4 id="other-key-commitments"><a class="toc-anchor" href="#other-key-commitments" >§</a> Other Key Commitments</h4>
+<p>Data structures similar to Location Scheme and Endpoint Authorizations and managed in KERI using BADA-RUN could be created that would be used for declaring other types of keys, for example encryption keys, etc</p>
+<p>TODO:  Propose new data structures in KERI and Detail the transformation</p>
+<h3 id="full-example"><a class="toc-anchor" href="#full-example" >§</a> Full Example</h3>
+<p>The following blocks contain full annotated examples of a KERI AID with two events, an inception event and an interaction event, some witnesses, multiple public signing and rotation keys and an Agent with the resulting DID Document that an implementation would generate assuming the implementation was running on the <code>example.com</code> domain with no unique port and no additional path defined:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"v"</span><span class="token operator">:</span> <span class="token string">"KERI10JSON0001b7_"</span><span class="token punctuation">,</span>
+    <span class="token property">"t"</span><span class="token operator">:</span> <span class="token string">"icp"</span><span class="token punctuation">,</span>
+    <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+    <span class="token property">"i"</span><span class="token operator">:</span> <span class="token string">"Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+    <span class="token property">"s"</span><span class="token operator">:</span> <span class="token string">"0"</span><span class="token punctuation">,</span>
+    <span class="token property">"kt"</span><span class="token operator">:</span> <span class="token string">"2"</span><span class="token punctuation">,</span>  <span class="token comment">// Signing Threshold</span>
+    <span class="token property">"k"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">"1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk"</span><span class="token punctuation">,</span>  <span class="token comment">// Secp256k1 Key</span>
+      <span class="token string">"DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE"</span><span class="token punctuation">,</span>      <span class="token comment">// Ed25519 Key</span>
+      <span class="token string">"DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"</span>       <span class="token comment">// Ed25519 Key</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"nt"</span><span class="token operator">:</span> <span class="token string">"2"</span><span class="token punctuation">,</span>
+    <span class="token property">"n"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">"Eao8tZQinzilol20Ot-PPlVz6ta8C4z-NpDOeVs63U8s"</span><span class="token punctuation">,</span>
+      <span class="token string">"EAcNrjXFeGay9qqMj96FIiDdXqdWjX17QXzdJvq58Zco"</span><span class="token punctuation">,</span>
+      <span class="token string">"EPoly9Tq4IPx41U-AGDShLDdtbFVzt7EqJUHmCrDxBdb"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"bt"</span><span class="token operator">:</span> <span class="token string">"3"</span><span class="token punctuation">,</span>
+    <span class="token property">"b"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">"BGKVzj4ve0VSd8z_AmvhLg4lqcC_9WYX90k03q-R_Ydo"</span><span class="token punctuation">,</span>
+      <span class="token string">"BuyRFMideczFZoapylLIyCjSdhtqVb31wZkRKvPfNqkw"</span><span class="token punctuation">,</span>
+      <span class="token string">"Bgoq68HCmYNUDgOz4Skvlu306o_NY-NrYuKAVhk3Zh9c"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"c"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"a"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+...
+<span class="token punctuation">{</span>
+  <span class="token property">"v"</span><span class="token operator">:</span> <span class="token string">"KERI10JSON00013a_"</span><span class="token punctuation">,</span>
+  <span class="token property">"t"</span><span class="token operator">:</span> <span class="token string">"ixn"</span><span class="token punctuation">,</span>
+  <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"Ek48ahzTIUA1ynJIiRd3H0WymilgqDbj8zZp4zzrad-w"</span><span class="token punctuation">,</span>
+  <span class="token property">"i"</span><span class="token operator">:</span> <span class="token string">"Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+  <span class="token property">"s"</span><span class="token operator">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
+  <span class="token property">"p"</span><span class="token operator">:</span> <span class="token string">"Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+  <span class="token property">"a"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"i"</span><span class="token operator">:</span> <span class="token string">"EoLNCdag8PlHpsIwzbwe7uVNcPE1mTr-e1o9nCIDPWgM"</span><span class="token punctuation">,</span>
+      <span class="token property">"s"</span><span class="token operator">:</span> <span class="token string">"0"</span><span class="token punctuation">,</span>
+      <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"EoLNCdag8PlHpsIwzbwe7uVNcPE1mTr-e1o9nCIDPWgM"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+...
+<span class="token punctuation">{</span>
+  <span class="token property">"v"</span><span class="token operator">:</span> <span class="token string">"KERI10JSON000116_"</span><span class="token punctuation">,</span>
+  <span class="token property">"t"</span><span class="token operator">:</span> <span class="token string">"rpy"</span><span class="token punctuation">,</span>
+  <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"EBiVyW6jPOeHX5briFYMQ4CefzqIZHgl-rrcXqj_t9ex"</span><span class="token punctuation">,</span>
+  <span class="token property">"dt"</span><span class="token operator">:</span> <span class="token string">"2022-01-20T12:57:59.823350+00:00"</span><span class="token punctuation">,</span>
+  <span class="token property">"r"</span><span class="token operator">:</span> <span class="token string">"/end/role/add"</span><span class="token punctuation">,</span>
+  <span class="token property">"a"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"cid"</span><span class="token operator">:</span> <span class="token string">"Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+    <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"agent"</span><span class="token punctuation">,</span>
+    <span class="token property">"eid"</span><span class="token operator">:</span> <span class="token string">"EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+...
+<span class="token punctuation">{</span>
+  <span class="token property">"v"</span><span class="token operator">:</span> <span class="token string">"KERI10JSON000116_"</span><span class="token punctuation">,</span>
+  <span class="token property">"t"</span><span class="token operator">:</span> <span class="token string">"rpy"</span><span class="token punctuation">,</span>
+  <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"EBiVyW6jPOeHX5briFYMQ4CefzqIZHgl-rrcXqj_t9ex"</span><span class="token punctuation">,</span>
+  <span class="token property">"dt"</span><span class="token operator">:</span> <span class="token string">"2022-01-20T12:57:59.823350+00:00"</span><span class="token punctuation">,</span>
+  <span class="token property">"r"</span><span class="token operator">:</span> <span class="token string">"/end/role/add"</span><span class="token punctuation">,</span>
+  <span class="token property">"a"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"cid"</span><span class="token operator">:</span> <span class="token string">"EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1"</span><span class="token punctuation">,</span>
+    <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"controller"</span><span class="token punctuation">,</span>
+    <span class="token property">"eid"</span><span class="token operator">:</span> <span class="token string">"EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+...
+<span class="token punctuation">{</span>
+  <span class="token property">"v"</span><span class="token operator">:</span> <span class="token string">"KERI10JSON0000fa_"</span><span class="token punctuation">,</span>
+  <span class="token property">"t"</span><span class="token operator">:</span> <span class="token string">"rpy"</span><span class="token punctuation">,</span>
+  <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"EOGL1KGpOnRaZDIB11uZDCkhHs52_MtMXHd7EqUqwtA3"</span><span class="token punctuation">,</span>
+  <span class="token property">"dt"</span><span class="token operator">:</span> <span class="token string">"2022-01-20T12:57:59.823350+00:00"</span><span class="token punctuation">,</span>
+  <span class="token property">"r"</span><span class="token operator">:</span> <span class="token string">"/loc/scheme"</span><span class="token punctuation">,</span>
+  <span class="token property">"a"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"eid"</span><span class="token operator">:</span> <span class="token string">"EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1"</span><span class="token punctuation">,</span>
+    <span class="token property">"scheme"</span><span class="token operator">:</span> <span class="token string">"http"</span><span class="token punctuation">,</span>
+    <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://foo.example.com:3901/"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
+...
+<span class="token punctuation">{</span>
+  <span class="token property">"v"</span><span class="token operator">:</span> <span class="token string">"KERI10JSON000116_"</span><span class="token punctuation">,</span>
+  <span class="token property">"t"</span><span class="token operator">:</span> <span class="token string">"rpy"</span><span class="token punctuation">,</span>
+  <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"EBiVyW6jPOeHX5briFYMQ4CefzqIZHgl-rrcXqj_t9ex"</span><span class="token punctuation">,</span>
+  <span class="token property">"dt"</span><span class="token operator">:</span> <span class="token string">"2022-01-20T12:57:59.823350+00:00"</span><span class="token punctuation">,</span>
+  <span class="token property">"r"</span><span class="token operator">:</span> <span class="token string">"/end/role/add"</span><span class="token punctuation">,</span>
+  <span class="token property">"a"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"cid"</span><span class="token operator">:</span> <span class="token string">"EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1"</span><span class="token punctuation">,</span>
+    <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"controller"</span><span class="token punctuation">,</span>
+    <span class="token property">"eid"</span><span class="token operator">:</span> <span class="token string">"EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+...
+<span class="token punctuation">{</span>
+  <span class="token property">"v"</span><span class="token operator">:</span> <span class="token string">"KERI10JSON0000fa_"</span><span class="token punctuation">,</span>
+  <span class="token property">"t"</span><span class="token operator">:</span> <span class="token string">"rpy"</span><span class="token punctuation">,</span>
+  <span class="token property">"d"</span><span class="token operator">:</span> <span class="token string">"EOGL1KGpOnRaZDIB11uZDCkhHs52_MtMXHd7EqUqwtA3"</span><span class="token punctuation">,</span>
+  <span class="token property">"dt"</span><span class="token operator">:</span> <span class="token string">"2022-01-20T12:57:59.823350+00:00"</span><span class="token punctuation">,</span>
+  <span class="token property">"r"</span><span class="token operator">:</span> <span class="token string">"/loc/scheme"</span><span class="token punctuation">,</span>
+  <span class="token property">"a"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"eid"</span><span class="token operator">:</span> <span class="token string">"EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1"</span><span class="token punctuation">,</span>
+    <span class="token property">"scheme"</span><span class="token operator">:</span> <span class="token string">"http"</span><span class="token punctuation">,</span>
+    <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://foo.example.com:3901/"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>Resulting DID Document:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+  <span class="token property">"alsoKnownAs"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+    <span class="token string">"did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+    <span class="token string">"did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"verificationMethod"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk"</span><span class="token punctuation">,</span>
+      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"EcdsaSecp256k1VerificationKey2019"</span><span class="token punctuation">,</span>
+      <span class="token property">"controller"</span><span class="token operator">:</span> <span class="token string">"did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+      <span class="token property">"publicKeyJwk"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"crv"</span><span class="token operator">:</span> <span class="token string">"secp256k1"</span><span class="token punctuation">,</span>
+        <span class="token property">"x"</span><span class="token operator">:</span> <span class="token string">"NtngWpJUr-rlNNbs0u-Aa8e16OwSJu6UiFf0Rdo1oJ4"</span><span class="token punctuation">,</span>
+        <span class="token property">"y"</span><span class="token operator">:</span> <span class="token string">"qN1jKupJlFsPFc1UkWinqljv4YE0mq_Ickwnjgasvmo"</span><span class="token punctuation">,</span>
+        <span class="token property">"kty"</span><span class="token operator">:</span> <span class="token string">"EC"</span><span class="token punctuation">,</span>
+        <span class="token property">"kid"</span><span class="token operator">:</span> <span class="token string">"WjKgJV7VRw3hmgU6--4v15c0Aewbcvat1BsRFTIqa5Q"</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE"</span><span class="token punctuation">,</span>
+      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"Ed25519VerificationKey2020"</span><span class="token punctuation">,</span>
+      <span class="token property">"controller"</span><span class="token operator">:</span> <span class="token string">"did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+      <span class="token property">"publicKeyMultibase"</span><span class="token operator">:</span> <span class="token string">"zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"</span><span class="token punctuation">,</span>
+      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"Ed25519VerificationKey2020"</span><span class="token punctuation">,</span>
+      <span class="token property">"controller"</span><span class="token operator">:</span> <span class="token string">"did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"</span><span class="token punctuation">,</span>
+      <span class="token property">"publicKeyMultibase"</span><span class="token operator">:</span> <span class="token string">"zDqYpw38nznAUJeeFdhKBQutRKpyDXeXxxi1HjYUQXLas"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"authentication"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk"</span><span class="token punctuation">,</span>
+    <span class="token string">"#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE"</span><span class="token punctuation">,</span>
+    <span class="token string">"#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"assertionMethod"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk"</span><span class="token punctuation">,</span>
+    <span class="token string">"#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE"</span><span class="token punctuation">,</span>
+    <span class="token string">"#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"service"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"#EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1"</span><span class="token punctuation">,</span>
+      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"KeriAgent"</span><span class="token punctuation">,</span>
+      <span class="token property">"serviceEndpoint"</span><span class="token operator">:</span> <span class="token string">"http://foo.example.com:3901/"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="signed-files"><a class="toc-anchor" href="#signed-files" >§</a> Signed Files</h2>
+<p><code>did:webs</code> <a class="term-reference" href="#term:signed-files">signed files</a> combine the semantics of folders of files on
+web servers, and the <a path-0="www.w3.org"path-1="TR"path-2="did-core"path-3=""href="https://www.w3.org/TR/did-core/" >DID Core Specification</a>’s <a path-0="www.w3.org"path-1="TR"path-2="did-core"path-3="#path"href="https://www.w3.org/TR/did-core/#path" >DID URL path</a> semantics to
+enable the controller of the DID to publish documents cryptographically signed
+using the verification key(s) of the DID. This kind of signed file capability
+has been implemented in a variety of ways in the past, such as with <a path-0="datatracker.ietf.org"path-1="doc"path-2="html"path-3="draft-sporny-hashlink"href="https://datatracker.ietf.org/doc/html/draft-sporny-hashlink" >hashlinks</a>.
+The value of including this as part of the <code>did:webs</code> DID method is that it
+ensures consistency in its application, including how the <a class="term-reference" href="#term:signed-files">signed files</a>
+can be verified when using a <a class="term-reference" href="#term:multisig">multisig</a>-enabled DID, and in the face of
+rotations of the DID’s key(s).</p>
+<p><code>did:webs</code> <a class="term-reference" href="#term:signed-files">signed files</a> work as follows:</p>
+<ul>
+<li>The controller of the DID may place arbitrary files into the folder structure
+below the root did:webs folder.
+<ul>
+<li>The DID URL for the <a class="term-reference" href="#term:signed-file">signed file</a> is of the form <code>&lt;did:webs DID&gt;/&lt;path to file&gt;</code>.</li>
+<li>The HTTPS path to the file MUST be `<HTTPS URL conversion of did:webs
+identifier>/<path to file>.</li>
+</ul>
+</li>
+<li>To be a valid <code>did:webs</code> <a class="term-reference" href="#term:signed-file">signed file</a>, each file MUST have an
+associated JSON Web Signature file named <code>&lt;filename&gt;.jws</code> beside (in the same Web folder as) the file.
+<ul>
+<li>For example, a file <code>revocation_registry.bin</code> MUST have a file
+<code>revocation_registry.bin.jws</code> beside it.</li>
+<li>The HTTPS path to the associated JWS file MUST be <code>&lt;HTTPS URL conversion of did:webs identifier&gt;/&lt;path to file&gt;.jws</code></li>
+</ul>
+</li>
+<li>The JWS web signature MUST:
+<ul>
+<li>Have a payload that is the <a path-0="github.com"path-1="multiformats"path-2="multihash"href="https://github.com/multiformats/multihash" >multiformat multihash</a> hash of the content of the associated signed file.</li>
+<li>Be signed with a verification key(s) that is (are) either currently in the DIDDoc
+of the DID, or found in the <a class="term-reference" href="#term:kel">KEL</a> associated with the DID. A verification
+key found in a valid <a class="term-reference" href="#term:kel">KEL</a> represents a key that had been in use previously,
+but has been rotated away.</li>
+<li>Be verified such that:
+<ul>
+<li>A calculated hash of the file matches the hash in the JWS.</li>
+<li>The signature(s) in the JWS is (are) valid.</li>
+<li>If the DID has (or had at the time of signing) <a class="term-reference" href="#term:multisig">multisig</a>
+requirements, those requirements are met.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>DID URL: <code>did:webs:w3c-ccg.github.io:12124313423525/members-list.txt</code>
+<ul>
+<li>HTTPS URL: <code>https://w3c-ccg.github.io/12124313423525/members-list.txt</code></li>
+<li>HTTPS JWS URL: <code>https://w3c-ccg.github.io/12124313423525/members-list.txt.jws</code></li>
+</ul>
+</li>
+<li>DID URL: <code>did:webs:mines.gov.bc.ca:VCissuer:12124313423525/mines-permit/v1.0/schema.json</code>
+<ul>
+<li>HTTPS URL: <code>https://mines.gov.bc.ca/VCissuer/12124313423525/mines-permit/v1.0/schema.json</code></li>
+<li>HTTPS JWS URL: <code>https://mines.gov.bc.ca/VCissuer/12124313423525/mines-permit/v1.0/schema.json.jws</code></li>
+</ul>
+</li>
+</ul>
+<p>The core use case for this feature is providing an easy way for a DID controller
+to publish files such that those receiving the file can be confident that the
+file was explicitly published by the DID controller (they signed it), and has
+not been tampered with since it was published. A few examples of where this
+might be useful in verifiable credential-related use cases include:</p>
+<ul>
+<li>Revocation registries such as <a path-0="w3c.github.io"path-1="vc-status-list-2021"path-2=""href="https://w3c.github.io/vc-status-list-2021/" >StatusList2021</a> published by the issuer (and
+revoker) of a set of revocable credentials.</li>
+<li><a path-0="www.hyperledger.org"path-1="projects"path-2="anoncreds"href="https://www.hyperledger.org/projects/anoncreds" >Hyperledger AnonCreds</a> objects such as those published by an Issuer when <a path-0="hyperledger.github.io"path-1="anoncreds-spec"path-2="#anoncreds-setup-data-flow"href="https://hyperledger.github.io/anoncreds-spec/#anoncreds-setup-data-flow" >setting up to publish AnonCreds verifiable credential</a></li>
+<li>JSON-LD context files.</li>
+<li>Verifiable Credential rendering data files and images published by verifiable
+credential issuers, such as those proposed in the <a path-0="w3c-ccg.github.io"path-1="vc-render-method"path-2=""href="https://w3c-ccg.github.io/vc-render-method/" >W3C VC Rendering Methods
+specification</a> and used in the <a path-0="github.com"path-1="hyperledger"path-2="aries-rfcs"path-3="blob"path-4="main"path-5="features"path-6="0755-oca-for-aries"path-7="README.md"href="https://github.com/hyperledger/aries-rfcs/blob/main/features/0755-oca-for-aries/README.md" >Overlay Capture Architecture (OCA) for Aries</a>
+specification.</li>
+</ul>
+<p>In publishing a file, the controller of the DID may use the KERI <a class="term-reference" href="#term:tel">TEL</a> to
+record the signing event, prior to publishing the file. In that case, in
+processing the KERI Audit log, the publication event can be found and verified.</p>
 <h2 id="keri-fundamentals"><a class="toc-anchor" href="#keri-fundamentals" >§</a> KERI Fundamentals</h2>
 <p><a class="term-reference" href="#term:keri">KERI</a> (<a class="term-reference" href="#term:key-event-receipt-infrastructure">Key Event Receipt Infrastructure</a>) is a methodology for managing cryptographic keys, plus the identifiers and verifiable data structures that depend on them. KERI was first described in an <a path-0="arxiv.org"path-1="abs"path-2="1907.02143"href="https://arxiv.org/abs/1907.02143" >academic paper</a>, and is now a <a path-0="weboftrust.github.io"path-1="ietf-keri"path-2="draft-ssmith-keri.html"href="https://weboftrust.github.io/ietf-keri/draft-ssmith-keri.html" >draft IETF RFC</a>. The open source community that develops KERI-related technologies can be found at <a path-0="github.com"path-1="WebOfTrust"href="https://github.com/WebOfTrust" ><span>https://github.com/WebOfTrust</span></a>.</p>
-<p>In KERI, an <a class="term-reference" href="#term:autonomic-identifier">autonomic identifier</a> (<a class="term-reference" href="#term:aid">AID</a>) is a globally unique string that is bound to cryptographic keys in a special way. AIDs have most of the properties that DIDs require, plus a few that give them unusually special security and decentralization.</p>
+<p><span id="term:aid"><span id="term:autonomic-identifier">Autonomic Identifier</span></span></p>
+<p>A globally unique string that is bound to cryptographic keys in a special way. AIDs and the associated structures, the <a class="term-reference" href="#term:kel">KEL</a> and <a class="term-reference" href="#term:tel">TEL</a>, have most of the properties that DIDs require, plus a few that give them unusually special security and decentralization.</p>
 <p><span id="term:kel"><span id="term:key-event-log">Key Event Log</span></span></p>
 <p>The binding between an AID and its cryptographic keys is proved by a data structure called a key event log (KEL). This data structure has certain blockchain-like properties. However, a KEL differs from blockchain technology in at least two important ways:</p>
 <ol>
@@ -326,7 +891,7 @@ is an approach similar to multibase, making them self-describing and terse.</p>
 <p><span id="term:witnesses">Witnesses</span></p>
 <p>In addition, KELs allow an AID owner to declare that an AID has <a class="term-reference" href="#term:witnesses">witnesses</a>. This choice also changes how the AID value is derived: <code>derive( initial_public_key, next_key_hash, witnesses )</code>. Witnesses are independent, highly decentralized parties (web sites, blockchains, etc.) that each publish a copy of the KEL.</p>
 <p>Witnesses do not coordinate or come to consensus with one another, and they need not be deeply trustworthy; merely by existing, they improve trust. This is because anyone changing an AID’s key state or its set of witnesses (including the AID’s legitimate owner) has to report those changes to the witnesses that are currently active, to produce a valid evolution of the KEL. The AID owner and all witnesses thus hold one another accountable. Further, it becomes possible to distinguish between duplicity and imperfect replication of state.</p>
-<p><span id="term:transaction-event-log">Transaction Event Log</span></p>
+<p><span id="term:tel"><span id="term:transaction-event-log">Transaction Event Log</span></span></p>
 <p>KERI supports an official mechanism for binding an identifier to important, non-repudible actions that must relate with deterministic order to the key rotation events in the KEL. This <a class="term-reference" href="#term:transaction-event-log">transaction event log</a> (<a class="term-reference" href="#term:tel">TEL</a>) is how an AID can tell the world it has issued and revoked credentials, started or stopped listening on a service endpoint, and so forth. TELs are <a>self-certifying</a>, just like KELs, but are also published by witnesses to enhance discoverability and accountability.</p>
 <p><span id="term:web-independence">Web Independence</span></p>
 <p>Although <em>this DID method</em> depends on web technology, <em>KERI itself</em> does not. It’s as easy to create AIDs on IOT devices as it is on the web. AIDs offer the same features regardless of their origin, and besides HTTP, they are shareable over Lo-Ra, BlueTooth, NFC, Low Earth Orbit satellite protocols, service buses on medical devices, and so forth. Thus, KERI’s AIDs offer a bridge between a web-centric DID method and lower-level IOT ecosystems.</p>
@@ -403,20 +968,20 @@ its chain of trust.</li>
 <p>If a <a class="term-reference" href="#term:ddurl">DDURL</a> results in a redirect, each URL MUST satisfy the same security
 requirements. A <a class="term-reference" href="#term:ddurl">DDURL</a> MAY come from a URL shortener.</p>
 <h2 id="privacy-considerations"><a class="toc-anchor" href="#privacy-considerations" >§</a> Privacy Considerations</h2>
-<div id="todo-2" class="notice todo"><a class="notice-link" href="#todo-2">TODO</a><p>TODO: talk about ephemeral vs. long-lived identifiers, and about using witnesses.</p>
+<div id="todo-2489" class="notice todo"><a class="notice-link" href="#todo-2489">TODO</a><p>TODO: talk about ephemeral vs. long-lived identifiers, and about using witnesses.</p>
 </div>
 <h2 id="references"><a class="toc-anchor" href="#references" >§</a> References</h2>
 <h3 id="normative-references"><a class="toc-anchor" href="#normative-references" >§</a> Normative References</h3>
-<div id="todo-3" class="notice todo"><a class="notice-link" href="#todo-3">TODO</a><p>Add normative references</p>
+<div id="todo-2490" class="notice todo"><a class="notice-link" href="#todo-2490">TODO</a><p>Add normative references</p>
 </div>
 <h3 id="informative-references"><a class="toc-anchor" href="#informative-references" >§</a> Informative References</h3>
-<div id="todo-4" class="notice todo"><a class="notice-link" href="#todo-4">TODO</a><p>Add informative references</p>
+<div id="todo-2491" class="notice todo"><a class="notice-link" href="#todo-2491">TODO</a><p>Add informative references</p>
 </div>
 <h2 id="acknowledgements"><a class="toc-anchor" href="#acknowledgements" >§</a> Acknowledgements</h2>
-<div id="todo-5" class="notice todo"><a class="notice-link" href="#todo-5">TODO</a><p>Add Acknowledgements</p>
+<div id="todo-2492" class="notice todo"><a class="notice-link" href="#todo-2492">TODO</a><p>Add Acknowledgements</p>
 </div>
 <h2 id="authors-addresses"><a class="toc-anchor" href="#authors-addresses" >§</a> Authors’ Addresses</h2>
-<div id="todo-6" class="notice todo"><a class="notice-link" href="#todo-6">TODO</a><p>Add authors’ addresses.</p>
+<div id="todo-2493" class="notice todo"><a class="notice-link" href="#todo-2493">TODO</a><p>Add authors’ addresses.</p>
 </div>
 
                     </article>    
@@ -453,8 +1018,8 @@ requirements. A <a class="term-reference" href="#term:ddurl">DDURL</a> MAY come 
 <li><a href="#method-name" >Method Name</a></li>
 <li><a href="#target-systems" >Target System(s)</a></li>
 <li><a href="#method-specific-identifier" >Method-Specific Identifier</a></li>
-<li><a href="#resolvable-form" >Resolvable Form</a></li>
-<li><a href="#stable-form" >Stable Form</a></li>
+<li><a href="#handling-web-redirection" >Handling Web Redirection</a></li>
+<li><a href="#identifiers-in-a-didwebs-diddoc" >Identifiers in a <code>did:webs</code> DIDDoc</a></li>
 <li><a href="#key-material-and-document-handling" >Key Material and Document Handling</a></li>
 <li><a href="#did-method-operations" >DID Method Operations</a>
 <ul>
@@ -466,7 +1031,22 @@ requirements. A <a class="term-reference" href="#term:ddurl">DDURL</a> MAY come 
 </li>
 </ul>
 </li>
-<li><a href="#did-docs" >DID docs</a></li>
+<li><a href="#did-docs" >DID docs</a>
+<ul>
+<li><a href="#introduction-2" >Introduction</a></li>
+<li><a href="#did-doc-from-the-keri-kel" >DID doc from the KERI KEL</a>
+<ul>
+<li><a href="#aid-value" >AID Value</a></li>
+<li><a href="#also-known-as-dids" >Also Known as DIDs</a></li>
+<li><a href="#current-set-of-public-signing-keys" >Current Set of Public Signing Keys</a></li>
+<li><a href="#keri-service-endpoints" >KERI Service Endpoints</a></li>
+<li><a href="#other-key-commitments" >Other Key Commitments</a></li>
+</ul>
+</li>
+<li><a href="#full-example" >Full Example</a></li>
+</ul>
+</li>
+<li><a href="#signed-files" >Signed Files</a></li>
 <li><a href="#keri-fundamentals" >KERI Fundamentals</a></li>
 <li><a href="#transformations" >Transformations</a>
 <ul>
@@ -495,7 +1075,7 @@ requirements. A <a class="term-reference" href="#term:ddurl">DDURL</a> MAY come 
                   </slide-panels>
       
                 </body>
-                <script>window.specConfig = {"title":"DID Method did:webs Specification","spec_directory":"./spec/","output_path":"./docs","markdown_paths":["header.md","abstract.md","status_copyright_toc.md","introduction.md","requirements_notations_conventions.md","terminology.md","core.md","diddocs.md","keri.md","transforms.md","iana_considerations.md","security_considerations.md","privacy_considerations.md","normative_references.md","informative_references.md","acknowledgements_authors.md"],"logo":"https://raw.githubusercontent.com/dhh1128/did-method-webs/main/logo.png","logo_link":"https://github.com/dhh1128/did-method-webs","katex":true,"source":{"host":"github","account":"dhh1128","repo":"did-method-webs"},"destination":"./docs/"}</script>
+                <script>window.specConfig = {"title":"DID Method did:webs Specification","spec_directory":"./spec/","output_path":"./docs","markdown_paths":["header.md","abstract.md","status_copyright_toc.md","introduction.md","requirements_notations_conventions.md","terminology.md","core.md","diddocs.md","signed_files.md","keri.md","transforms.md","iana_considerations.md","security_considerations.md","privacy_considerations.md","normative_references.md","informative_references.md","acknowledgements_authors.md"],"logo":"https://raw.githubusercontent.com/dhh1128/did-method-webs/main/logo.png","logo_link":"https://github.com/dhh1128/did-method-webs","katex":true,"source":{"host":"github","account":"dhh1128","repo":"did-method-webs"},"destination":"./docs/"}</script>
                 <script>/*! markdown-it 13.0.1 https://github.com/markdown-it/markdown-it @license MIT */
 !function(e,r){"object"==typeof exports&&"undefined"!=typeof module?module.exports=r():"function"==typeof define&&define.amd?define(r):(e="undefined"!=typeof globalThis?globalThis:e||self).markdownit=r()}(this,(function(){"use strict";var e={Aacute:"Á",aacute:"á",Abreve:"Ă",abreve:"ă",ac:"∾",acd:"∿",acE:"∾̳",Acirc:"Â",acirc:"â",acute:"´",Acy:"А",acy:"а",AElig:"Æ",aelig:"æ",af:"⁡",Afr:"𝔄",afr:"𝔞",Agrave:"À",agrave:"à",alefsym:"ℵ",aleph:"ℵ",Alpha:"Α",alpha:"α",Amacr:"Ā",amacr:"ā",amalg:"⨿",amp:"&",AMP:"&",andand:"⩕",And:"⩓",and:"∧",andd:"⩜",andslope:"⩘",andv:"⩚",ang:"∠",ange:"⦤",angle:"∠",angmsdaa:"⦨",angmsdab:"⦩",angmsdac:"⦪",angmsdad:"⦫",angmsdae:"⦬",angmsdaf:"⦭",angmsdag:"⦮",angmsdah:"⦯",angmsd:"∡",angrt:"∟",angrtvb:"⊾",angrtvbd:"⦝",angsph:"∢",angst:"Å",angzarr:"⍼",Aogon:"Ą",aogon:"ą",Aopf:"𝔸",aopf:"𝕒",apacir:"⩯",ap:"≈",apE:"⩰",ape:"≊",apid:"≋",apos:"'",ApplyFunction:"⁡",approx:"≈",approxeq:"≊",Aring:"Å",aring:"å",Ascr:"𝒜",ascr:"𝒶",Assign:"≔",ast:"*",asymp:"≈",asympeq:"≍",Atilde:"Ã",atilde:"ã",Auml:"Ä",auml:"ä",awconint:"∳",awint:"⨑",backcong:"≌",backepsilon:"϶",backprime:"‵",backsim:"∽",backsimeq:"⋍",Backslash:"∖",Barv:"⫧",barvee:"⊽",barwed:"⌅",Barwed:"⌆",barwedge:"⌅",bbrk:"⎵",bbrktbrk:"⎶",bcong:"≌",Bcy:"Б",bcy:"б",bdquo:"„",becaus:"∵",because:"∵",Because:"∵",bemptyv:"⦰",bepsi:"϶",bernou:"ℬ",Bernoullis:"ℬ",Beta:"Β",beta:"β",beth:"ℶ",between:"≬",Bfr:"𝔅",bfr:"𝔟",bigcap:"⋂",bigcirc:"◯",bigcup:"⋃",bigodot:"⨀",bigoplus:"⨁",bigotimes:"⨂",bigsqcup:"⨆",bigstar:"★",bigtriangledown:"▽",bigtriangleup:"△",biguplus:"⨄",bigvee:"⋁",bigwedge:"⋀",bkarow:"⤍",blacklozenge:"⧫",blacksquare:"▪",blacktriangle:"▴",blacktriangledown:"▾",blacktriangleleft:"◂",blacktriangleright:"▸",blank:"␣",blk12:"▒",blk14:"░",blk34:"▓",block:"█",bne:"=⃥",bnequiv:"≡⃥",bNot:"⫭",bnot:"⌐",Bopf:"𝔹",bopf:"𝕓",bot:"⊥",bottom:"⊥",bowtie:"⋈",boxbox:"⧉",boxdl:"┐",boxdL:"╕",boxDl:"╖",boxDL:"╗",boxdr:"┌",boxdR:"╒",boxDr:"╓",boxDR:"╔",boxh:"─",boxH:"═",boxhd:"┬",boxHd:"╤",boxhD:"╥",boxHD:"╦",boxhu:"┴",boxHu:"╧",boxhU:"╨",boxHU:"╩",boxminus:"⊟",boxplus:"⊞",boxtimes:"⊠",boxul:"┘",boxuL:"╛",boxUl:"╜",boxUL:"╝",boxur:"└",boxuR:"╘",boxUr:"╙",boxUR:"╚",boxv:"│",boxV:"║",boxvh:"┼",boxvH:"╪",boxVh:"╫",boxVH:"╬",boxvl:"┤",boxvL:"╡",boxVl:"╢",boxVL:"╣",boxvr:"├",boxvR:"╞",boxVr:"╟",boxVR:"╠",bprime:"‵",breve:"˘",Breve:"˘",brvbar:"¦",bscr:"𝒷",Bscr:"ℬ",bsemi:"⁏",bsim:"∽",bsime:"⋍",bsolb:"⧅",bsol:"\\",bsolhsub:"⟈",bull:"•",bullet:"•",bump:"≎",bumpE:"⪮",bumpe:"≏",Bumpeq:"≎",bumpeq:"≏",Cacute:"Ć",cacute:"ć",capand:"⩄",capbrcup:"⩉",capcap:"⩋",cap:"∩",Cap:"⋒",capcup:"⩇",capdot:"⩀",CapitalDifferentialD:"ⅅ",caps:"∩︀",caret:"⁁",caron:"ˇ",Cayleys:"ℭ",ccaps:"⩍",Ccaron:"Č",ccaron:"č",Ccedil:"Ç",ccedil:"ç",Ccirc:"Ĉ",ccirc:"ĉ",Cconint:"∰",ccups:"⩌",ccupssm:"⩐",Cdot:"Ċ",cdot:"ċ",cedil:"¸",Cedilla:"¸",cemptyv:"⦲",cent:"¢",centerdot:"·",CenterDot:"·",cfr:"𝔠",Cfr:"ℭ",CHcy:"Ч",chcy:"ч",check:"✓",checkmark:"✓",Chi:"Χ",chi:"χ",circ:"ˆ",circeq:"≗",circlearrowleft:"↺",circlearrowright:"↻",circledast:"⊛",circledcirc:"⊚",circleddash:"⊝",CircleDot:"⊙",circledR:"®",circledS:"Ⓢ",CircleMinus:"⊖",CirclePlus:"⊕",CircleTimes:"⊗",cir:"○",cirE:"⧃",cire:"≗",cirfnint:"⨐",cirmid:"⫯",cirscir:"⧂",ClockwiseContourIntegral:"∲",CloseCurlyDoubleQuote:"”",CloseCurlyQuote:"’",clubs:"♣",clubsuit:"♣",colon:":",Colon:"∷",Colone:"⩴",colone:"≔",coloneq:"≔",comma:",",commat:"@",comp:"∁",compfn:"∘",complement:"∁",complexes:"ℂ",cong:"≅",congdot:"⩭",Congruent:"≡",conint:"∮",Conint:"∯",ContourIntegral:"∮",copf:"𝕔",Copf:"ℂ",coprod:"∐",Coproduct:"∐",copy:"©",COPY:"©",copysr:"℗",CounterClockwiseContourIntegral:"∳",crarr:"↵",cross:"✗",Cross:"⨯",Cscr:"𝒞",cscr:"𝒸",csub:"⫏",csube:"⫑",csup:"⫐",csupe:"⫒",ctdot:"⋯",cudarrl:"⤸",cudarrr:"⤵",cuepr:"⋞",cuesc:"⋟",cularr:"↶",cularrp:"⤽",cupbrcap:"⩈",cupcap:"⩆",CupCap:"≍",cup:"∪",Cup:"⋓",cupcup:"⩊",cupdot:"⊍",cupor:"⩅",cups:"∪︀",curarr:"↷",curarrm:"⤼",curlyeqprec:"⋞",curlyeqsucc:"⋟",curlyvee:"⋎",curlywedge:"⋏",curren:"¤",curvearrowleft:"↶",curvearrowright:"↷",cuvee:"⋎",cuwed:"⋏",cwconint:"∲",cwint:"∱",cylcty:"⌭",dagger:"†",Dagger:"‡",daleth:"ℸ",darr:"↓",Darr:"↡",dArr:"⇓",dash:"‐",Dashv:"⫤",dashv:"⊣",dbkarow:"⤏",dblac:"˝",Dcaron:"Ď",dcaron:"ď",Dcy:"Д",dcy:"д",ddagger:"‡",ddarr:"⇊",DD:"ⅅ",dd:"ⅆ",DDotrahd:"⤑",ddotseq:"⩷",deg:"°",Del:"∇",Delta:"Δ",delta:"δ",demptyv:"⦱",dfisht:"⥿",Dfr:"𝔇",dfr:"𝔡",dHar:"⥥",dharl:"⇃",dharr:"⇂",DiacriticalAcute:"´",DiacriticalDot:"˙",DiacriticalDoubleAcute:"˝",DiacriticalGrave:"`",DiacriticalTilde:"˜",diam:"⋄",diamond:"⋄",Diamond:"⋄",diamondsuit:"♦",diams:"♦",die:"¨",DifferentialD:"ⅆ",digamma:"ϝ",disin:"⋲",div:"÷",divide:"÷",divideontimes:"⋇",divonx:"⋇",DJcy:"Ђ",djcy:"ђ",dlcorn:"⌞",dlcrop:"⌍",dollar:"$",Dopf:"𝔻",dopf:"𝕕",Dot:"¨",dot:"˙",DotDot:"⃜",doteq:"≐",doteqdot:"≑",DotEqual:"≐",dotminus:"∸",dotplus:"∔",dotsquare:"⊡",doublebarwedge:"⌆",DoubleContourIntegral:"∯",DoubleDot:"¨",DoubleDownArrow:"⇓",DoubleLeftArrow:"⇐",DoubleLeftRightArrow:"⇔",DoubleLeftTee:"⫤",DoubleLongLeftArrow:"⟸",DoubleLongLeftRightArrow:"⟺",DoubleLongRightArrow:"⟹",DoubleRightArrow:"⇒",DoubleRightTee:"⊨",DoubleUpArrow:"⇑",DoubleUpDownArrow:"⇕",DoubleVerticalBar:"∥",DownArrowBar:"⤓",downarrow:"↓",DownArrow:"↓",Downarrow:"⇓",DownArrowUpArrow:"⇵",DownBreve:"̑",downdownarrows:"⇊",downharpoonleft:"⇃",downharpoonright:"⇂",DownLeftRightVector:"⥐",DownLeftTeeVector:"⥞",DownLeftVectorBar:"⥖",DownLeftVector:"↽",DownRightTeeVector:"⥟",DownRightVectorBar:"⥗",DownRightVector:"⇁",DownTeeArrow:"↧",DownTee:"⊤",drbkarow:"⤐",drcorn:"⌟",drcrop:"⌌",Dscr:"𝒟",dscr:"𝒹",DScy:"Ѕ",dscy:"ѕ",dsol:"⧶",Dstrok:"Đ",dstrok:"đ",dtdot:"⋱",dtri:"▿",dtrif:"▾",duarr:"⇵",duhar:"⥯",dwangle:"⦦",DZcy:"Џ",dzcy:"џ",dzigrarr:"⟿",Eacute:"É",eacute:"é",easter:"⩮",Ecaron:"Ě",ecaron:"ě",Ecirc:"Ê",ecirc:"ê",ecir:"≖",ecolon:"≕",Ecy:"Э",ecy:"э",eDDot:"⩷",Edot:"Ė",edot:"ė",eDot:"≑",ee:"ⅇ",efDot:"≒",Efr:"𝔈",efr:"𝔢",eg:"⪚",Egrave:"È",egrave:"è",egs:"⪖",egsdot:"⪘",el:"⪙",Element:"∈",elinters:"⏧",ell:"ℓ",els:"⪕",elsdot:"⪗",Emacr:"Ē",emacr:"ē",empty:"∅",emptyset:"∅",EmptySmallSquare:"◻",emptyv:"∅",EmptyVerySmallSquare:"▫",emsp13:" ",emsp14:" ",emsp:" ",ENG:"Ŋ",eng:"ŋ",ensp:" ",Eogon:"Ę",eogon:"ę",Eopf:"𝔼",eopf:"𝕖",epar:"⋕",eparsl:"⧣",eplus:"⩱",epsi:"ε",Epsilon:"Ε",epsilon:"ε",epsiv:"ϵ",eqcirc:"≖",eqcolon:"≕",eqsim:"≂",eqslantgtr:"⪖",eqslantless:"⪕",Equal:"⩵",equals:"=",EqualTilde:"≂",equest:"≟",Equilibrium:"⇌",equiv:"≡",equivDD:"⩸",eqvparsl:"⧥",erarr:"⥱",erDot:"≓",escr:"ℯ",Escr:"ℰ",esdot:"≐",Esim:"⩳",esim:"≂",Eta:"Η",eta:"η",ETH:"Ð",eth:"ð",Euml:"Ë",euml:"ë",euro:"€",excl:"!",exist:"∃",Exists:"∃",expectation:"ℰ",exponentiale:"ⅇ",ExponentialE:"ⅇ",fallingdotseq:"≒",Fcy:"Ф",fcy:"ф",female:"♀",ffilig:"ﬃ",fflig:"ﬀ",ffllig:"ﬄ",Ffr:"𝔉",ffr:"𝔣",filig:"ﬁ",FilledSmallSquare:"◼",FilledVerySmallSquare:"▪",fjlig:"fj",flat:"♭",fllig:"ﬂ",fltns:"▱",fnof:"ƒ",Fopf:"𝔽",fopf:"𝕗",forall:"∀",ForAll:"∀",fork:"⋔",forkv:"⫙",Fouriertrf:"ℱ",fpartint:"⨍",frac12:"½",frac13:"⅓",frac14:"¼",frac15:"⅕",frac16:"⅙",frac18:"⅛",frac23:"⅔",frac25:"⅖",frac34:"¾",frac35:"⅗",frac38:"⅜",frac45:"⅘",frac56:"⅚",frac58:"⅝",frac78:"⅞",frasl:"⁄",frown:"⌢",fscr:"𝒻",Fscr:"ℱ",gacute:"ǵ",Gamma:"Γ",gamma:"γ",Gammad:"Ϝ",gammad:"ϝ",gap:"⪆",Gbreve:"Ğ",gbreve:"ğ",Gcedil:"Ģ",Gcirc:"Ĝ",gcirc:"ĝ",Gcy:"Г",gcy:"г",Gdot:"Ġ",gdot:"ġ",ge:"≥",gE:"≧",gEl:"⪌",gel:"⋛",geq:"≥",geqq:"≧",geqslant:"⩾",gescc:"⪩",ges:"⩾",gesdot:"⪀",gesdoto:"⪂",gesdotol:"⪄",gesl:"⋛︀",gesles:"⪔",Gfr:"𝔊",gfr:"𝔤",gg:"≫",Gg:"⋙",ggg:"⋙",gimel:"ℷ",GJcy:"Ѓ",gjcy:"ѓ",gla:"⪥",gl:"≷",glE:"⪒",glj:"⪤",gnap:"⪊",gnapprox:"⪊",gne:"⪈",gnE:"≩",gneq:"⪈",gneqq:"≩",gnsim:"⋧",Gopf:"𝔾",gopf:"𝕘",grave:"`",GreaterEqual:"≥",GreaterEqualLess:"⋛",GreaterFullEqual:"≧",GreaterGreater:"⪢",GreaterLess:"≷",GreaterSlantEqual:"⩾",GreaterTilde:"≳",Gscr:"𝒢",gscr:"ℊ",gsim:"≳",gsime:"⪎",gsiml:"⪐",gtcc:"⪧",gtcir:"⩺",gt:">",GT:">",Gt:"≫",gtdot:"⋗",gtlPar:"⦕",gtquest:"⩼",gtrapprox:"⪆",gtrarr:"⥸",gtrdot:"⋗",gtreqless:"⋛",gtreqqless:"⪌",gtrless:"≷",gtrsim:"≳",gvertneqq:"≩︀",gvnE:"≩︀",Hacek:"ˇ",hairsp:" ",half:"½",hamilt:"ℋ",HARDcy:"Ъ",hardcy:"ъ",harrcir:"⥈",harr:"↔",hArr:"⇔",harrw:"↭",Hat:"^",hbar:"ℏ",Hcirc:"Ĥ",hcirc:"ĥ",hearts:"♥",heartsuit:"♥",hellip:"…",hercon:"⊹",hfr:"𝔥",Hfr:"ℌ",HilbertSpace:"ℋ",hksearow:"⤥",hkswarow:"⤦",hoarr:"⇿",homtht:"∻",hookleftarrow:"↩",hookrightarrow:"↪",hopf:"𝕙",Hopf:"ℍ",horbar:"―",HorizontalLine:"─",hscr:"𝒽",Hscr:"ℋ",hslash:"ℏ",Hstrok:"Ħ",hstrok:"ħ",HumpDownHump:"≎",HumpEqual:"≏",hybull:"⁃",hyphen:"‐",Iacute:"Í",iacute:"í",ic:"⁣",Icirc:"Î",icirc:"î",Icy:"И",icy:"и",Idot:"İ",IEcy:"Е",iecy:"е",iexcl:"¡",iff:"⇔",ifr:"𝔦",Ifr:"ℑ",Igrave:"Ì",igrave:"ì",ii:"ⅈ",iiiint:"⨌",iiint:"∭",iinfin:"⧜",iiota:"℩",IJlig:"Ĳ",ijlig:"ĳ",Imacr:"Ī",imacr:"ī",image:"ℑ",ImaginaryI:"ⅈ",imagline:"ℐ",imagpart:"ℑ",imath:"ı",Im:"ℑ",imof:"⊷",imped:"Ƶ",Implies:"⇒",incare:"℅",in:"∈",infin:"∞",infintie:"⧝",inodot:"ı",intcal:"⊺",int:"∫",Int:"∬",integers:"ℤ",Integral:"∫",intercal:"⊺",Intersection:"⋂",intlarhk:"⨗",intprod:"⨼",InvisibleComma:"⁣",InvisibleTimes:"⁢",IOcy:"Ё",iocy:"ё",Iogon:"Į",iogon:"į",Iopf:"𝕀",iopf:"𝕚",Iota:"Ι",iota:"ι",iprod:"⨼",iquest:"¿",iscr:"𝒾",Iscr:"ℐ",isin:"∈",isindot:"⋵",isinE:"⋹",isins:"⋴",isinsv:"⋳",isinv:"∈",it:"⁢",Itilde:"Ĩ",itilde:"ĩ",Iukcy:"І",iukcy:"і",Iuml:"Ï",iuml:"ï",Jcirc:"Ĵ",jcirc:"ĵ",Jcy:"Й",jcy:"й",Jfr:"𝔍",jfr:"𝔧",jmath:"ȷ",Jopf:"𝕁",jopf:"𝕛",Jscr:"𝒥",jscr:"𝒿",Jsercy:"Ј",jsercy:"ј",Jukcy:"Є",jukcy:"є",Kappa:"Κ",kappa:"κ",kappav:"ϰ",Kcedil:"Ķ",kcedil:"ķ",Kcy:"К",kcy:"к",Kfr:"𝔎",kfr:"𝔨",kgreen:"ĸ",KHcy:"Х",khcy:"х",KJcy:"Ќ",kjcy:"ќ",Kopf:"𝕂",kopf:"𝕜",Kscr:"𝒦",kscr:"𝓀",lAarr:"⇚",Lacute:"Ĺ",lacute:"ĺ",laemptyv:"⦴",lagran:"ℒ",Lambda:"Λ",lambda:"λ",lang:"⟨",Lang:"⟪",langd:"⦑",langle:"⟨",lap:"⪅",Laplacetrf:"ℒ",laquo:"«",larrb:"⇤",larrbfs:"⤟",larr:"←",Larr:"↞",lArr:"⇐",larrfs:"⤝",larrhk:"↩",larrlp:"↫",larrpl:"⤹",larrsim:"⥳",larrtl:"↢",latail:"⤙",lAtail:"⤛",lat:"⪫",late:"⪭",lates:"⪭︀",lbarr:"⤌",lBarr:"⤎",lbbrk:"❲",lbrace:"{",lbrack:"[",lbrke:"⦋",lbrksld:"⦏",lbrkslu:"⦍",Lcaron:"Ľ",lcaron:"ľ",Lcedil:"Ļ",lcedil:"ļ",lceil:"⌈",lcub:"{",Lcy:"Л",lcy:"л",ldca:"⤶",ldquo:"“",ldquor:"„",ldrdhar:"⥧",ldrushar:"⥋",ldsh:"↲",le:"≤",lE:"≦",LeftAngleBracket:"⟨",LeftArrowBar:"⇤",leftarrow:"←",LeftArrow:"←",Leftarrow:"⇐",LeftArrowRightArrow:"⇆",leftarrowtail:"↢",LeftCeiling:"⌈",LeftDoubleBracket:"⟦",LeftDownTeeVector:"⥡",LeftDownVectorBar:"⥙",LeftDownVector:"⇃",LeftFloor:"⌊",leftharpoondown:"↽",leftharpoonup:"↼",leftleftarrows:"⇇",leftrightarrow:"↔",LeftRightArrow:"↔",Leftrightarrow:"⇔",leftrightarrows:"⇆",leftrightharpoons:"⇋",leftrightsquigarrow:"↭",LeftRightVector:"⥎",LeftTeeArrow:"↤",LeftTee:"⊣",LeftTeeVector:"⥚",leftthreetimes:"⋋",LeftTriangleBar:"⧏",LeftTriangle:"⊲",LeftTriangleEqual:"⊴",LeftUpDownVector:"⥑",LeftUpTeeVector:"⥠",LeftUpVectorBar:"⥘",LeftUpVector:"↿",LeftVectorBar:"⥒",LeftVector:"↼",lEg:"⪋",leg:"⋚",leq:"≤",leqq:"≦",leqslant:"⩽",lescc:"⪨",les:"⩽",lesdot:"⩿",lesdoto:"⪁",lesdotor:"⪃",lesg:"⋚︀",lesges:"⪓",lessapprox:"⪅",lessdot:"⋖",lesseqgtr:"⋚",lesseqqgtr:"⪋",LessEqualGreater:"⋚",LessFullEqual:"≦",LessGreater:"≶",lessgtr:"≶",LessLess:"⪡",lesssim:"≲",LessSlantEqual:"⩽",LessTilde:"≲",lfisht:"⥼",lfloor:"⌊",Lfr:"𝔏",lfr:"𝔩",lg:"≶",lgE:"⪑",lHar:"⥢",lhard:"↽",lharu:"↼",lharul:"⥪",lhblk:"▄",LJcy:"Љ",ljcy:"љ",llarr:"⇇",ll:"≪",Ll:"⋘",llcorner:"⌞",Lleftarrow:"⇚",llhard:"⥫",lltri:"◺",Lmidot:"Ŀ",lmidot:"ŀ",lmoustache:"⎰",lmoust:"⎰",lnap:"⪉",lnapprox:"⪉",lne:"⪇",lnE:"≨",lneq:"⪇",lneqq:"≨",lnsim:"⋦",loang:"⟬",loarr:"⇽",lobrk:"⟦",longleftarrow:"⟵",LongLeftArrow:"⟵",Longleftarrow:"⟸",longleftrightarrow:"⟷",LongLeftRightArrow:"⟷",Longleftrightarrow:"⟺",longmapsto:"⟼",longrightarrow:"⟶",LongRightArrow:"⟶",Longrightarrow:"⟹",looparrowleft:"↫",looparrowright:"↬",lopar:"⦅",Lopf:"𝕃",lopf:"𝕝",loplus:"⨭",lotimes:"⨴",lowast:"∗",lowbar:"_",LowerLeftArrow:"↙",LowerRightArrow:"↘",loz:"◊",lozenge:"◊",lozf:"⧫",lpar:"(",lparlt:"⦓",lrarr:"⇆",lrcorner:"⌟",lrhar:"⇋",lrhard:"⥭",lrm:"‎",lrtri:"⊿",lsaquo:"‹",lscr:"𝓁",Lscr:"ℒ",lsh:"↰",Lsh:"↰",lsim:"≲",lsime:"⪍",lsimg:"⪏",lsqb:"[",lsquo:"‘",lsquor:"‚",Lstrok:"Ł",lstrok:"ł",ltcc:"⪦",ltcir:"⩹",lt:"<",LT:"<",Lt:"≪",ltdot:"⋖",lthree:"⋋",ltimes:"⋉",ltlarr:"⥶",ltquest:"⩻",ltri:"◃",ltrie:"⊴",ltrif:"◂",ltrPar:"⦖",lurdshar:"⥊",luruhar:"⥦",lvertneqq:"≨︀",lvnE:"≨︀",macr:"¯",male:"♂",malt:"✠",maltese:"✠",Map:"⤅",map:"↦",mapsto:"↦",mapstodown:"↧",mapstoleft:"↤",mapstoup:"↥",marker:"▮",mcomma:"⨩",Mcy:"М",mcy:"м",mdash:"—",mDDot:"∺",measuredangle:"∡",MediumSpace:" ",Mellintrf:"ℳ",Mfr:"𝔐",mfr:"𝔪",mho:"℧",micro:"µ",midast:"*",midcir:"⫰",mid:"∣",middot:"·",minusb:"⊟",minus:"−",minusd:"∸",minusdu:"⨪",MinusPlus:"∓",mlcp:"⫛",mldr:"…",mnplus:"∓",models:"⊧",Mopf:"𝕄",mopf:"𝕞",mp:"∓",mscr:"𝓂",Mscr:"ℳ",mstpos:"∾",Mu:"Μ",mu:"μ",multimap:"⊸",mumap:"⊸",nabla:"∇",Nacute:"Ń",nacute:"ń",nang:"∠⃒",nap:"≉",napE:"⩰̸",napid:"≋̸",napos:"ŉ",napprox:"≉",natural:"♮",naturals:"ℕ",natur:"♮",nbsp:" ",nbump:"≎̸",nbumpe:"≏̸",ncap:"⩃",Ncaron:"Ň",ncaron:"ň",Ncedil:"Ņ",ncedil:"ņ",ncong:"≇",ncongdot:"⩭̸",ncup:"⩂",Ncy:"Н",ncy:"н",ndash:"–",nearhk:"⤤",nearr:"↗",neArr:"⇗",nearrow:"↗",ne:"≠",nedot:"≐̸",NegativeMediumSpace:"​",NegativeThickSpace:"​",NegativeThinSpace:"​",NegativeVeryThinSpace:"​",nequiv:"≢",nesear:"⤨",nesim:"≂̸",NestedGreaterGreater:"≫",NestedLessLess:"≪",NewLine:"\n",nexist:"∄",nexists:"∄",Nfr:"𝔑",nfr:"𝔫",ngE:"≧̸",nge:"≱",ngeq:"≱",ngeqq:"≧̸",ngeqslant:"⩾̸",nges:"⩾̸",nGg:"⋙̸",ngsim:"≵",nGt:"≫⃒",ngt:"≯",ngtr:"≯",nGtv:"≫̸",nharr:"↮",nhArr:"⇎",nhpar:"⫲",ni:"∋",nis:"⋼",nisd:"⋺",niv:"∋",NJcy:"Њ",njcy:"њ",nlarr:"↚",nlArr:"⇍",nldr:"‥",nlE:"≦̸",nle:"≰",nleftarrow:"↚",nLeftarrow:"⇍",nleftrightarrow:"↮",nLeftrightarrow:"⇎",nleq:"≰",nleqq:"≦̸",nleqslant:"⩽̸",nles:"⩽̸",nless:"≮",nLl:"⋘̸",nlsim:"≴",nLt:"≪⃒",nlt:"≮",nltri:"⋪",nltrie:"⋬",nLtv:"≪̸",nmid:"∤",NoBreak:"⁠",NonBreakingSpace:" ",nopf:"𝕟",Nopf:"ℕ",Not:"⫬",not:"¬",NotCongruent:"≢",NotCupCap:"≭",NotDoubleVerticalBar:"∦",NotElement:"∉",NotEqual:"≠",NotEqualTilde:"≂̸",NotExists:"∄",NotGreater:"≯",NotGreaterEqual:"≱",NotGreaterFullEqual:"≧̸",NotGreaterGreater:"≫̸",NotGreaterLess:"≹",NotGreaterSlantEqual:"⩾̸",NotGreaterTilde:"≵",NotHumpDownHump:"≎̸",NotHumpEqual:"≏̸",notin:"∉",notindot:"⋵̸",notinE:"⋹̸",notinva:"∉",notinvb:"⋷",notinvc:"⋶",NotLeftTriangleBar:"⧏̸",NotLeftTriangle:"⋪",NotLeftTriangleEqual:"⋬",NotLess:"≮",NotLessEqual:"≰",NotLessGreater:"≸",NotLessLess:"≪̸",NotLessSlantEqual:"⩽̸",NotLessTilde:"≴",NotNestedGreaterGreater:"⪢̸",NotNestedLessLess:"⪡̸",notni:"∌",notniva:"∌",notnivb:"⋾",notnivc:"⋽",NotPrecedes:"⊀",NotPrecedesEqual:"⪯̸",NotPrecedesSlantEqual:"⋠",NotReverseElement:"∌",NotRightTriangleBar:"⧐̸",NotRightTriangle:"⋫",NotRightTriangleEqual:"⋭",NotSquareSubset:"⊏̸",NotSquareSubsetEqual:"⋢",NotSquareSuperset:"⊐̸",NotSquareSupersetEqual:"⋣",NotSubset:"⊂⃒",NotSubsetEqual:"⊈",NotSucceeds:"⊁",NotSucceedsEqual:"⪰̸",NotSucceedsSlantEqual:"⋡",NotSucceedsTilde:"≿̸",NotSuperset:"⊃⃒",NotSupersetEqual:"⊉",NotTilde:"≁",NotTildeEqual:"≄",NotTildeFullEqual:"≇",NotTildeTilde:"≉",NotVerticalBar:"∤",nparallel:"∦",npar:"∦",nparsl:"⫽⃥",npart:"∂̸",npolint:"⨔",npr:"⊀",nprcue:"⋠",nprec:"⊀",npreceq:"⪯̸",npre:"⪯̸",nrarrc:"⤳̸",nrarr:"↛",nrArr:"⇏",nrarrw:"↝̸",nrightarrow:"↛",nRightarrow:"⇏",nrtri:"⋫",nrtrie:"⋭",nsc:"⊁",nsccue:"⋡",nsce:"⪰̸",Nscr:"𝒩",nscr:"𝓃",nshortmid:"∤",nshortparallel:"∦",nsim:"≁",nsime:"≄",nsimeq:"≄",nsmid:"∤",nspar:"∦",nsqsube:"⋢",nsqsupe:"⋣",nsub:"⊄",nsubE:"⫅̸",nsube:"⊈",nsubset:"⊂⃒",nsubseteq:"⊈",nsubseteqq:"⫅̸",nsucc:"⊁",nsucceq:"⪰̸",nsup:"⊅",nsupE:"⫆̸",nsupe:"⊉",nsupset:"⊃⃒",nsupseteq:"⊉",nsupseteqq:"⫆̸",ntgl:"≹",Ntilde:"Ñ",ntilde:"ñ",ntlg:"≸",ntriangleleft:"⋪",ntrianglelefteq:"⋬",ntriangleright:"⋫",ntrianglerighteq:"⋭",Nu:"Ν",nu:"ν",num:"#",numero:"№",numsp:" ",nvap:"≍⃒",nvdash:"⊬",nvDash:"⊭",nVdash:"⊮",nVDash:"⊯",nvge:"≥⃒",nvgt:">⃒",nvHarr:"⤄",nvinfin:"⧞",nvlArr:"⤂",nvle:"≤⃒",nvlt:"<⃒",nvltrie:"⊴⃒",nvrArr:"⤃",nvrtrie:"⊵⃒",nvsim:"∼⃒",nwarhk:"⤣",nwarr:"↖",nwArr:"⇖",nwarrow:"↖",nwnear:"⤧",Oacute:"Ó",oacute:"ó",oast:"⊛",Ocirc:"Ô",ocirc:"ô",ocir:"⊚",Ocy:"О",ocy:"о",odash:"⊝",Odblac:"Ő",odblac:"ő",odiv:"⨸",odot:"⊙",odsold:"⦼",OElig:"Œ",oelig:"œ",ofcir:"⦿",Ofr:"𝔒",ofr:"𝔬",ogon:"˛",Ograve:"Ò",ograve:"ò",ogt:"⧁",ohbar:"⦵",ohm:"Ω",oint:"∮",olarr:"↺",olcir:"⦾",olcross:"⦻",oline:"‾",olt:"⧀",Omacr:"Ō",omacr:"ō",Omega:"Ω",omega:"ω",Omicron:"Ο",omicron:"ο",omid:"⦶",ominus:"⊖",Oopf:"𝕆",oopf:"𝕠",opar:"⦷",OpenCurlyDoubleQuote:"“",OpenCurlyQuote:"‘",operp:"⦹",oplus:"⊕",orarr:"↻",Or:"⩔",or:"∨",ord:"⩝",order:"ℴ",orderof:"ℴ",ordf:"ª",ordm:"º",origof:"⊶",oror:"⩖",orslope:"⩗",orv:"⩛",oS:"Ⓢ",Oscr:"𝒪",oscr:"ℴ",Oslash:"Ø",oslash:"ø",osol:"⊘",Otilde:"Õ",otilde:"õ",otimesas:"⨶",Otimes:"⨷",otimes:"⊗",Ouml:"Ö",ouml:"ö",ovbar:"⌽",OverBar:"‾",OverBrace:"⏞",OverBracket:"⎴",OverParenthesis:"⏜",para:"¶",parallel:"∥",par:"∥",parsim:"⫳",parsl:"⫽",part:"∂",PartialD:"∂",Pcy:"П",pcy:"п",percnt:"%",period:".",permil:"‰",perp:"⊥",pertenk:"‱",Pfr:"𝔓",pfr:"𝔭",Phi:"Φ",phi:"φ",phiv:"ϕ",phmmat:"ℳ",phone:"☎",Pi:"Π",pi:"π",pitchfork:"⋔",piv:"ϖ",planck:"ℏ",planckh:"ℎ",plankv:"ℏ",plusacir:"⨣",plusb:"⊞",pluscir:"⨢",plus:"+",plusdo:"∔",plusdu:"⨥",pluse:"⩲",PlusMinus:"±",plusmn:"±",plussim:"⨦",plustwo:"⨧",pm:"±",Poincareplane:"ℌ",pointint:"⨕",popf:"𝕡",Popf:"ℙ",pound:"£",prap:"⪷",Pr:"⪻",pr:"≺",prcue:"≼",precapprox:"⪷",prec:"≺",preccurlyeq:"≼",Precedes:"≺",PrecedesEqual:"⪯",PrecedesSlantEqual:"≼",PrecedesTilde:"≾",preceq:"⪯",precnapprox:"⪹",precneqq:"⪵",precnsim:"⋨",pre:"⪯",prE:"⪳",precsim:"≾",prime:"′",Prime:"″",primes:"ℙ",prnap:"⪹",prnE:"⪵",prnsim:"⋨",prod:"∏",Product:"∏",profalar:"⌮",profline:"⌒",profsurf:"⌓",prop:"∝",Proportional:"∝",Proportion:"∷",propto:"∝",prsim:"≾",prurel:"⊰",Pscr:"𝒫",pscr:"𝓅",Psi:"Ψ",psi:"ψ",puncsp:" ",Qfr:"𝔔",qfr:"𝔮",qint:"⨌",qopf:"𝕢",Qopf:"ℚ",qprime:"⁗",Qscr:"𝒬",qscr:"𝓆",quaternions:"ℍ",quatint:"⨖",quest:"?",questeq:"≟",quot:'"',QUOT:'"',rAarr:"⇛",race:"∽̱",Racute:"Ŕ",racute:"ŕ",radic:"√",raemptyv:"⦳",rang:"⟩",Rang:"⟫",rangd:"⦒",range:"⦥",rangle:"⟩",raquo:"»",rarrap:"⥵",rarrb:"⇥",rarrbfs:"⤠",rarrc:"⤳",rarr:"→",Rarr:"↠",rArr:"⇒",rarrfs:"⤞",rarrhk:"↪",rarrlp:"↬",rarrpl:"⥅",rarrsim:"⥴",Rarrtl:"⤖",rarrtl:"↣",rarrw:"↝",ratail:"⤚",rAtail:"⤜",ratio:"∶",rationals:"ℚ",rbarr:"⤍",rBarr:"⤏",RBarr:"⤐",rbbrk:"❳",rbrace:"}",rbrack:"]",rbrke:"⦌",rbrksld:"⦎",rbrkslu:"⦐",Rcaron:"Ř",rcaron:"ř",Rcedil:"Ŗ",rcedil:"ŗ",rceil:"⌉",rcub:"}",Rcy:"Р",rcy:"р",rdca:"⤷",rdldhar:"⥩",rdquo:"”",rdquor:"”",rdsh:"↳",real:"ℜ",realine:"ℛ",realpart:"ℜ",reals:"ℝ",Re:"ℜ",rect:"▭",reg:"®",REG:"®",ReverseElement:"∋",ReverseEquilibrium:"⇋",ReverseUpEquilibrium:"⥯",rfisht:"⥽",rfloor:"⌋",rfr:"𝔯",Rfr:"ℜ",rHar:"⥤",rhard:"⇁",rharu:"⇀",rharul:"⥬",Rho:"Ρ",rho:"ρ",rhov:"ϱ",RightAngleBracket:"⟩",RightArrowBar:"⇥",rightarrow:"→",RightArrow:"→",Rightarrow:"⇒",RightArrowLeftArrow:"⇄",rightarrowtail:"↣",RightCeiling:"⌉",RightDoubleBracket:"⟧",RightDownTeeVector:"⥝",RightDownVectorBar:"⥕",RightDownVector:"⇂",RightFloor:"⌋",rightharpoondown:"⇁",rightharpoonup:"⇀",rightleftarrows:"⇄",rightleftharpoons:"⇌",rightrightarrows:"⇉",rightsquigarrow:"↝",RightTeeArrow:"↦",RightTee:"⊢",RightTeeVector:"⥛",rightthreetimes:"⋌",RightTriangleBar:"⧐",RightTriangle:"⊳",RightTriangleEqual:"⊵",RightUpDownVector:"⥏",RightUpTeeVector:"⥜",RightUpVectorBar:"⥔",RightUpVector:"↾",RightVectorBar:"⥓",RightVector:"⇀",ring:"˚",risingdotseq:"≓",rlarr:"⇄",rlhar:"⇌",rlm:"‏",rmoustache:"⎱",rmoust:"⎱",rnmid:"⫮",roang:"⟭",roarr:"⇾",robrk:"⟧",ropar:"⦆",ropf:"𝕣",Ropf:"ℝ",roplus:"⨮",rotimes:"⨵",RoundImplies:"⥰",rpar:")",rpargt:"⦔",rppolint:"⨒",rrarr:"⇉",Rrightarrow:"⇛",rsaquo:"›",rscr:"𝓇",Rscr:"ℛ",rsh:"↱",Rsh:"↱",rsqb:"]",rsquo:"’",rsquor:"’",rthree:"⋌",rtimes:"⋊",rtri:"▹",rtrie:"⊵",rtrif:"▸",rtriltri:"⧎",RuleDelayed:"⧴",ruluhar:"⥨",rx:"℞",Sacute:"Ś",sacute:"ś",sbquo:"‚",scap:"⪸",Scaron:"Š",scaron:"š",Sc:"⪼",sc:"≻",sccue:"≽",sce:"⪰",scE:"⪴",Scedil:"Ş",scedil:"ş",Scirc:"Ŝ",scirc:"ŝ",scnap:"⪺",scnE:"⪶",scnsim:"⋩",scpolint:"⨓",scsim:"≿",Scy:"С",scy:"с",sdotb:"⊡",sdot:"⋅",sdote:"⩦",searhk:"⤥",searr:"↘",seArr:"⇘",searrow:"↘",sect:"§",semi:";",seswar:"⤩",setminus:"∖",setmn:"∖",sext:"✶",Sfr:"𝔖",sfr:"𝔰",sfrown:"⌢",sharp:"♯",SHCHcy:"Щ",shchcy:"щ",SHcy:"Ш",shcy:"ш",ShortDownArrow:"↓",ShortLeftArrow:"←",shortmid:"∣",shortparallel:"∥",ShortRightArrow:"→",ShortUpArrow:"↑",shy:"­",Sigma:"Σ",sigma:"σ",sigmaf:"ς",sigmav:"ς",sim:"∼",simdot:"⩪",sime:"≃",simeq:"≃",simg:"⪞",simgE:"⪠",siml:"⪝",simlE:"⪟",simne:"≆",simplus:"⨤",simrarr:"⥲",slarr:"←",SmallCircle:"∘",smallsetminus:"∖",smashp:"⨳",smeparsl:"⧤",smid:"∣",smile:"⌣",smt:"⪪",smte:"⪬",smtes:"⪬︀",SOFTcy:"Ь",softcy:"ь",solbar:"⌿",solb:"⧄",sol:"/",Sopf:"𝕊",sopf:"𝕤",spades:"♠",spadesuit:"♠",spar:"∥",sqcap:"⊓",sqcaps:"⊓︀",sqcup:"⊔",sqcups:"⊔︀",Sqrt:"√",sqsub:"⊏",sqsube:"⊑",sqsubset:"⊏",sqsubseteq:"⊑",sqsup:"⊐",sqsupe:"⊒",sqsupset:"⊐",sqsupseteq:"⊒",square:"□",Square:"□",SquareIntersection:"⊓",SquareSubset:"⊏",SquareSubsetEqual:"⊑",SquareSuperset:"⊐",SquareSupersetEqual:"⊒",SquareUnion:"⊔",squarf:"▪",squ:"□",squf:"▪",srarr:"→",Sscr:"𝒮",sscr:"𝓈",ssetmn:"∖",ssmile:"⌣",sstarf:"⋆",Star:"⋆",star:"☆",starf:"★",straightepsilon:"ϵ",straightphi:"ϕ",strns:"¯",sub:"⊂",Sub:"⋐",subdot:"⪽",subE:"⫅",sube:"⊆",subedot:"⫃",submult:"⫁",subnE:"⫋",subne:"⊊",subplus:"⪿",subrarr:"⥹",subset:"⊂",Subset:"⋐",subseteq:"⊆",subseteqq:"⫅",SubsetEqual:"⊆",subsetneq:"⊊",subsetneqq:"⫋",subsim:"⫇",subsub:"⫕",subsup:"⫓",succapprox:"⪸",succ:"≻",succcurlyeq:"≽",Succeeds:"≻",SucceedsEqual:"⪰",SucceedsSlantEqual:"≽",SucceedsTilde:"≿",succeq:"⪰",succnapprox:"⪺",succneqq:"⪶",succnsim:"⋩",succsim:"≿",SuchThat:"∋",sum:"∑",Sum:"∑",sung:"♪",sup1:"¹",sup2:"²",sup3:"³",sup:"⊃",Sup:"⋑",supdot:"⪾",supdsub:"⫘",supE:"⫆",supe:"⊇",supedot:"⫄",Superset:"⊃",SupersetEqual:"⊇",suphsol:"⟉",suphsub:"⫗",suplarr:"⥻",supmult:"⫂",supnE:"⫌",supne:"⊋",supplus:"⫀",supset:"⊃",Supset:"⋑",supseteq:"⊇",supseteqq:"⫆",supsetneq:"⊋",supsetneqq:"⫌",supsim:"⫈",supsub:"⫔",supsup:"⫖",swarhk:"⤦",swarr:"↙",swArr:"⇙",swarrow:"↙",swnwar:"⤪",szlig:"ß",Tab:"\t",target:"⌖",Tau:"Τ",tau:"τ",tbrk:"⎴",Tcaron:"Ť",tcaron:"ť",Tcedil:"Ţ",tcedil:"ţ",Tcy:"Т",tcy:"т",tdot:"⃛",telrec:"⌕",Tfr:"𝔗",tfr:"𝔱",there4:"∴",therefore:"∴",Therefore:"∴",Theta:"Θ",theta:"θ",thetasym:"ϑ",thetav:"ϑ",thickapprox:"≈",thicksim:"∼",ThickSpace:"  ",ThinSpace:" ",thinsp:" ",thkap:"≈",thksim:"∼",THORN:"Þ",thorn:"þ",tilde:"˜",Tilde:"∼",TildeEqual:"≃",TildeFullEqual:"≅",TildeTilde:"≈",timesbar:"⨱",timesb:"⊠",times:"×",timesd:"⨰",tint:"∭",toea:"⤨",topbot:"⌶",topcir:"⫱",top:"⊤",Topf:"𝕋",topf:"𝕥",topfork:"⫚",tosa:"⤩",tprime:"‴",trade:"™",TRADE:"™",triangle:"▵",triangledown:"▿",triangleleft:"◃",trianglelefteq:"⊴",triangleq:"≜",triangleright:"▹",trianglerighteq:"⊵",tridot:"◬",trie:"≜",triminus:"⨺",TripleDot:"⃛",triplus:"⨹",trisb:"⧍",tritime:"⨻",trpezium:"⏢",Tscr:"𝒯",tscr:"𝓉",TScy:"Ц",tscy:"ц",TSHcy:"Ћ",tshcy:"ћ",Tstrok:"Ŧ",tstrok:"ŧ",twixt:"≬",twoheadleftarrow:"↞",twoheadrightarrow:"↠",Uacute:"Ú",uacute:"ú",uarr:"↑",Uarr:"↟",uArr:"⇑",Uarrocir:"⥉",Ubrcy:"Ў",ubrcy:"ў",Ubreve:"Ŭ",ubreve:"ŭ",Ucirc:"Û",ucirc:"û",Ucy:"У",ucy:"у",udarr:"⇅",Udblac:"Ű",udblac:"ű",udhar:"⥮",ufisht:"⥾",Ufr:"𝔘",ufr:"𝔲",Ugrave:"Ù",ugrave:"ù",uHar:"⥣",uharl:"↿",uharr:"↾",uhblk:"▀",ulcorn:"⌜",ulcorner:"⌜",ulcrop:"⌏",ultri:"◸",Umacr:"Ū",umacr:"ū",uml:"¨",UnderBar:"_",UnderBrace:"⏟",UnderBracket:"⎵",UnderParenthesis:"⏝",Union:"⋃",UnionPlus:"⊎",Uogon:"Ų",uogon:"ų",Uopf:"𝕌",uopf:"𝕦",UpArrowBar:"⤒",uparrow:"↑",UpArrow:"↑",Uparrow:"⇑",UpArrowDownArrow:"⇅",updownarrow:"↕",UpDownArrow:"↕",Updownarrow:"⇕",UpEquilibrium:"⥮",upharpoonleft:"↿",upharpoonright:"↾",uplus:"⊎",UpperLeftArrow:"↖",UpperRightArrow:"↗",upsi:"υ",Upsi:"ϒ",upsih:"ϒ",Upsilon:"Υ",upsilon:"υ",UpTeeArrow:"↥",UpTee:"⊥",upuparrows:"⇈",urcorn:"⌝",urcorner:"⌝",urcrop:"⌎",Uring:"Ů",uring:"ů",urtri:"◹",Uscr:"𝒰",uscr:"𝓊",utdot:"⋰",Utilde:"Ũ",utilde:"ũ",utri:"▵",utrif:"▴",uuarr:"⇈",Uuml:"Ü",uuml:"ü",uwangle:"⦧",vangrt:"⦜",varepsilon:"ϵ",varkappa:"ϰ",varnothing:"∅",varphi:"ϕ",varpi:"ϖ",varpropto:"∝",varr:"↕",vArr:"⇕",varrho:"ϱ",varsigma:"ς",varsubsetneq:"⊊︀",varsubsetneqq:"⫋︀",varsupsetneq:"⊋︀",varsupsetneqq:"⫌︀",vartheta:"ϑ",vartriangleleft:"⊲",vartriangleright:"⊳",vBar:"⫨",Vbar:"⫫",vBarv:"⫩",Vcy:"В",vcy:"в",vdash:"⊢",vDash:"⊨",Vdash:"⊩",VDash:"⊫",Vdashl:"⫦",veebar:"⊻",vee:"∨",Vee:"⋁",veeeq:"≚",vellip:"⋮",verbar:"|",Verbar:"‖",vert:"|",Vert:"‖",VerticalBar:"∣",VerticalLine:"|",VerticalSeparator:"❘",VerticalTilde:"≀",VeryThinSpace:" ",Vfr:"𝔙",vfr:"𝔳",vltri:"⊲",vnsub:"⊂⃒",vnsup:"⊃⃒",Vopf:"𝕍",vopf:"𝕧",vprop:"∝",vrtri:"⊳",Vscr:"𝒱",vscr:"𝓋",vsubnE:"⫋︀",vsubne:"⊊︀",vsupnE:"⫌︀",vsupne:"⊋︀",Vvdash:"⊪",vzigzag:"⦚",Wcirc:"Ŵ",wcirc:"ŵ",wedbar:"⩟",wedge:"∧",Wedge:"⋀",wedgeq:"≙",weierp:"℘",Wfr:"𝔚",wfr:"𝔴",Wopf:"𝕎",wopf:"𝕨",wp:"℘",wr:"≀",wreath:"≀",Wscr:"𝒲",wscr:"𝓌",xcap:"⋂",xcirc:"◯",xcup:"⋃",xdtri:"▽",Xfr:"𝔛",xfr:"𝔵",xharr:"⟷",xhArr:"⟺",Xi:"Ξ",xi:"ξ",xlarr:"⟵",xlArr:"⟸",xmap:"⟼",xnis:"⋻",xodot:"⨀",Xopf:"𝕏",xopf:"𝕩",xoplus:"⨁",xotime:"⨂",xrarr:"⟶",xrArr:"⟹",Xscr:"𝒳",xscr:"𝓍",xsqcup:"⨆",xuplus:"⨄",xutri:"△",xvee:"⋁",xwedge:"⋀",Yacute:"Ý",yacute:"ý",YAcy:"Я",yacy:"я",Ycirc:"Ŷ",ycirc:"ŷ",Ycy:"Ы",ycy:"ы",yen:"¥",Yfr:"𝔜",yfr:"𝔶",YIcy:"Ї",yicy:"ї",Yopf:"𝕐",yopf:"𝕪",Yscr:"𝒴",yscr:"𝓎",YUcy:"Ю",yucy:"ю",yuml:"ÿ",Yuml:"Ÿ",Zacute:"Ź",zacute:"ź",Zcaron:"Ž",zcaron:"ž",Zcy:"З",zcy:"з",Zdot:"Ż",zdot:"ż",zeetrf:"ℨ",ZeroWidthSpace:"​",Zeta:"Ζ",zeta:"ζ",zfr:"𝔷",Zfr:"ℨ",ZHcy:"Ж",zhcy:"ж",zigrarr:"⇝",zopf:"𝕫",Zopf:"ℤ",Zscr:"𝒵",zscr:"𝓏",zwj:"‍",zwnj:"‌"},r=/[!-#%-\*,-\/:;\?@\[-\]_\{\}\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u09FD\u0A76\u0AF0\u0C84\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2010-\u2027\u2030-\u2043\u2045-\u2051\u2053-\u205E\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E4E\u3001-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD803[\uDF55-\uDF59]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC8\uDDCD\uDDDB\uDDDD-\uDDDF\uDE38-\uDE3D\uDEA9]|\uD805[\uDC4B-\uDC4F\uDC5B\uDC5D\uDCC6\uDDC1-\uDDD7\uDE41-\uDE43\uDE60-\uDE6C\uDF3C-\uDF3E]|\uD806[\uDC3B\uDE3F-\uDE46\uDE9A-\uDE9C\uDE9E-\uDEA2]|\uD807[\uDC41-\uDC45\uDC70\uDC71\uDEF7\uDEF8]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD81B[\uDE97-\uDE9A]|\uD82F\uDC9F|\uD836[\uDE87-\uDE8B]|\uD83A[\uDD5E\uDD5F]/,t={};function n(e,r,s){var o,i,a,c,l,u="";for("string"!=typeof r&&(s=r,r=n.defaultChars),void 0===s&&(s=!0),l=function(e){var r,n,s=t[e];if(s)return s;for(s=t[e]=[],r=0;r<128;r++)n=String.fromCharCode(r),/^[0-9a-z]$/i.test(n)?s.push(n):s.push("%"+("0"+r.toString(16).toUpperCase()).slice(-2));for(r=0;r<e.length;r++)s[e.charCodeAt(r)]=e[r];return s}(r),o=0,i=e.length;o<i;o++)if(a=e.charCodeAt(o),s&&37===a&&o+2<i&&/^[0-9a-f]{2}$/i.test(e.slice(o+1,o+3)))u+=e.slice(o,o+3),o+=2;else if(a<128)u+=l[a];else if(a>=55296&&a<=57343){if(a>=55296&&a<=56319&&o+1<i&&(c=e.charCodeAt(o+1))>=56320&&c<=57343){u+=encodeURIComponent(e[o]+e[o+1]),o++;continue}u+="%EF%BF%BD"}else u+=encodeURIComponent(e[o]);return u}n.defaultChars=";/?:@&=+$,-_.!~*'()#",n.componentChars="-_.!~*'()";var s=n,o={};function i(e,r){var t;return"string"!=typeof r&&(r=i.defaultChars),t=function(e){var r,t,n=o[e];if(n)return n;for(n=o[e]=[],r=0;r<128;r++)t=String.fromCharCode(r),n.push(t);for(r=0;r<e.length;r++)n[t=e.charCodeAt(r)]="%"+("0"+t.toString(16).toUpperCase()).slice(-2);return n}(r),e.replace(/(%[a-f0-9]{2})+/gi,(function(e){var r,n,s,o,i,a,c,l="";for(r=0,n=e.length;r<n;r+=3)(s=parseInt(e.slice(r+1,r+3),16))<128?l+=t[s]:192==(224&s)&&r+3<n&&128==(192&(o=parseInt(e.slice(r+4,r+6),16)))?(l+=(c=s<<6&1984|63&o)<128?"��":String.fromCharCode(c),r+=3):224==(240&s)&&r+6<n&&(o=parseInt(e.slice(r+4,r+6),16),i=parseInt(e.slice(r+7,r+9),16),128==(192&o)&&128==(192&i))?(l+=(c=s<<12&61440|o<<6&4032|63&i)<2048||c>=55296&&c<=57343?"���":String.fromCharCode(c),r+=6):240==(248&s)&&r+9<n&&(o=parseInt(e.slice(r+4,r+6),16),i=parseInt(e.slice(r+7,r+9),16),a=parseInt(e.slice(r+10,r+12),16),128==(192&o)&&128==(192&i)&&128==(192&a))?((c=s<<18&1835008|o<<12&258048|i<<6&4032|63&a)<65536||c>1114111?l+="����":(c-=65536,l+=String.fromCharCode(55296+(c>>10),56320+(1023&c))),r+=9):l+="�";return l}))}i.defaultChars=";/?:@&=+$,#",i.componentChars="";var a=i;function c(){this.protocol=null,this.slashes=null,this.auth=null,this.port=null,this.hostname=null,this.hash=null,this.search=null,this.pathname=null}var l=/^([a-z0-9.+-]+:)/i,u=/:[0-9]*$/,p=/^(\/\/?(?!\/)[^\?\s]*)(\?[^\s]*)?$/,h=["{","}","|","\\","^","`"].concat(["<",">",'"',"`"," ","\r","\n","\t"]),f=["'"].concat(h),d=["%","/","?",";","#"].concat(f),m=["/","?","#"],g=/^[+a-z0-9A-Z_-]{0,63}$/,_=/^([+a-z0-9A-Z_-]{0,63})(.*)$/,k={javascript:!0,"javascript:":!0},b={http:!0,https:!0,ftp:!0,gopher:!0,file:!0,"http:":!0,"https:":!0,"ftp:":!0,"gopher:":!0,"file:":!0};c.prototype.parse=function(e,r){var t,n,s,o,i,a=e;if(a=a.trim(),!r&&1===e.split("#").length){var c=p.exec(a);if(c)return this.pathname=c[1],c[2]&&(this.search=c[2]),this}var u=l.exec(a);if(u&&(s=(u=u[0]).toLowerCase(),this.protocol=u,a=a.substr(u.length)),(r||u||a.match(/^\/\/[^@\/]+@[^@\/]+/))&&(!(i="//"===a.substr(0,2))||u&&k[u]||(a=a.substr(2),this.slashes=!0)),!k[u]&&(i||u&&!b[u])){var h,f,v=-1;for(t=0;t<m.length;t++)-1!==(o=a.indexOf(m[t]))&&(-1===v||o<v)&&(v=o);for(-1!==(f=-1===v?a.lastIndexOf("@"):a.lastIndexOf("@",v))&&(h=a.slice(0,f),a=a.slice(f+1),this.auth=h),v=-1,t=0;t<d.length;t++)-1!==(o=a.indexOf(d[t]))&&(-1===v||o<v)&&(v=o);-1===v&&(v=a.length),":"===a[v-1]&&v--;var C=a.slice(0,v);a=a.slice(v),this.parseHost(C),this.hostname=this.hostname||"";var y="["===this.hostname[0]&&"]"===this.hostname[this.hostname.length-1];if(!y){var A=this.hostname.split(/\./);for(t=0,n=A.length;t<n;t++){var x=A[t];if(x&&!x.match(g)){for(var D="",w=0,E=x.length;w<E;w++)x.charCodeAt(w)>127?D+="x":D+=x[w];if(!D.match(g)){var q=A.slice(0,t),S=A.slice(t+1),F=x.match(_);F&&(q.push(F[1]),S.unshift(F[2])),S.length&&(a=S.join(".")+a),this.hostname=q.join(".");break}}}}this.hostname.length>255&&(this.hostname=""),y&&(this.hostname=this.hostname.substr(1,this.hostname.length-2))}var L=a.indexOf("#");-1!==L&&(this.hash=a.substr(L),a=a.slice(0,L));var z=a.indexOf("?");return-1!==z&&(this.search=a.substr(z),a=a.slice(0,z)),a&&(this.pathname=a),b[s]&&this.hostname&&!this.pathname&&(this.pathname=""),this},c.prototype.parseHost=function(e){var r=u.exec(e);r&&(":"!==(r=r[0])&&(this.port=r.substr(1)),e=e.substr(0,e.length-r.length)),e&&(this.hostname=e)};var v={encode:s,decode:a,format:function(e){var r="";return r+=e.protocol||"",r+=e.slashes?"//":"",r+=e.auth?e.auth+"@":"",e.hostname&&-1!==e.hostname.indexOf(":")?r+="["+e.hostname+"]":r+=e.hostname||"",r+=e.port?":"+e.port:"",r+=e.pathname||"",(r+=e.search||"")+(e.hash||"")},parse:function(e,r){if(e&&e instanceof c)return e;var t=new c;return t.parse(e,r),t}},C=/[\0-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/,y=/[\0-\x1F\x7F-\x9F]/,A=/[ \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/,x={Any:C,Cc:y,Cf:/[\xAD\u0600-\u0605\u061C\u06DD\u070F\u08E2\u180E\u200B-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u206F\uFEFF\uFFF9-\uFFFB]|\uD804[\uDCBD\uDCCD]|\uD82F[\uDCA0-\uDCA3]|\uD834[\uDD73-\uDD7A]|\uDB40[\uDC01\uDC20-\uDC7F]/,P:r,Z:A},D=function(e,r,t){return e(t={path:void 0,exports:{},require:function(e,r){return function(){throw new Error("Dynamic requires are not currently supported by @rollup/plugin-commonjs")}(null==r&&t.path)}},t.exports),t.exports}((function(t,n){var s=Object.prototype.hasOwnProperty;function o(e,r){return s.call(e,r)}function i(e){return!(e>=55296&&e<=57343||e>=64976&&e<=65007||65535==(65535&e)||65534==(65535&e)||e>=0&&e<=8||11===e||e>=14&&e<=31||e>=127&&e<=159||e>1114111)}function a(e){if(e>65535){var r=55296+((e-=65536)>>10),t=56320+(1023&e);return String.fromCharCode(r,t)}return String.fromCharCode(e)}var c=/\\([!"#$%&'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])/g,l=new RegExp(c.source+"|"+/&([a-z#][a-z0-9]{1,31});/gi.source,"gi"),u=/^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))/i,p=/[&<>"]/,h=/[&<>"]/g,f={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"};function d(e){return f[e]}var m=/[.?*+^$[\]\\(){}|-]/g;n.lib={},n.lib.mdurl=v,n.lib.ucmicro=x,n.assign=function(e){var r=Array.prototype.slice.call(arguments,1);return r.forEach((function(r){if(r){if("object"!=typeof r)throw new TypeError(r+"must be object");Object.keys(r).forEach((function(t){e[t]=r[t]}))}})),e},n.isString=function(e){return"[object String]"===function(e){return Object.prototype.toString.call(e)}(e)},n.has=o,n.unescapeMd=function(e){return e.indexOf("\\")<0?e:e.replace(c,"$1")},n.unescapeAll=function(r){return r.indexOf("\\")<0&&r.indexOf("&")<0?r:r.replace(l,(function(r,t,n){return t||function(r,t){var n=0;return o(e,t)?e[t]:35===t.charCodeAt(0)&&u.test(t)&&i(n="x"===t[1].toLowerCase()?parseInt(t.slice(2),16):parseInt(t.slice(1),10))?a(n):r}(r,n)}))},n.isValidEntityCode=i,n.fromCodePoint=a,n.escapeHtml=function(e){return p.test(e)?e.replace(h,d):e},n.arrayReplaceAt=function(e,r,t){return[].concat(e.slice(0,r),t,e.slice(r+1))},n.isSpace=function(e){switch(e){case 9:case 32:return!0}return!1},n.isWhiteSpace=function(e){if(e>=8192&&e<=8202)return!0;switch(e){case 9:case 10:case 11:case 12:case 13:case 32:case 160:case 5760:case 8239:case 8287:case 12288:return!0}return!1},n.isMdAsciiPunct=function(e){switch(e){case 33:case 34:case 35:case 36:case 37:case 38:case 39:case 40:case 41:case 42:case 43:case 44:case 45:case 46:case 47:case 58:case 59:case 60:case 61:case 62:case 63:case 64:case 91:case 92:case 93:case 94:case 95:case 96:case 123:case 124:case 125:case 126:return!0;default:return!1}},n.isPunctChar=function(e){return r.test(e)},n.escapeRE=function(e){return e.replace(m,"\\$&")},n.normalizeReference=function(e){return e=e.trim().replace(/\s+/g," "),"Ṿ"==="ẞ".toLowerCase()&&(e=e.replace(/\u1e9e/g,"ß")),e.toLowerCase().toUpperCase()}})),w=D.unescapeAll,E=D.unescapeAll,q={parseLinkLabel:function(e,r,t){var n,s,o,i,a=-1,c=e.posMax,l=e.pos;for(e.pos=r+1,n=1;e.pos<c;){if(93===(o=e.src.charCodeAt(e.pos))&&0==--n){s=!0;break}if(i=e.pos,e.md.inline.skipToken(e),91===o)if(i===e.pos-1)n++;else if(t)return e.pos=l,-1}return s&&(a=e.pos),e.pos=l,a},parseLinkDestination:function(e,r,t){var n,s,o=r,i={ok:!1,pos:0,lines:0,str:""};if(60===e.charCodeAt(r)){for(r++;r<t;){if(10===(n=e.charCodeAt(r)))return i;if(60===n)return i;if(62===n)return i.pos=r+1,i.str=w(e.slice(o+1,r)),i.ok=!0,i;92===n&&r+1<t?r+=2:r++}return i}for(s=0;r<t&&32!==(n=e.charCodeAt(r))&&!(n<32||127===n);)if(92===n&&r+1<t){if(32===e.charCodeAt(r+1))break;r+=2}else{if(40===n&&++s>32)return i;if(41===n){if(0===s)break;s--}r++}return o===r||0!==s||(i.str=w(e.slice(o,r)),i.lines=0,i.pos=r,i.ok=!0),i},parseLinkTitle:function(e,r,t){var n,s,o=0,i=r,a={ok:!1,pos:0,lines:0,str:""};if(r>=t)return a;if(34!==(s=e.charCodeAt(r))&&39!==s&&40!==s)return a;for(r++,40===s&&(s=41);r<t;){if((n=e.charCodeAt(r))===s)return a.pos=r+1,a.lines=o,a.str=E(e.slice(i+1,r)),a.ok=!0,a;if(40===n&&41===s)return a;10===n?o++:92===n&&r+1<t&&(r++,10===e.charCodeAt(r)&&o++),r++}return a}},S=D.assign,F=D.unescapeAll,L=D.escapeHtml,z={};function T(){this.rules=S({},z)}z.code_inline=function(e,r,t,n,s){var o=e[r];return"<code"+s.renderAttrs(o)+">"+L(e[r].content)+"</code>"},z.code_block=function(e,r,t,n,s){var o=e[r];return"<pre"+s.renderAttrs(o)+"><code>"+L(e[r].content)+"</code></pre>\n"},z.fence=function(e,r,t,n,s){var o,i,a,c,l,u=e[r],p=u.info?F(u.info).trim():"",h="",f="";return p&&(h=(a=p.split(/(\s+)/g))[0],f=a.slice(2).join("")),0===(o=t.highlight&&t.highlight(u.content,h,f)||L(u.content)).indexOf("<pre")?o+"\n":p?(i=u.attrIndex("class"),c=u.attrs?u.attrs.slice():[],i<0?c.push(["class",t.langPrefix+h]):(c[i]=c[i].slice(),c[i][1]+=" "+t.langPrefix+h),l={attrs:c},"<pre><code"+s.renderAttrs(l)+">"+o+"</code></pre>\n"):"<pre><code"+s.renderAttrs(u)+">"+o+"</code></pre>\n"},z.image=function(e,r,t,n,s){var o=e[r];return o.attrs[o.attrIndex("alt")][1]=s.renderInlineAsText(o.children,t,n),s.renderToken(e,r,t)},z.hardbreak=function(e,r,t){return t.xhtmlOut?"<br />\n":"<br>\n"},z.softbreak=function(e,r,t){return t.breaks?t.xhtmlOut?"<br />\n":"<br>\n":"\n"},z.text=function(e,r){return L(e[r].content)},z.html_block=function(e,r){return e[r].content},z.html_inline=function(e,r){return e[r].content},T.prototype.renderAttrs=function(e){var r,t,n;if(!e.attrs)return"";for(n="",r=0,t=e.attrs.length;r<t;r++)n+=" "+L(e.attrs[r][0])+'="'+L(e.attrs[r][1])+'"';return n},T.prototype.renderToken=function(e,r,t){var n,s="",o=!1,i=e[r];return i.hidden?"":(i.block&&-1!==i.nesting&&r&&e[r-1].hidden&&(s+="\n"),s+=(-1===i.nesting?"</":"<")+i.tag,s+=this.renderAttrs(i),0===i.nesting&&t.xhtmlOut&&(s+=" /"),i.block&&(o=!0,1===i.nesting&&r+1<e.length&&("inline"===(n=e[r+1]).type||n.hidden||-1===n.nesting&&n.tag===i.tag)&&(o=!1)),s+=o?">\n":">")},T.prototype.renderInline=function(e,r,t){for(var n,s="",o=this.rules,i=0,a=e.length;i<a;i++)void 0!==o[n=e[i].type]?s+=o[n](e,i,r,t,this):s+=this.renderToken(e,i,r);return s},T.prototype.renderInlineAsText=function(e,r,t){for(var n="",s=0,o=e.length;s<o;s++)"text"===e[s].type?n+=e[s].content:"image"===e[s].type?n+=this.renderInlineAsText(e[s].children,r,t):"softbreak"===e[s].type&&(n+="\n");return n},T.prototype.render=function(e,r,t){var n,s,o,i="",a=this.rules;for(n=0,s=e.length;n<s;n++)"inline"===(o=e[n].type)?i+=this.renderInline(e[n].children,r,t):void 0!==a[o]?i+=a[e[n].type](e,n,r,t,this):i+=this.renderToken(e,n,r,t);return i};var I=T;function M(){this.__rules__=[],this.__cache__=null}M.prototype.__find__=function(e){for(var r=0;r<this.__rules__.length;r++)if(this.__rules__[r].name===e)return r;return-1},M.prototype.__compile__=function(){var e=this,r=[""];e.__rules__.forEach((function(e){e.enabled&&e.alt.forEach((function(e){r.indexOf(e)<0&&r.push(e)}))})),e.__cache__={},r.forEach((function(r){e.__cache__[r]=[],e.__rules__.forEach((function(t){t.enabled&&(r&&t.alt.indexOf(r)<0||e.__cache__[r].push(t.fn))}))}))},M.prototype.at=function(e,r,t){var n=this.__find__(e),s=t||{};if(-1===n)throw new Error("Parser rule not found: "+e);this.__rules__[n].fn=r,this.__rules__[n].alt=s.alt||[],this.__cache__=null},M.prototype.before=function(e,r,t,n){var s=this.__find__(e),o=n||{};if(-1===s)throw new Error("Parser rule not found: "+e);this.__rules__.splice(s,0,{name:r,enabled:!0,fn:t,alt:o.alt||[]}),this.__cache__=null},M.prototype.after=function(e,r,t,n){var s=this.__find__(e),o=n||{};if(-1===s)throw new Error("Parser rule not found: "+e);this.__rules__.splice(s+1,0,{name:r,enabled:!0,fn:t,alt:o.alt||[]}),this.__cache__=null},M.prototype.push=function(e,r,t){var n=t||{};this.__rules__.push({name:e,enabled:!0,fn:r,alt:n.alt||[]}),this.__cache__=null},M.prototype.enable=function(e,r){Array.isArray(e)||(e=[e]);var t=[];return e.forEach((function(e){var n=this.__find__(e);if(n<0){if(r)return;throw new Error("Rules manager: invalid rule name "+e)}this.__rules__[n].enabled=!0,t.push(e)}),this),this.__cache__=null,t},M.prototype.enableOnly=function(e,r){Array.isArray(e)||(e=[e]),this.__rules__.forEach((function(e){e.enabled=!1})),this.enable(e,r)},M.prototype.disable=function(e,r){Array.isArray(e)||(e=[e]);var t=[];return e.forEach((function(e){var n=this.__find__(e);if(n<0){if(r)return;throw new Error("Rules manager: invalid rule name "+e)}this.__rules__[n].enabled=!1,t.push(e)}),this),this.__cache__=null,t},M.prototype.getRules=function(e){return null===this.__cache__&&this.__compile__(),this.__cache__[e]||[]};var R=M,B=/\r\n?|\n/g,N=/\0/g,O=D.arrayReplaceAt;function P(e){return/^<\/a\s*>/i.test(e)}var j=/\+-|\.\.|\?\?\?\?|!!!!|,,|--/,U=/\((c|tm|r)\)/i,V=/\((c|tm|r)\)/gi,Z={c:"©",r:"®",tm:"™"};function $(e,r){return Z[r.toLowerCase()]}function G(e){var r,t,n=0;for(r=e.length-1;r>=0;r--)"text"!==(t=e[r]).type||n||(t.content=t.content.replace(V,$)),"link_open"===t.type&&"auto"===t.info&&n--,"link_close"===t.type&&"auto"===t.info&&n++}function H(e){var r,t,n=0;for(r=e.length-1;r>=0;r--)"text"!==(t=e[r]).type||n||j.test(t.content)&&(t.content=t.content.replace(/\+-/g,"±").replace(/\.{2,}/g,"…").replace(/([?!])\u2026/g,"$1..").replace(/([?!]){4,}/g,"$1$1$1").replace(/,{2,}/g,",").replace(/(^|[^-])---(?=[^-]|$)/gm,"$1—").replace(/(^|\s)--(?=\s|$)/gm,"$1–").replace(/(^|[^-\s])--(?=[^-\s]|$)/gm,"$1–")),"link_open"===t.type&&"auto"===t.info&&n--,"link_close"===t.type&&"auto"===t.info&&n++}var J=D.isWhiteSpace,W=D.isPunctChar,Y=D.isMdAsciiPunct,K=/['"]/,Q=/['"]/g;function X(e,r,t){return e.slice(0,r)+t+e.slice(r+1)}function ee(e,r){var t,n,s,o,i,a,c,l,u,p,h,f,d,m,g,_,k,b,v,C,y;for(v=[],t=0;t<e.length;t++){for(n=e[t],c=e[t].level,k=v.length-1;k>=0&&!(v[k].level<=c);k--);if(v.length=k+1,"text"===n.type){i=0,a=(s=n.content).length;e:for(;i<a&&(Q.lastIndex=i,o=Q.exec(s));){if(g=_=!0,i=o.index+1,b="'"===o[0],u=32,o.index-1>=0)u=s.charCodeAt(o.index-1);else for(k=t-1;k>=0&&"softbreak"!==e[k].type&&"hardbreak"!==e[k].type;k--)if(e[k].content){u=e[k].content.charCodeAt(e[k].content.length-1);break}if(p=32,i<a)p=s.charCodeAt(i);else for(k=t+1;k<e.length&&"softbreak"!==e[k].type&&"hardbreak"!==e[k].type;k++)if(e[k].content){p=e[k].content.charCodeAt(0);break}if(h=Y(u)||W(String.fromCharCode(u)),f=Y(p)||W(String.fromCharCode(p)),d=J(u),(m=J(p))?g=!1:f&&(d||h||(g=!1)),d?_=!1:h&&(m||f||(_=!1)),34===p&&'"'===o[0]&&u>=48&&u<=57&&(_=g=!1),g&&_&&(g=h,_=f),g||_){if(_)for(k=v.length-1;k>=0&&(l=v[k],!(v[k].level<c));k--)if(l.single===b&&v[k].level===c){l=v[k],b?(C=r.md.options.quotes[2],y=r.md.options.quotes[3]):(C=r.md.options.quotes[0],y=r.md.options.quotes[1]),n.content=X(n.content,o.index,y),e[l.token].content=X(e[l.token].content,l.pos,C),i+=y.length-1,l.token===t&&(i+=C.length-1),a=(s=n.content).length,v.length=k;continue e}g?v.push({token:t,pos:o.index,single:b,level:c}):_&&b&&(n.content=X(n.content,o.index,"’"))}else b&&(n.content=X(n.content,o.index,"’"))}}}}function re(e,r,t){this.type=e,this.tag=r,this.attrs=null,this.map=null,this.nesting=t,this.level=0,this.children=null,this.content="",this.markup="",this.info="",this.meta=null,this.block=!1,this.hidden=!1}re.prototype.attrIndex=function(e){var r,t,n;if(!this.attrs)return-1;for(t=0,n=(r=this.attrs).length;t<n;t++)if(r[t][0]===e)return t;return-1},re.prototype.attrPush=function(e){this.attrs?this.attrs.push(e):this.attrs=[e]},re.prototype.attrSet=function(e,r){var t=this.attrIndex(e),n=[e,r];t<0?this.attrPush(n):this.attrs[t]=n},re.prototype.attrGet=function(e){var r=this.attrIndex(e),t=null;return r>=0&&(t=this.attrs[r][1]),t},re.prototype.attrJoin=function(e,r){var t=this.attrIndex(e);t<0?this.attrPush([e,r]):this.attrs[t][1]=this.attrs[t][1]+" "+r};var te=re;function ne(e,r,t){this.src=e,this.env=t,this.tokens=[],this.inlineMode=!1,this.md=r}ne.prototype.Token=te;var se=ne,oe=[["normalize",function(e){var r;r=(r=e.src.replace(B,"\n")).replace(N,"�"),e.src=r}],["block",function(e){var r;e.inlineMode?((r=new e.Token("inline","",0)).content=e.src,r.map=[0,1],r.children=[],e.tokens.push(r)):e.md.block.parse(e.src,e.md,e.env,e.tokens)}],["inline",function(e){var r,t,n,s=e.tokens;for(t=0,n=s.length;t<n;t++)"inline"===(r=s[t]).type&&e.md.inline.parse(r.content,e.md,e.env,r.children)}],["linkify",function(e){var r,t,n,s,o,i,a,c,l,u,p,h,f,d,m,g,_,k,b=e.tokens;if(e.md.options.linkify)for(t=0,n=b.length;t<n;t++)if("inline"===b[t].type&&e.md.linkify.pretest(b[t].content))for(f=0,r=(s=b[t].children).length-1;r>=0;r--)if("link_close"!==(i=s[r]).type){if("html_inline"===i.type&&(k=i.content,/^<a[>\s]/i.test(k)&&f>0&&f--,P(i.content)&&f++),!(f>0)&&"text"===i.type&&e.md.linkify.test(i.content)){for(l=i.content,_=e.md.linkify.match(l),a=[],h=i.level,p=0,_.length>0&&0===_[0].index&&r>0&&"text_special"===s[r-1].type&&(_=_.slice(1)),c=0;c<_.length;c++)d=_[c].url,m=e.md.normalizeLink(d),e.md.validateLink(m)&&(g=_[c].text,g=_[c].schema?"mailto:"!==_[c].schema||/^mailto:/i.test(g)?e.md.normalizeLinkText(g):e.md.normalizeLinkText("mailto:"+g).replace(/^mailto:/,""):e.md.normalizeLinkText("http://"+g).replace(/^http:\/\//,""),(u=_[c].index)>p&&((o=new e.Token("text","",0)).content=l.slice(p,u),o.level=h,a.push(o)),(o=new e.Token("link_open","a",1)).attrs=[["href",m]],o.level=h++,o.markup="linkify",o.info="auto",a.push(o),(o=new e.Token("text","",0)).content=g,o.level=h,a.push(o),(o=new e.Token("link_close","a",-1)).level=--h,o.markup="linkify",o.info="auto",a.push(o),p=_[c].lastIndex);p<l.length&&((o=new e.Token("text","",0)).content=l.slice(p),o.level=h,a.push(o)),b[t].children=s=O(s,r,a)}}else for(r--;s[r].level!==i.level&&"link_open"!==s[r].type;)r--}],["replacements",function(e){var r;if(e.md.options.typographer)for(r=e.tokens.length-1;r>=0;r--)"inline"===e.tokens[r].type&&(U.test(e.tokens[r].content)&&G(e.tokens[r].children),j.test(e.tokens[r].content)&&H(e.tokens[r].children))}],["smartquotes",function(e){var r;if(e.md.options.typographer)for(r=e.tokens.length-1;r>=0;r--)"inline"===e.tokens[r].type&&K.test(e.tokens[r].content)&&ee(e.tokens[r].children,e)}],["text_join",function(e){var r,t,n,s,o,i,a=e.tokens;for(r=0,t=a.length;r<t;r++)if("inline"===a[r].type){for(o=(n=a[r].children).length,s=0;s<o;s++)"text_special"===n[s].type&&(n[s].type="text");for(s=i=0;s<o;s++)"text"===n[s].type&&s+1<o&&"text"===n[s+1].type?n[s+1].content=n[s].content+n[s+1].content:(s!==i&&(n[i]=n[s]),i++);s!==i&&(n.length=i)}}]];function ie(){this.ruler=new R;for(var e=0;e<oe.length;e++)this.ruler.push(oe[e][0],oe[e][1])}ie.prototype.process=function(e){var r,t,n;for(r=0,t=(n=this.ruler.getRules("")).length;r<t;r++)n[r](e)},ie.prototype.State=se;var ae=ie,ce=D.isSpace;function le(e,r){var t=e.bMarks[r]+e.tShift[r],n=e.eMarks[r];return e.src.slice(t,n)}function ue(e){var r,t=[],n=0,s=e.length,o=!1,i=0,a="";for(r=e.charCodeAt(n);n<s;)124===r&&(o?(a+=e.substring(i,n-1),i=n):(t.push(a+e.substring(i,n)),a="",i=n+1)),o=92===r,n++,r=e.charCodeAt(n);return t.push(a+e.substring(i)),t}var pe=D.isSpace,he=D.isSpace,fe=D.isSpace;function de(e,r){var t,n,s,o;return n=e.bMarks[r]+e.tShift[r],s=e.eMarks[r],42!==(t=e.src.charCodeAt(n++))&&45!==t&&43!==t||n<s&&(o=e.src.charCodeAt(n),!fe(o))?-1:n}function me(e,r){var t,n=e.bMarks[r]+e.tShift[r],s=n,o=e.eMarks[r];if(s+1>=o)return-1;if((t=e.src.charCodeAt(s++))<48||t>57)return-1;for(;;){if(s>=o)return-1;if(!((t=e.src.charCodeAt(s++))>=48&&t<=57)){if(41===t||46===t)break;return-1}if(s-n>=10)return-1}return s<o&&(t=e.src.charCodeAt(s),!fe(t))?-1:s}var ge=D.normalizeReference,_e=D.isSpace,ke="<[A-Za-z][A-Za-z0-9\\-]*(?:\\s+[a-zA-Z_:][a-zA-Z0-9:._-]*(?:\\s*=\\s*(?:[^\"'=<>`\\x00-\\x20]+|'[^']*'|\"[^\"]*\"))?)*\\s*\\/?>",be="<\\/[A-Za-z][A-Za-z0-9\\-]*\\s*>",ve={HTML_TAG_RE:new RegExp("^(?:"+ke+"|"+be+"|\x3c!----\x3e|\x3c!--(?:-?[^>-])(?:-?[^-])*--\x3e|<[?][\\s\\S]*?[?]>|<![A-Z]+\\s+[^>]*>|<!\\[CDATA\\[[\\s\\S]*?\\]\\]>)"),HTML_OPEN_CLOSE_TAG_RE:new RegExp("^(?:"+ke+"|"+be+")")},Ce=ve.HTML_OPEN_CLOSE_TAG_RE,ye=[[/^<(script|pre|style|textarea)(?=(\s|>|$))/i,/<\/(script|pre|style|textarea)>/i,!0],[/^<!--/,/-->/,!0],[/^<\?/,/\?>/,!0],[/^<![A-Z]/,/>/,!0],[/^<!\[CDATA\[/,/\]\]>/,!0],[new RegExp("^</?("+["address","article","aside","base","basefont","blockquote","body","caption","center","col","colgroup","dd","details","dialog","dir","div","dl","dt","fieldset","figcaption","figure","footer","form","frame","frameset","h1","h2","h3","h4","h5","h6","head","header","hr","html","iframe","legend","li","link","main","menu","menuitem","nav","noframes","ol","optgroup","option","p","param","section","source","summary","table","tbody","td","tfoot","th","thead","title","tr","track","ul"].join("|")+")(?=(\\s|/?>|$))","i"),/^$/,!0],[new RegExp(Ce.source+"\\s*$"),/^$/,!1]],Ae=D.isSpace,xe=D.isSpace;function De(e,r,t,n){var s,o,i,a,c,l,u,p;for(this.src=e,this.md=r,this.env=t,this.tokens=n,this.bMarks=[],this.eMarks=[],this.tShift=[],this.sCount=[],this.bsCount=[],this.blkIndent=0,this.line=0,this.lineMax=0,this.tight=!1,this.ddIndent=-1,this.listIndent=-1,this.parentType="root",this.level=0,this.result="",p=!1,i=a=l=u=0,c=(o=this.src).length;a<c;a++){if(s=o.charCodeAt(a),!p){if(xe(s)){l++,9===s?u+=4-u%4:u++;continue}p=!0}10!==s&&a!==c-1||(10!==s&&a++,this.bMarks.push(i),this.eMarks.push(a),this.tShift.push(l),this.sCount.push(u),this.bsCount.push(0),p=!1,l=0,u=0,i=a+1)}this.bMarks.push(o.length),this.eMarks.push(o.length),this.tShift.push(0),this.sCount.push(0),this.bsCount.push(0),this.lineMax=this.bMarks.length-1}De.prototype.push=function(e,r,t){var n=new te(e,r,t);return n.block=!0,t<0&&this.level--,n.level=this.level,t>0&&this.level++,this.tokens.push(n),n},De.prototype.isEmpty=function(e){return this.bMarks[e]+this.tShift[e]>=this.eMarks[e]},De.prototype.skipEmptyLines=function(e){for(var r=this.lineMax;e<r&&!(this.bMarks[e]+this.tShift[e]<this.eMarks[e]);e++);return e},De.prototype.skipSpaces=function(e){for(var r,t=this.src.length;e<t&&(r=this.src.charCodeAt(e),xe(r));e++);return e},De.prototype.skipSpacesBack=function(e,r){if(e<=r)return e;for(;e>r;)if(!xe(this.src.charCodeAt(--e)))return e+1;return e},De.prototype.skipChars=function(e,r){for(var t=this.src.length;e<t&&this.src.charCodeAt(e)===r;e++);return e},De.prototype.skipCharsBack=function(e,r,t){if(e<=t)return e;for(;e>t;)if(r!==this.src.charCodeAt(--e))return e+1;return e},De.prototype.getLines=function(e,r,t,n){var s,o,i,a,c,l,u,p=e;if(e>=r)return"";for(l=new Array(r-e),s=0;p<r;p++,s++){for(o=0,u=a=this.bMarks[p],c=p+1<r||n?this.eMarks[p]+1:this.eMarks[p];a<c&&o<t;){if(i=this.src.charCodeAt(a),xe(i))9===i?o+=4-(o+this.bsCount[p])%4:o++;else{if(!(a-u<this.tShift[p]))break;o++}a++}l[s]=o>t?new Array(o-t+1).join(" ")+this.src.slice(a,c):this.src.slice(a,c)}return l.join("")},De.prototype.Token=te;var we=De,Ee=[["table",function(e,r,t,n){var s,o,i,a,c,l,u,p,h,f,d,m,g,_,k,b,v,C;if(r+2>t)return!1;if(l=r+1,e.sCount[l]<e.blkIndent)return!1;if(e.sCount[l]-e.blkIndent>=4)return!1;if((i=e.bMarks[l]+e.tShift[l])>=e.eMarks[l])return!1;if(124!==(v=e.src.charCodeAt(i++))&&45!==v&&58!==v)return!1;if(i>=e.eMarks[l])return!1;if(124!==(C=e.src.charCodeAt(i++))&&45!==C&&58!==C&&!ce(C))return!1;if(45===v&&ce(C))return!1;for(;i<e.eMarks[l];){if(124!==(s=e.src.charCodeAt(i))&&45!==s&&58!==s&&!ce(s))return!1;i++}for(u=(o=le(e,r+1)).split("|"),f=[],a=0;a<u.length;a++){if(!(d=u[a].trim())){if(0===a||a===u.length-1)continue;return!1}if(!/^:?-+:?$/.test(d))return!1;58===d.charCodeAt(d.length-1)?f.push(58===d.charCodeAt(0)?"center":"right"):58===d.charCodeAt(0)?f.push("left"):f.push("")}if(-1===(o=le(e,r).trim()).indexOf("|"))return!1;if(e.sCount[r]-e.blkIndent>=4)return!1;if((u=ue(o)).length&&""===u[0]&&u.shift(),u.length&&""===u[u.length-1]&&u.pop(),0===(p=u.length)||p!==f.length)return!1;if(n)return!0;for(_=e.parentType,e.parentType="table",b=e.md.block.ruler.getRules("blockquote"),(h=e.push("table_open","table",1)).map=m=[r,0],(h=e.push("thead_open","thead",1)).map=[r,r+1],(h=e.push("tr_open","tr",1)).map=[r,r+1],a=0;a<u.length;a++)h=e.push("th_open","th",1),f[a]&&(h.attrs=[["style","text-align:"+f[a]]]),(h=e.push("inline","",0)).content=u[a].trim(),h.children=[],h=e.push("th_close","th",-1);for(h=e.push("tr_close","tr",-1),h=e.push("thead_close","thead",-1),l=r+2;l<t&&!(e.sCount[l]<e.blkIndent);l++){for(k=!1,a=0,c=b.length;a<c;a++)if(b[a](e,l,t,!0)){k=!0;break}if(k)break;if(!(o=le(e,l).trim()))break;if(e.sCount[l]-e.blkIndent>=4)break;for((u=ue(o)).length&&""===u[0]&&u.shift(),u.length&&""===u[u.length-1]&&u.pop(),l===r+2&&((h=e.push("tbody_open","tbody",1)).map=g=[r+2,0]),(h=e.push("tr_open","tr",1)).map=[l,l+1],a=0;a<p;a++)h=e.push("td_open","td",1),f[a]&&(h.attrs=[["style","text-align:"+f[a]]]),(h=e.push("inline","",0)).content=u[a]?u[a].trim():"",h.children=[],h=e.push("td_close","td",-1);h=e.push("tr_close","tr",-1)}return g&&(h=e.push("tbody_close","tbody",-1),g[1]=l),h=e.push("table_close","table",-1),m[1]=l,e.parentType=_,e.line=l,!0},["paragraph","reference"]],["code",function(e,r,t){var n,s,o;if(e.sCount[r]-e.blkIndent<4)return!1;for(s=n=r+1;n<t;)if(e.isEmpty(n))n++;else{if(!(e.sCount[n]-e.blkIndent>=4))break;s=++n}return e.line=s,(o=e.push("code_block","code",0)).content=e.getLines(r,s,4+e.blkIndent,!1)+"\n",o.map=[r,e.line],!0}],["fence",function(e,r,t,n){var s,o,i,a,c,l,u,p=!1,h=e.bMarks[r]+e.tShift[r],f=e.eMarks[r];if(e.sCount[r]-e.blkIndent>=4)return!1;if(h+3>f)return!1;if(126!==(s=e.src.charCodeAt(h))&&96!==s)return!1;if(c=h,(o=(h=e.skipChars(h,s))-c)<3)return!1;if(u=e.src.slice(c,h),i=e.src.slice(h,f),96===s&&i.indexOf(String.fromCharCode(s))>=0)return!1;if(n)return!0;for(a=r;!(++a>=t||(h=c=e.bMarks[a]+e.tShift[a])<(f=e.eMarks[a])&&e.sCount[a]<e.blkIndent);)if(e.src.charCodeAt(h)===s&&!(e.sCount[a]-e.blkIndent>=4||(h=e.skipChars(h,s))-c<o||(h=e.skipSpaces(h))<f)){p=!0;break}return o=e.sCount[r],e.line=a+(p?1:0),(l=e.push("fence","code",0)).info=i,l.content=e.getLines(r+1,a,o,!0),l.markup=u,l.map=[r,e.line],!0},["paragraph","reference","blockquote","list"]],["blockquote",function(e,r,t,n){var s,o,i,a,c,l,u,p,h,f,d,m,g,_,k,b,v,C,y,A,x=e.lineMax,D=e.bMarks[r]+e.tShift[r],w=e.eMarks[r];if(e.sCount[r]-e.blkIndent>=4)return!1;if(62!==e.src.charCodeAt(D++))return!1;if(n)return!0;for(a=h=e.sCount[r]+1,32===e.src.charCodeAt(D)?(D++,a++,h++,s=!1,b=!0):9===e.src.charCodeAt(D)?(b=!0,(e.bsCount[r]+h)%4==3?(D++,a++,h++,s=!1):s=!0):b=!1,f=[e.bMarks[r]],e.bMarks[r]=D;D<w&&(o=e.src.charCodeAt(D),pe(o));)9===o?h+=4-(h+e.bsCount[r]+(s?1:0))%4:h++,D++;for(d=[e.bsCount[r]],e.bsCount[r]=e.sCount[r]+1+(b?1:0),l=D>=w,_=[e.sCount[r]],e.sCount[r]=h-a,k=[e.tShift[r]],e.tShift[r]=D-e.bMarks[r],C=e.md.block.ruler.getRules("blockquote"),g=e.parentType,e.parentType="blockquote",p=r+1;p<t&&(A=e.sCount[p]<e.blkIndent,!((D=e.bMarks[p]+e.tShift[p])>=(w=e.eMarks[p])));p++)if(62!==e.src.charCodeAt(D++)||A){if(l)break;for(v=!1,i=0,c=C.length;i<c;i++)if(C[i](e,p,t,!0)){v=!0;break}if(v){e.lineMax=p,0!==e.blkIndent&&(f.push(e.bMarks[p]),d.push(e.bsCount[p]),k.push(e.tShift[p]),_.push(e.sCount[p]),e.sCount[p]-=e.blkIndent);break}f.push(e.bMarks[p]),d.push(e.bsCount[p]),k.push(e.tShift[p]),_.push(e.sCount[p]),e.sCount[p]=-1}else{for(a=h=e.sCount[p]+1,32===e.src.charCodeAt(D)?(D++,a++,h++,s=!1,b=!0):9===e.src.charCodeAt(D)?(b=!0,(e.bsCount[p]+h)%4==3?(D++,a++,h++,s=!1):s=!0):b=!1,f.push(e.bMarks[p]),e.bMarks[p]=D;D<w&&(o=e.src.charCodeAt(D),pe(o));)9===o?h+=4-(h+e.bsCount[p]+(s?1:0))%4:h++,D++;l=D>=w,d.push(e.bsCount[p]),e.bsCount[p]=e.sCount[p]+1+(b?1:0),_.push(e.sCount[p]),e.sCount[p]=h-a,k.push(e.tShift[p]),e.tShift[p]=D-e.bMarks[p]}for(m=e.blkIndent,e.blkIndent=0,(y=e.push("blockquote_open","blockquote",1)).markup=">",y.map=u=[r,0],e.md.block.tokenize(e,r,p),(y=e.push("blockquote_close","blockquote",-1)).markup=">",e.lineMax=x,e.parentType=g,u[1]=e.line,i=0;i<k.length;i++)e.bMarks[i+r]=f[i],e.tShift[i+r]=k[i],e.sCount[i+r]=_[i],e.bsCount[i+r]=d[i];return e.blkIndent=m,!0},["paragraph","reference","blockquote","list"]],["hr",function(e,r,t,n){var s,o,i,a,c=e.bMarks[r]+e.tShift[r],l=e.eMarks[r];if(e.sCount[r]-e.blkIndent>=4)return!1;if(42!==(s=e.src.charCodeAt(c++))&&45!==s&&95!==s)return!1;for(o=1;c<l;){if((i=e.src.charCodeAt(c++))!==s&&!he(i))return!1;i===s&&o++}return!(o<3||(n||(e.line=r+1,(a=e.push("hr","hr",0)).map=[r,e.line],a.markup=Array(o+1).join(String.fromCharCode(s))),0))},["paragraph","reference","blockquote","list"]],["list",function(e,r,t,n){var s,o,i,a,c,l,u,p,h,f,d,m,g,_,k,b,v,C,y,A,x,D,w,E,q,S,F,L,z=!1,T=!0;if(e.sCount[r]-e.blkIndent>=4)return!1;if(e.listIndent>=0&&e.sCount[r]-e.listIndent>=4&&e.sCount[r]<e.blkIndent)return!1;if(n&&"paragraph"===e.parentType&&e.sCount[r]>=e.blkIndent&&(z=!0),(w=me(e,r))>=0){if(u=!0,q=e.bMarks[r]+e.tShift[r],g=Number(e.src.slice(q,w-1)),z&&1!==g)return!1}else{if(!((w=de(e,r))>=0))return!1;u=!1}if(z&&e.skipSpaces(w)>=e.eMarks[r])return!1;if(m=e.src.charCodeAt(w-1),n)return!0;for(d=e.tokens.length,u?(L=e.push("ordered_list_open","ol",1),1!==g&&(L.attrs=[["start",g]])):L=e.push("bullet_list_open","ul",1),L.map=f=[r,0],L.markup=String.fromCharCode(m),k=r,E=!1,F=e.md.block.ruler.getRules("list"),C=e.parentType,e.parentType="list";k<t;){for(D=w,_=e.eMarks[k],l=b=e.sCount[k]+w-(e.bMarks[r]+e.tShift[r]);D<_;){if(9===(s=e.src.charCodeAt(D)))b+=4-(b+e.bsCount[k])%4;else{if(32!==s)break;b++}D++}if((c=(o=D)>=_?1:b-l)>4&&(c=1),a=l+c,(L=e.push("list_item_open","li",1)).markup=String.fromCharCode(m),L.map=p=[r,0],u&&(L.info=e.src.slice(q,w-1)),x=e.tight,A=e.tShift[r],y=e.sCount[r],v=e.listIndent,e.listIndent=e.blkIndent,e.blkIndent=a,e.tight=!0,e.tShift[r]=o-e.bMarks[r],e.sCount[r]=b,o>=_&&e.isEmpty(r+1)?e.line=Math.min(e.line+2,t):e.md.block.tokenize(e,r,t,!0),e.tight&&!E||(T=!1),E=e.line-r>1&&e.isEmpty(e.line-1),e.blkIndent=e.listIndent,e.listIndent=v,e.tShift[r]=A,e.sCount[r]=y,e.tight=x,(L=e.push("list_item_close","li",-1)).markup=String.fromCharCode(m),k=r=e.line,p[1]=k,o=e.bMarks[r],k>=t)break;if(e.sCount[k]<e.blkIndent)break;if(e.sCount[r]-e.blkIndent>=4)break;for(S=!1,i=0,h=F.length;i<h;i++)if(F[i](e,k,t,!0)){S=!0;break}if(S)break;if(u){if((w=me(e,k))<0)break;q=e.bMarks[k]+e.tShift[k]}else if((w=de(e,k))<0)break;if(m!==e.src.charCodeAt(w-1))break}return(L=u?e.push("ordered_list_close","ol",-1):e.push("bullet_list_close","ul",-1)).markup=String.fromCharCode(m),f[1]=k,e.line=k,e.parentType=C,T&&function(e,r){var t,n,s=e.level+2;for(t=r+2,n=e.tokens.length-2;t<n;t++)e.tokens[t].level===s&&"paragraph_open"===e.tokens[t].type&&(e.tokens[t+2].hidden=!0,e.tokens[t].hidden=!0,t+=2)}(e,d),!0},["paragraph","reference","blockquote"]],["reference",function(e,r,t,n){var s,o,i,a,c,l,u,p,h,f,d,m,g,_,k,b,v=0,C=e.bMarks[r]+e.tShift[r],y=e.eMarks[r],A=r+1;if(e.sCount[r]-e.blkIndent>=4)return!1;if(91!==e.src.charCodeAt(C))return!1;for(;++C<y;)if(93===e.src.charCodeAt(C)&&92!==e.src.charCodeAt(C-1)){if(C+1===y)return!1;if(58!==e.src.charCodeAt(C+1))return!1;break}for(a=e.lineMax,k=e.md.block.ruler.getRules("reference"),f=e.parentType,e.parentType="reference";A<a&&!e.isEmpty(A);A++)if(!(e.sCount[A]-e.blkIndent>3||e.sCount[A]<0)){for(_=!1,l=0,u=k.length;l<u;l++)if(k[l](e,A,a,!0)){_=!0;break}if(_)break}for(y=(g=e.getLines(r,A,e.blkIndent,!1).trim()).length,C=1;C<y;C++){if(91===(s=g.charCodeAt(C)))return!1;if(93===s){h=C;break}(10===s||92===s&&++C<y&&10===g.charCodeAt(C))&&v++}if(h<0||58!==g.charCodeAt(h+1))return!1;for(C=h+2;C<y;C++)if(10===(s=g.charCodeAt(C)))v++;else if(!_e(s))break;if(!(d=e.md.helpers.parseLinkDestination(g,C,y)).ok)return!1;if(c=e.md.normalizeLink(d.str),!e.md.validateLink(c))return!1;for(o=C=d.pos,i=v+=d.lines,m=C;C<y;C++)if(10===(s=g.charCodeAt(C)))v++;else if(!_e(s))break;for(d=e.md.helpers.parseLinkTitle(g,C,y),C<y&&m!==C&&d.ok?(b=d.str,C=d.pos,v+=d.lines):(b="",C=o,v=i);C<y&&(s=g.charCodeAt(C),_e(s));)C++;if(C<y&&10!==g.charCodeAt(C)&&b)for(b="",C=o,v=i;C<y&&(s=g.charCodeAt(C),_e(s));)C++;return!(C<y&&10!==g.charCodeAt(C)||!(p=ge(g.slice(1,h)))||(n||(void 0===e.env.references&&(e.env.references={}),void 0===e.env.references[p]&&(e.env.references[p]={title:b,href:c}),e.parentType=f,e.line=r+v+1),0))}],["html_block",function(e,r,t,n){var s,o,i,a,c=e.bMarks[r]+e.tShift[r],l=e.eMarks[r];if(e.sCount[r]-e.blkIndent>=4)return!1;if(!e.md.options.html)return!1;if(60!==e.src.charCodeAt(c))return!1;for(a=e.src.slice(c,l),s=0;s<ye.length&&!ye[s][0].test(a);s++);if(s===ye.length)return!1;if(n)return ye[s][2];if(o=r+1,!ye[s][1].test(a))for(;o<t&&!(e.sCount[o]<e.blkIndent);o++)if(c=e.bMarks[o]+e.tShift[o],l=e.eMarks[o],a=e.src.slice(c,l),ye[s][1].test(a)){0!==a.length&&o++;break}return e.line=o,(i=e.push("html_block","",0)).map=[r,o],i.content=e.getLines(r,o,e.blkIndent,!0),!0},["paragraph","reference","blockquote"]],["heading",function(e,r,t,n){var s,o,i,a,c=e.bMarks[r]+e.tShift[r],l=e.eMarks[r];if(e.sCount[r]-e.blkIndent>=4)return!1;if(35!==(s=e.src.charCodeAt(c))||c>=l)return!1;for(o=1,s=e.src.charCodeAt(++c);35===s&&c<l&&o<=6;)o++,s=e.src.charCodeAt(++c);return!(o>6||c<l&&!Ae(s)||(n||(l=e.skipSpacesBack(l,c),(i=e.skipCharsBack(l,35,c))>c&&Ae(e.src.charCodeAt(i-1))&&(l=i),e.line=r+1,(a=e.push("heading_open","h"+String(o),1)).markup="########".slice(0,o),a.map=[r,e.line],(a=e.push("inline","",0)).content=e.src.slice(c,l).trim(),a.map=[r,e.line],a.children=[],(a=e.push("heading_close","h"+String(o),-1)).markup="########".slice(0,o)),0))},["paragraph","reference","blockquote"]],["lheading",function(e,r,t){var n,s,o,i,a,c,l,u,p,h,f=r+1,d=e.md.block.ruler.getRules("paragraph");if(e.sCount[r]-e.blkIndent>=4)return!1;for(h=e.parentType,e.parentType="paragraph";f<t&&!e.isEmpty(f);f++)if(!(e.sCount[f]-e.blkIndent>3)){if(e.sCount[f]>=e.blkIndent&&(c=e.bMarks[f]+e.tShift[f])<(l=e.eMarks[f])&&(45===(p=e.src.charCodeAt(c))||61===p)&&(c=e.skipChars(c,p),(c=e.skipSpaces(c))>=l)){u=61===p?1:2;break}if(!(e.sCount[f]<0)){for(s=!1,o=0,i=d.length;o<i;o++)if(d[o](e,f,t,!0)){s=!0;break}if(s)break}}return!!u&&(n=e.getLines(r,f,e.blkIndent,!1).trim(),e.line=f+1,(a=e.push("heading_open","h"+String(u),1)).markup=String.fromCharCode(p),a.map=[r,e.line],(a=e.push("inline","",0)).content=n,a.map=[r,e.line-1],a.children=[],(a=e.push("heading_close","h"+String(u),-1)).markup=String.fromCharCode(p),e.parentType=h,!0)}],["paragraph",function(e,r){var t,n,s,o,i,a,c=r+1,l=e.md.block.ruler.getRules("paragraph"),u=e.lineMax;for(a=e.parentType,e.parentType="paragraph";c<u&&!e.isEmpty(c);c++)if(!(e.sCount[c]-e.blkIndent>3||e.sCount[c]<0)){for(n=!1,s=0,o=l.length;s<o;s++)if(l[s](e,c,u,!0)){n=!0;break}if(n)break}return t=e.getLines(r,c,e.blkIndent,!1).trim(),e.line=c,(i=e.push("paragraph_open","p",1)).map=[r,e.line],(i=e.push("inline","",0)).content=t,i.map=[r,e.line],i.children=[],i=e.push("paragraph_close","p",-1),e.parentType=a,!0}]];function qe(){this.ruler=new R;for(var e=0;e<Ee.length;e++)this.ruler.push(Ee[e][0],Ee[e][1],{alt:(Ee[e][2]||[]).slice()})}qe.prototype.tokenize=function(e,r,t){for(var n,s=this.ruler.getRules(""),o=s.length,i=r,a=!1,c=e.md.options.maxNesting;i<t&&(e.line=i=e.skipEmptyLines(i),!(i>=t))&&!(e.sCount[i]<e.blkIndent);){if(e.level>=c){e.line=t;break}for(n=0;n<o&&!s[n](e,i,t,!1);n++);e.tight=!a,e.isEmpty(e.line-1)&&(a=!0),(i=e.line)<t&&e.isEmpty(i)&&(a=!0,i++,e.line=i)}},qe.prototype.parse=function(e,r,t,n){var s;e&&(s=new this.State(e,r,t,n),this.tokenize(s,s.line,s.lineMax))},qe.prototype.State=we;var Se=qe;function Fe(e){switch(e){case 10:case 33:case 35:case 36:case 37:case 38:case 42:case 43:case 45:case 58:case 60:case 61:case 62:case 64:case 91:case 92:case 93:case 94:case 95:case 96:case 123:case 125:case 126:return!0;default:return!1}}for(var Le=/(?:^|[^a-z0-9.+-])([a-z][a-z0-9.+-]*)$/i,ze=D.isSpace,Te=D.isSpace,Ie=[],Me=0;Me<256;Me++)Ie.push(0);function Re(e,r){var t,n,s,o,i,a=[],c=r.length;for(t=0;t<c;t++)126===(s=r[t]).marker&&-1!==s.end&&(o=r[s.end],(i=e.tokens[s.token]).type="s_open",i.tag="s",i.nesting=1,i.markup="~~",i.content="",(i=e.tokens[o.token]).type="s_close",i.tag="s",i.nesting=-1,i.markup="~~",i.content="","text"===e.tokens[o.token-1].type&&"~"===e.tokens[o.token-1].content&&a.push(o.token-1));for(;a.length;){for(n=(t=a.pop())+1;n<e.tokens.length&&"s_close"===e.tokens[n].type;)n++;t!==--n&&(i=e.tokens[n],e.tokens[n]=e.tokens[t],e.tokens[t]=i)}}"\\!\"#$%&'()*+,./:;<=>?@[]^_`{|}~-".split("").forEach((function(e){Ie[e.charCodeAt(0)]=1}));var Be={tokenize:function(e,r){var t,n,s,o,i=e.pos,a=e.src.charCodeAt(i);if(r)return!1;if(126!==a)return!1;if(s=(n=e.scanDelims(e.pos,!0)).length,o=String.fromCharCode(a),s<2)return!1;for(s%2&&(e.push("text","",0).content=o,s--),t=0;t<s;t+=2)e.push("text","",0).content=o+o,e.delimiters.push({marker:a,length:0,token:e.tokens.length-1,end:-1,open:n.can_open,close:n.can_close});return e.pos+=n.length,!0},postProcess:function(e){var r,t=e.tokens_meta,n=e.tokens_meta.length;for(Re(e,e.delimiters),r=0;r<n;r++)t[r]&&t[r].delimiters&&Re(e,t[r].delimiters)}};function Ne(e,r){var t,n,s,o,i,a;for(t=r.length-1;t>=0;t--)95!==(n=r[t]).marker&&42!==n.marker||-1!==n.end&&(s=r[n.end],a=t>0&&r[t-1].end===n.end+1&&r[t-1].marker===n.marker&&r[t-1].token===n.token-1&&r[n.end+1].token===s.token+1,i=String.fromCharCode(n.marker),(o=e.tokens[n.token]).type=a?"strong_open":"em_open",o.tag=a?"strong":"em",o.nesting=1,o.markup=a?i+i:i,o.content="",(o=e.tokens[s.token]).type=a?"strong_close":"em_close",o.tag=a?"strong":"em",o.nesting=-1,o.markup=a?i+i:i,o.content="",a&&(e.tokens[r[t-1].token].content="",e.tokens[r[n.end+1].token].content="",t--))}var Oe={tokenize:function(e,r){var t,n,s=e.pos,o=e.src.charCodeAt(s);if(r)return!1;if(95!==o&&42!==o)return!1;for(n=e.scanDelims(e.pos,42===o),t=0;t<n.length;t++)e.push("text","",0).content=String.fromCharCode(o),e.delimiters.push({marker:o,length:n.length,token:e.tokens.length-1,end:-1,open:n.can_open,close:n.can_close});return e.pos+=n.length,!0},postProcess:function(e){var r,t=e.tokens_meta,n=e.tokens_meta.length;for(Ne(e,e.delimiters),r=0;r<n;r++)t[r]&&t[r].delimiters&&Ne(e,t[r].delimiters)}},Pe=D.normalizeReference,je=D.isSpace,Ue=D.normalizeReference,Ve=D.isSpace,Ze=/^([a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)$/,$e=/^([a-zA-Z][a-zA-Z0-9+.\-]{1,31}):([^<>\x00-\x20]*)$/,Ge=ve.HTML_TAG_RE,He=D.has,Je=D.isValidEntityCode,We=D.fromCodePoint,Ye=/^&#((?:x[a-f0-9]{1,6}|[0-9]{1,7}));/i,Ke=/^&([a-z][a-z0-9]{1,31});/i;function Qe(e,r){var t,n,s,o,i,a,c,l,u={},p=r.length;if(p){var h=0,f=-2,d=[];for(t=0;t<p;t++)if(s=r[t],d.push(0),r[h].marker===s.marker&&f===s.token-1||(h=t),f=s.token,s.length=s.length||0,s.close){for(u.hasOwnProperty(s.marker)||(u[s.marker]=[-1,-1,-1,-1,-1,-1]),i=u[s.marker][(s.open?3:0)+s.length%3],a=n=h-d[h]-1;n>i;n-=d[n]+1)if((o=r[n]).marker===s.marker&&o.open&&o.end<0&&(c=!1,(o.close||s.open)&&(o.length+s.length)%3==0&&(o.length%3==0&&s.length%3==0||(c=!0)),!c)){l=n>0&&!r[n-1].open?d[n-1]+1:0,d[t]=t-n+l,d[n]=l,s.open=!1,o.end=t,o.close=!1,a=-1,f=-2;break}-1!==a&&(u[s.marker][(s.open?3:0)+(s.length||0)%3]=a)}}}var Xe=D.isWhiteSpace,er=D.isPunctChar,rr=D.isMdAsciiPunct;function tr(e,r,t,n){this.src=e,this.env=t,this.md=r,this.tokens=n,this.tokens_meta=Array(n.length),this.pos=0,this.posMax=this.src.length,this.level=0,this.pending="",this.pendingLevel=0,this.cache={},this.delimiters=[],this._prev_delimiters=[],this.backticks={},this.backticksScanned=!1,this.linkLevel=0}tr.prototype.pushPending=function(){var e=new te("text","",0);return e.content=this.pending,e.level=this.pendingLevel,this.tokens.push(e),this.pending="",e},tr.prototype.push=function(e,r,t){this.pending&&this.pushPending();var n=new te(e,r,t),s=null;return t<0&&(this.level--,this.delimiters=this._prev_delimiters.pop()),n.level=this.level,t>0&&(this.level++,this._prev_delimiters.push(this.delimiters),this.delimiters=[],s={delimiters:this.delimiters}),this.pendingLevel=this.level,this.tokens.push(n),this.tokens_meta.push(s),n},tr.prototype.scanDelims=function(e,r){var t,n,s,o,i,a,c,l,u,p=e,h=!0,f=!0,d=this.posMax,m=this.src.charCodeAt(e);for(t=e>0?this.src.charCodeAt(e-1):32;p<d&&this.src.charCodeAt(p)===m;)p++;return s=p-e,n=p<d?this.src.charCodeAt(p):32,c=rr(t)||er(String.fromCharCode(t)),u=rr(n)||er(String.fromCharCode(n)),a=Xe(t),(l=Xe(n))?h=!1:u&&(a||c||(h=!1)),a?f=!1:c&&(l||u||(f=!1)),r?(o=h,i=f):(o=h&&(!f||c),i=f&&(!h||u)),{can_open:o,can_close:i,length:s}},tr.prototype.Token=te;var nr=tr,sr=[["text",function(e,r){for(var t=e.pos;t<e.posMax&&!Fe(e.src.charCodeAt(t));)t++;return t!==e.pos&&(r||(e.pending+=e.src.slice(e.pos,t)),e.pos=t,!0)}],["linkify",function(e,r){var t,n,s,o,i,a,c;return!(!e.md.options.linkify||e.linkLevel>0||(t=e.pos)+3>e.posMax||58!==e.src.charCodeAt(t)||47!==e.src.charCodeAt(t+1)||47!==e.src.charCodeAt(t+2)||!(n=e.pending.match(Le))||(s=n[1],!(o=e.md.linkify.matchAtStart(e.src.slice(t-s.length)))||(i=(i=o.url).replace(/\*+$/,""),a=e.md.normalizeLink(i),!e.md.validateLink(a)||(r||(e.pending=e.pending.slice(0,-s.length),(c=e.push("link_open","a",1)).attrs=[["href",a]],c.markup="linkify",c.info="auto",(c=e.push("text","",0)).content=e.md.normalizeLinkText(i),(c=e.push("link_close","a",-1)).markup="linkify",c.info="auto"),e.pos+=i.length-s.length,0))))}],["newline",function(e,r){var t,n,s,o=e.pos;if(10!==e.src.charCodeAt(o))return!1;if(t=e.pending.length-1,n=e.posMax,!r)if(t>=0&&32===e.pending.charCodeAt(t))if(t>=1&&32===e.pending.charCodeAt(t-1)){for(s=t-1;s>=1&&32===e.pending.charCodeAt(s-1);)s--;e.pending=e.pending.slice(0,s),e.push("hardbreak","br",0)}else e.pending=e.pending.slice(0,-1),e.push("softbreak","br",0);else e.push("softbreak","br",0);for(o++;o<n&&ze(e.src.charCodeAt(o));)o++;return e.pos=o,!0}],["escape",function(e,r){var t,n,s,o,i,a=e.pos,c=e.posMax;if(92!==e.src.charCodeAt(a))return!1;if(++a>=c)return!1;if(10===(t=e.src.charCodeAt(a))){for(r||e.push("hardbreak","br",0),a++;a<c&&(t=e.src.charCodeAt(a),Te(t));)a++;return e.pos=a,!0}return o=e.src[a],t>=55296&&t<=56319&&a+1<c&&(n=e.src.charCodeAt(a+1))>=56320&&n<=57343&&(o+=e.src[a+1],a++),s="\\"+o,r||(i=e.push("text_special","",0),t<256&&0!==Ie[t]?i.content=o:i.content=s,i.markup=s,i.info="escape"),e.pos=a+1,!0}],["backticks",function(e,r){var t,n,s,o,i,a,c,l,u=e.pos;if(96!==e.src.charCodeAt(u))return!1;for(t=u,u++,n=e.posMax;u<n&&96===e.src.charCodeAt(u);)u++;if(c=(s=e.src.slice(t,u)).length,e.backticksScanned&&(e.backticks[c]||0)<=t)return r||(e.pending+=s),e.pos+=c,!0;for(i=a=u;-1!==(i=e.src.indexOf("`",a));){for(a=i+1;a<n&&96===e.src.charCodeAt(a);)a++;if((l=a-i)===c)return r||((o=e.push("code_inline","code",0)).markup=s,o.content=e.src.slice(u,i).replace(/\n/g," ").replace(/^ (.+) $/,"$1")),e.pos=a,!0;e.backticks[l]=i}return e.backticksScanned=!0,r||(e.pending+=s),e.pos+=c,!0}],["strikethrough",Be.tokenize],["emphasis",Oe.tokenize],["link",function(e,r){var t,n,s,o,i,a,c,l,u="",p="",h=e.pos,f=e.posMax,d=e.pos,m=!0;if(91!==e.src.charCodeAt(e.pos))return!1;if(i=e.pos+1,(o=e.md.helpers.parseLinkLabel(e,e.pos,!0))<0)return!1;if((a=o+1)<f&&40===e.src.charCodeAt(a)){for(m=!1,a++;a<f&&(n=e.src.charCodeAt(a),je(n)||10===n);a++);if(a>=f)return!1;if(d=a,(c=e.md.helpers.parseLinkDestination(e.src,a,e.posMax)).ok){for(u=e.md.normalizeLink(c.str),e.md.validateLink(u)?a=c.pos:u="",d=a;a<f&&(n=e.src.charCodeAt(a),je(n)||10===n);a++);if(c=e.md.helpers.parseLinkTitle(e.src,a,e.posMax),a<f&&d!==a&&c.ok)for(p=c.str,a=c.pos;a<f&&(n=e.src.charCodeAt(a),je(n)||10===n);a++);}(a>=f||41!==e.src.charCodeAt(a))&&(m=!0),a++}if(m){if(void 0===e.env.references)return!1;if(a<f&&91===e.src.charCodeAt(a)?(d=a+1,(a=e.md.helpers.parseLinkLabel(e,a))>=0?s=e.src.slice(d,a++):a=o+1):a=o+1,s||(s=e.src.slice(i,o)),!(l=e.env.references[Pe(s)]))return e.pos=h,!1;u=l.href,p=l.title}return r||(e.pos=i,e.posMax=o,e.push("link_open","a",1).attrs=t=[["href",u]],p&&t.push(["title",p]),e.linkLevel++,e.md.inline.tokenize(e),e.linkLevel--,e.push("link_close","a",-1)),e.pos=a,e.posMax=f,!0}],["image",function(e,r){var t,n,s,o,i,a,c,l,u,p,h,f,d,m="",g=e.pos,_=e.posMax;if(33!==e.src.charCodeAt(e.pos))return!1;if(91!==e.src.charCodeAt(e.pos+1))return!1;if(a=e.pos+2,(i=e.md.helpers.parseLinkLabel(e,e.pos+1,!1))<0)return!1;if((c=i+1)<_&&40===e.src.charCodeAt(c)){for(c++;c<_&&(n=e.src.charCodeAt(c),Ve(n)||10===n);c++);if(c>=_)return!1;for(d=c,(u=e.md.helpers.parseLinkDestination(e.src,c,e.posMax)).ok&&(m=e.md.normalizeLink(u.str),e.md.validateLink(m)?c=u.pos:m=""),d=c;c<_&&(n=e.src.charCodeAt(c),Ve(n)||10===n);c++);if(u=e.md.helpers.parseLinkTitle(e.src,c,e.posMax),c<_&&d!==c&&u.ok)for(p=u.str,c=u.pos;c<_&&(n=e.src.charCodeAt(c),Ve(n)||10===n);c++);else p="";if(c>=_||41!==e.src.charCodeAt(c))return e.pos=g,!1;c++}else{if(void 0===e.env.references)return!1;if(c<_&&91===e.src.charCodeAt(c)?(d=c+1,(c=e.md.helpers.parseLinkLabel(e,c))>=0?o=e.src.slice(d,c++):c=i+1):c=i+1,o||(o=e.src.slice(a,i)),!(l=e.env.references[Ue(o)]))return e.pos=g,!1;m=l.href,p=l.title}return r||(s=e.src.slice(a,i),e.md.inline.parse(s,e.md,e.env,f=[]),(h=e.push("image","img",0)).attrs=t=[["src",m],["alt",""]],h.children=f,h.content=s,p&&t.push(["title",p])),e.pos=c,e.posMax=_,!0}],["autolink",function(e,r){var t,n,s,o,i,a,c=e.pos;if(60!==e.src.charCodeAt(c))return!1;for(i=e.pos,a=e.posMax;;){if(++c>=a)return!1;if(60===(o=e.src.charCodeAt(c)))return!1;if(62===o)break}return t=e.src.slice(i+1,c),$e.test(t)?(n=e.md.normalizeLink(t),!!e.md.validateLink(n)&&(r||((s=e.push("link_open","a",1)).attrs=[["href",n]],s.markup="autolink",s.info="auto",(s=e.push("text","",0)).content=e.md.normalizeLinkText(t),(s=e.push("link_close","a",-1)).markup="autolink",s.info="auto"),e.pos+=t.length+2,!0)):!!Ze.test(t)&&(n=e.md.normalizeLink("mailto:"+t),!!e.md.validateLink(n)&&(r||((s=e.push("link_open","a",1)).attrs=[["href",n]],s.markup="autolink",s.info="auto",(s=e.push("text","",0)).content=e.md.normalizeLinkText(t),(s=e.push("link_close","a",-1)).markup="autolink",s.info="auto"),e.pos+=t.length+2,!0))}],["html_inline",function(e,r){var t,n,s,o,i,a=e.pos;return!(!e.md.options.html||(s=e.posMax,60!==e.src.charCodeAt(a)||a+2>=s||33!==(t=e.src.charCodeAt(a+1))&&63!==t&&47!==t&&!function(e){var r=32|e;return r>=97&&r<=122}(t)||!(n=e.src.slice(a).match(Ge))||(r||((o=e.push("html_inline","",0)).content=e.src.slice(a,a+n[0].length),i=o.content,/^<a[>\s]/i.test(i)&&e.linkLevel++,function(e){return/^<\/a\s*>/i.test(e)}(o.content)&&e.linkLevel--),e.pos+=n[0].length,0)))}],["entity",function(r,t){var n,s,o,i=r.pos,a=r.posMax;if(38!==r.src.charCodeAt(i))return!1;if(i+1>=a)return!1;if(35===r.src.charCodeAt(i+1)){if(s=r.src.slice(i).match(Ye))return t||(n="x"===s[1][0].toLowerCase()?parseInt(s[1].slice(1),16):parseInt(s[1],10),(o=r.push("text_special","",0)).content=Je(n)?We(n):We(65533),o.markup=s[0],o.info="entity"),r.pos+=s[0].length,!0}else if((s=r.src.slice(i).match(Ke))&&He(e,s[1]))return t||((o=r.push("text_special","",0)).content=e[s[1]],o.markup=s[0],o.info="entity"),r.pos+=s[0].length,!0;return!1}]],or=[["balance_pairs",function(e){var r,t=e.tokens_meta,n=e.tokens_meta.length;for(Qe(0,e.delimiters),r=0;r<n;r++)t[r]&&t[r].delimiters&&Qe(0,t[r].delimiters)}],["strikethrough",Be.postProcess],["emphasis",Oe.postProcess],["fragments_join",function(e){var r,t,n=0,s=e.tokens,o=e.tokens.length;for(r=t=0;r<o;r++)s[r].nesting<0&&n--,s[r].level=n,s[r].nesting>0&&n++,"text"===s[r].type&&r+1<o&&"text"===s[r+1].type?s[r+1].content=s[r].content+s[r+1].content:(r!==t&&(s[t]=s[r]),t++);r!==t&&(s.length=t)}]];function ir(){var e;for(this.ruler=new R,e=0;e<sr.length;e++)this.ruler.push(sr[e][0],sr[e][1]);for(this.ruler2=new R,e=0;e<or.length;e++)this.ruler2.push(or[e][0],or[e][1])}ir.prototype.skipToken=function(e){var r,t,n=e.pos,s=this.ruler.getRules(""),o=s.length,i=e.md.options.maxNesting,a=e.cache;if(void 0===a[n]){if(e.level<i)for(t=0;t<o&&(e.level++,r=s[t](e,!0),e.level--,!r);t++);else e.pos=e.posMax;r||e.pos++,a[n]=e.pos}else e.pos=a[n]},ir.prototype.tokenize=function(e){for(var r,t,n=this.ruler.getRules(""),s=n.length,o=e.posMax,i=e.md.options.maxNesting;e.pos<o;){if(e.level<i)for(t=0;t<s&&!(r=n[t](e,!1));t++);if(r){if(e.pos>=o)break}else e.pending+=e.src[e.pos++]}e.pending&&e.pushPending()},ir.prototype.parse=function(e,r,t,n){var s,o,i,a=new this.State(e,r,t,n);for(this.tokenize(a),i=(o=this.ruler2.getRules("")).length,s=0;s<i;s++)o[s](a)},ir.prototype.State=nr;var ar=ir;function cr(e){var r=Array.prototype.slice.call(arguments,1);return r.forEach((function(r){r&&Object.keys(r).forEach((function(t){e[t]=r[t]}))})),e}function lr(e){return Object.prototype.toString.call(e)}function ur(e){return"[object Function]"===lr(e)}function pr(e){return e.replace(/[.?*+^$[\]\\(){}|-]/g,"\\$&")}var hr={fuzzyLink:!0,fuzzyEmail:!0,fuzzyIP:!1},fr={"http:":{validate:function(e,r,t){var n=e.slice(r);return t.re.http||(t.re.http=new RegExp("^\\/\\/"+t.re.src_auth+t.re.src_host_port_strict+t.re.src_path,"i")),t.re.http.test(n)?n.match(t.re.http)[0].length:0}},"https:":"http:","ftp:":"http:","//":{validate:function(e,r,t){var n=e.slice(r);return t.re.no_http||(t.re.no_http=new RegExp("^"+t.re.src_auth+"(?:localhost|(?:(?:"+t.re.src_domain+")\\.)+"+t.re.src_domain_root+")"+t.re.src_port+t.re.src_host_terminator+t.re.src_path,"i")),t.re.no_http.test(n)?r>=3&&":"===e[r-3]||r>=3&&"/"===e[r-3]?0:n.match(t.re.no_http)[0].length:0}},"mailto:":{validate:function(e,r,t){var n=e.slice(r);return t.re.mailto||(t.re.mailto=new RegExp("^"+t.re.src_email_name+"@"+t.re.src_host_strict,"i")),t.re.mailto.test(n)?n.match(t.re.mailto)[0].length:0}}},dr="biz|com|edu|gov|net|org|pro|web|xxx|aero|asia|coop|info|museum|name|shop|рф".split("|");function mr(e){var t=e.re=function(e){var t={};return e=e||{},t.src_Any=C.source,t.src_Cc=y.source,t.src_Z=A.source,t.src_P=r.source,t.src_ZPCc=[t.src_Z,t.src_P,t.src_Cc].join("|"),t.src_ZCc=[t.src_Z,t.src_Cc].join("|"),t.src_pseudo_letter="(?:(?![><｜]|"+t.src_ZPCc+")"+t.src_Any+")",t.src_ip4="(?:(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)",t.src_auth="(?:(?:(?!"+t.src_ZCc+"|[@/\\[\\]()]).)+@)?",t.src_port="(?::(?:6(?:[0-4]\\d{3}|5(?:[0-4]\\d{2}|5(?:[0-2]\\d|3[0-5])))|[1-5]?\\d{1,4}))?",t.src_host_terminator="(?=$|[><｜]|"+t.src_ZPCc+")(?!"+(e["---"]?"-(?!--)|":"-|")+"_|:\\d|\\.-|\\.(?!$|"+t.src_ZPCc+"))",t.src_path="(?:[/?#](?:(?!"+t.src_ZCc+"|[><｜]|[()[\\]{}.,\"'?!\\-;]).|\\[(?:(?!"+t.src_ZCc+"|\\]).)*\\]|\\((?:(?!"+t.src_ZCc+"|[)]).)*\\)|\\{(?:(?!"+t.src_ZCc+'|[}]).)*\\}|\\"(?:(?!'+t.src_ZCc+'|["]).)+\\"|\\\'(?:(?!'+t.src_ZCc+"|[']).)+\\'|\\'(?="+t.src_pseudo_letter+"|[-])|\\.{2,}[a-zA-Z0-9%/&]|\\.(?!"+t.src_ZCc+"|[.]|$)|"+(e["---"]?"\\-(?!--(?:[^-]|$))(?:-*)|":"\\-+|")+",(?!"+t.src_ZCc+"|$)|;(?!"+t.src_ZCc+"|$)|\\!+(?!"+t.src_ZCc+"|[!]|$)|\\?(?!"+t.src_ZCc+"|[?]|$))+|\\/)?",t.src_email_name='[\\-;:&=\\+\\$,\\.a-zA-Z0-9_][\\-;:&=\\+\\$,\\"\\.a-zA-Z0-9_]*',t.src_xn="xn--[a-z0-9\\-]{1,59}",t.src_domain_root="(?:"+t.src_xn+"|"+t.src_pseudo_letter+"{1,63})",t.src_domain="(?:"+t.src_xn+"|(?:"+t.src_pseudo_letter+")|(?:"+t.src_pseudo_letter+"(?:-|"+t.src_pseudo_letter+"){0,61}"+t.src_pseudo_letter+"))",t.src_host="(?:(?:(?:(?:"+t.src_domain+")\\.)*"+t.src_domain+"))",t.tpl_host_fuzzy="(?:"+t.src_ip4+"|(?:(?:(?:"+t.src_domain+")\\.)+(?:%TLDS%)))",t.tpl_host_no_ip_fuzzy="(?:(?:(?:"+t.src_domain+")\\.)+(?:%TLDS%))",t.src_host_strict=t.src_host+t.src_host_terminator,t.tpl_host_fuzzy_strict=t.tpl_host_fuzzy+t.src_host_terminator,t.src_host_port_strict=t.src_host+t.src_port+t.src_host_terminator,t.tpl_host_port_fuzzy_strict=t.tpl_host_fuzzy+t.src_port+t.src_host_terminator,t.tpl_host_port_no_ip_fuzzy_strict=t.tpl_host_no_ip_fuzzy+t.src_port+t.src_host_terminator,t.tpl_host_fuzzy_test="localhost|www\\.|\\.\\d{1,3}\\.|(?:\\.(?:%TLDS%)(?:"+t.src_ZPCc+"|>|$))",t.tpl_email_fuzzy='(^|[><｜]|"|\\(|'+t.src_ZCc+")("+t.src_email_name+"@"+t.tpl_host_fuzzy_strict+")",t.tpl_link_fuzzy="(^|(?![.:/\\-_@])(?:[$+<=>^`|｜]|"+t.src_ZPCc+"))((?![$+<=>^`|｜])"+t.tpl_host_port_fuzzy_strict+t.src_path+")",t.tpl_link_no_ip_fuzzy="(^|(?![.:/\\-_@])(?:[$+<=>^`|｜]|"+t.src_ZPCc+"))((?![$+<=>^`|｜])"+t.tpl_host_port_no_ip_fuzzy_strict+t.src_path+")",t}(e.__opts__),n=e.__tlds__.slice();function s(e){return e.replace("%TLDS%",t.src_tlds)}e.onCompile(),e.__tlds_replaced__||n.push("a[cdefgilmnoqrstuwxz]|b[abdefghijmnorstvwyz]|c[acdfghiklmnoruvwxyz]|d[ejkmoz]|e[cegrstu]|f[ijkmor]|g[abdefghilmnpqrstuwy]|h[kmnrtu]|i[delmnoqrst]|j[emop]|k[eghimnprwyz]|l[abcikrstuvy]|m[acdeghklmnopqrstuvwxyz]|n[acefgilopruz]|om|p[aefghklmnrstwy]|qa|r[eosuw]|s[abcdeghijklmnortuvxyz]|t[cdfghjklmnortvwz]|u[agksyz]|v[aceginu]|w[fs]|y[et]|z[amw]"),n.push(t.src_xn),t.src_tlds=n.join("|"),t.email_fuzzy=RegExp(s(t.tpl_email_fuzzy),"i"),t.link_fuzzy=RegExp(s(t.tpl_link_fuzzy),"i"),t.link_no_ip_fuzzy=RegExp(s(t.tpl_link_no_ip_fuzzy),"i"),t.host_fuzzy_test=RegExp(s(t.tpl_host_fuzzy_test),"i");var o=[];function i(e,r){throw new Error('(LinkifyIt) Invalid schema "'+e+'": '+r)}e.__compiled__={},Object.keys(e.__schemas__).forEach((function(r){var t=e.__schemas__[r];if(null!==t){var n={validate:null,link:null};if(e.__compiled__[r]=n,"[object Object]"===lr(t))return function(e){return"[object RegExp]"===lr(e)}(t.validate)?n.validate=function(e){return function(r,t){var n=r.slice(t);return e.test(n)?n.match(e)[0].length:0}}(t.validate):ur(t.validate)?n.validate=t.validate:i(r,t),void(ur(t.normalize)?n.normalize=t.normalize:t.normalize?i(r,t):n.normalize=function(e,r){r.normalize(e)});!function(e){return"[object String]"===lr(e)}(t)?i(r,t):o.push(r)}})),o.forEach((function(r){e.__compiled__[e.__schemas__[r]]&&(e.__compiled__[r].validate=e.__compiled__[e.__schemas__[r]].validate,e.__compiled__[r].normalize=e.__compiled__[e.__schemas__[r]].normalize)})),e.__compiled__[""]={validate:null,normalize:function(e,r){r.normalize(e)}};var a=Object.keys(e.__compiled__).filter((function(r){return r.length>0&&e.__compiled__[r]})).map(pr).join("|");e.re.schema_test=RegExp("(^|(?!_)(?:[><｜]|"+t.src_ZPCc+"))("+a+")","i"),e.re.schema_search=RegExp("(^|(?!_)(?:[><｜]|"+t.src_ZPCc+"))("+a+")","ig"),e.re.schema_at_start=RegExp("^"+e.re.schema_search.source,"i"),e.re.pretest=RegExp("("+e.re.schema_test.source+")|("+e.re.host_fuzzy_test.source+")|@","i"),function(e){e.__index__=-1,e.__text_cache__=""}(e)}function gr(e,r){var t=e.__index__,n=e.__last_index__,s=e.__text_cache__.slice(t,n);this.schema=e.__schema__.toLowerCase(),this.index=t+r,this.lastIndex=n+r,this.raw=s,this.text=s,this.url=s}function _r(e,r){var t=new gr(e,r);return e.__compiled__[t.schema].normalize(t,e),t}function kr(e,r){if(!(this instanceof kr))return new kr(e,r);var t;r||(t=e,Object.keys(t||{}).reduce((function(e,r){return e||hr.hasOwnProperty(r)}),!1)&&(r=e,e={})),this.__opts__=cr({},hr,r),this.__index__=-1,this.__last_index__=-1,this.__schema__="",this.__text_cache__="",this.__schemas__=cr({},fr,e),this.__compiled__={},this.__tlds__=dr,this.__tlds_replaced__=!1,this.re={},mr(this)}kr.prototype.add=function(e,r){return this.__schemas__[e]=r,mr(this),this},kr.prototype.set=function(e){return this.__opts__=cr(this.__opts__,e),this},kr.prototype.test=function(e){if(this.__text_cache__=e,this.__index__=-1,!e.length)return!1;var r,t,n,s,o,i,a,c;if(this.re.schema_test.test(e))for((a=this.re.schema_search).lastIndex=0;null!==(r=a.exec(e));)if(s=this.testSchemaAt(e,r[2],a.lastIndex)){this.__schema__=r[2],this.__index__=r.index+r[1].length,this.__last_index__=r.index+r[0].length+s;break}return this.__opts__.fuzzyLink&&this.__compiled__["http:"]&&(c=e.search(this.re.host_fuzzy_test))>=0&&(this.__index__<0||c<this.__index__)&&null!==(t=e.match(this.__opts__.fuzzyIP?this.re.link_fuzzy:this.re.link_no_ip_fuzzy))&&(o=t.index+t[1].length,(this.__index__<0||o<this.__index__)&&(this.__schema__="",this.__index__=o,this.__last_index__=t.index+t[0].length)),this.__opts__.fuzzyEmail&&this.__compiled__["mailto:"]&&e.indexOf("@")>=0&&null!==(n=e.match(this.re.email_fuzzy))&&(o=n.index+n[1].length,i=n.index+n[0].length,(this.__index__<0||o<this.__index__||o===this.__index__&&i>this.__last_index__)&&(this.__schema__="mailto:",this.__index__=o,this.__last_index__=i)),this.__index__>=0},kr.prototype.pretest=function(e){return this.re.pretest.test(e)},kr.prototype.testSchemaAt=function(e,r,t){return this.__compiled__[r.toLowerCase()]?this.__compiled__[r.toLowerCase()].validate(e,t,this):0},kr.prototype.match=function(e){var r=0,t=[];this.__index__>=0&&this.__text_cache__===e&&(t.push(_r(this,r)),r=this.__last_index__);for(var n=r?e.slice(r):e;this.test(n);)t.push(_r(this,r)),n=n.slice(this.__last_index__),r+=this.__last_index__;return t.length?t:null},kr.prototype.matchAtStart=function(e){if(this.__text_cache__=e,this.__index__=-1,!e.length)return null;var r=this.re.schema_at_start.exec(e);if(!r)return null;var t=this.testSchemaAt(e,r[2],r[0].length);return t?(this.__schema__=r[2],this.__index__=r.index+r[1].length,this.__last_index__=r.index+r[0].length+t,_r(this,0)):null},kr.prototype.tlds=function(e,r){return e=Array.isArray(e)?e:[e],r?(this.__tlds__=this.__tlds__.concat(e).sort().filter((function(e,r,t){return e!==t[r-1]})).reverse(),mr(this),this):(this.__tlds__=e.slice(),this.__tlds_replaced__=!0,mr(this),this)},kr.prototype.normalize=function(e){e.schema||(e.url="http://"+e.url),"mailto:"!==e.schema||/^mailto:/i.test(e.url)||(e.url="mailto:"+e.url)},kr.prototype.onCompile=function(){};var br=kr,vr=2147483647,Cr=/^xn--/,yr=/[^\x20-\x7E]/,Ar=/[\x2E\u3002\uFF0E\uFF61]/g,xr={overflow:"Overflow: input needs wider integers to process","not-basic":"Illegal input >= 0x80 (not a basic code point)","invalid-input":"Invalid input"},Dr=Math.floor,wr=String.fromCharCode;
 /*! https://mths.be/punycode v1.4.1 by @mathias */function Er(e){throw new RangeError(xr[e])}function qr(e,r){for(var t=e.length,n=[];t--;)n[t]=r(e[t]);return n}function Sr(e,r){var t=e.split("@"),n="";return t.length>1&&(n=t[0]+"@",e=t[1]),n+qr((e=e.replace(Ar,".")).split("."),r).join(".")}function Fr(e){for(var r,t,n=[],s=0,o=e.length;s<o;)(r=e.charCodeAt(s++))>=55296&&r<=56319&&s<o?56320==(64512&(t=e.charCodeAt(s++)))?n.push(((1023&r)<<10)+(1023&t)+65536):(n.push(r),s--):n.push(r);return n}function Lr(e){return qr(e,(function(e){var r="";return e>65535&&(r+=wr((e-=65536)>>>10&1023|55296),e=56320|1023&e),r+wr(e)})).join("")}function zr(e,r){return e+22+75*(e<26)-((0!=r)<<5)}function Tr(e,r,t){var n=0;for(e=t?Dr(e/700):e>>1,e+=Dr(e/r);e>455;n+=36)e=Dr(e/35);return Dr(n+36*e/(e+38))}function Ir(e){var r,t,n,s,o,i,a,c,l,u,p,h=[],f=e.length,d=0,m=128,g=72;for((t=e.lastIndexOf("-"))<0&&(t=0),n=0;n<t;++n)e.charCodeAt(n)>=128&&Er("not-basic"),h.push(e.charCodeAt(n));for(s=t>0?t+1:0;s<f;){for(o=d,i=1,a=36;s>=f&&Er("invalid-input"),((c=(p=e.charCodeAt(s++))-48<10?p-22:p-65<26?p-65:p-97<26?p-97:36)>=36||c>Dr((vr-d)/i))&&Er("overflow"),d+=c*i,!(c<(l=a<=g?1:a>=g+26?26:a-g));a+=36)i>Dr(vr/(u=36-l))&&Er("overflow"),i*=u;g=Tr(d-o,r=h.length+1,0==o),Dr(d/r)>vr-m&&Er("overflow"),m+=Dr(d/r),d%=r,h.splice(d++,0,m)}return Lr(h)}function Mr(e){var r,t,n,s,o,i,a,c,l,u,p,h,f,d,m,g=[];for(h=(e=Fr(e)).length,r=128,t=0,o=72,i=0;i<h;++i)(p=e[i])<128&&g.push(wr(p));for(n=s=g.length,s&&g.push("-");n<h;){for(a=vr,i=0;i<h;++i)(p=e[i])>=r&&p<a&&(a=p);for(a-r>Dr((vr-t)/(f=n+1))&&Er("overflow"),t+=(a-r)*f,r=a,i=0;i<h;++i)if((p=e[i])<r&&++t>vr&&Er("overflow"),p==r){for(c=t,l=36;!(c<(u=l<=o?1:l>=o+26?26:l-o));l+=36)m=c-u,d=36-u,g.push(wr(zr(u+m%d,0))),c=Dr(m/d);g.push(wr(zr(c,0))),o=Tr(t,f,n==s),t=0,++n}++t,++r}return g.join("")}function Rr(e){return Sr(e,(function(e){return Cr.test(e)?Ir(e.slice(4).toLowerCase()):e}))}function Br(e){return Sr(e,(function(e){return yr.test(e)?"xn--"+Mr(e):e}))}var Nr={decode:Fr,encode:Lr},Or={version:"1.4.1",ucs2:Nr,toASCII:Br,toUnicode:Rr,encode:Mr,decode:Ir},Pr=function(e){if(e.__esModule)return e;var r=Object.defineProperty({},"__esModule",{value:!0});return Object.keys(e).forEach((function(t){var n=Object.getOwnPropertyDescriptor(e,t);Object.defineProperty(r,t,n.get?n:{enumerable:!0,get:function(){return e[t]}})})),r}(Object.freeze({__proto__:null,decode:Ir,encode:Mr,toUnicode:Rr,toASCII:Br,version:"1.4.1",ucs2:Nr,default:Or})),jr={default:{options:{html:!1,xhtmlOut:!1,breaks:!1,langPrefix:"language-",linkify:!1,typographer:!1,quotes:"“”‘’",highlight:null,maxNesting:100},components:{core:{},block:{},inline:{}}},zero:{options:{html:!1,xhtmlOut:!1,breaks:!1,langPrefix:"language-",linkify:!1,typographer:!1,quotes:"“”‘’",highlight:null,maxNesting:20},components:{core:{rules:["normalize","block","inline","text_join"]},block:{rules:["paragraph"]},inline:{rules:["text"],rules2:["balance_pairs","fragments_join"]}}},commonmark:{options:{html:!0,xhtmlOut:!0,breaks:!1,langPrefix:"language-",linkify:!1,typographer:!1,quotes:"“”‘’",highlight:null,maxNesting:20},components:{core:{rules:["normalize","block","inline","text_join"]},block:{rules:["blockquote","code","fence","heading","hr","html_block","lheading","list","reference","paragraph"]},inline:{rules:["autolink","backticks","emphasis","entity","escape","html_inline","image","link","newline","text"],rules2:["balance_pairs","emphasis","fragments_join"]}}}},Ur=/^(vbscript|javascript|file|data):/,Vr=/^data:image\/(gif|png|jpeg|webp);/;function Zr(e){var r=e.trim().toLowerCase();return!Ur.test(r)||!!Vr.test(r)}var $r=["http:","https:","mailto:"];function Gr(e){var r=v.parse(e,!0);if(r.hostname&&(!r.protocol||$r.indexOf(r.protocol)>=0))try{r.hostname=Pr.toASCII(r.hostname)}catch(e){}return v.encode(v.format(r))}function Hr(e){var r=v.parse(e,!0);if(r.hostname&&(!r.protocol||$r.indexOf(r.protocol)>=0))try{r.hostname=Pr.toUnicode(r.hostname)}catch(e){}return v.decode(v.format(r),v.decode.defaultChars+"%")}function Jr(e,r){if(!(this instanceof Jr))return new Jr(e,r);r||D.isString(e)||(r=e||{},e="default"),this.inline=new ar,this.block=new Se,this.core=new ae,this.renderer=new I,this.linkify=new br,this.validateLink=Zr,this.normalizeLink=Gr,this.normalizeLinkText=Hr,this.utils=D,this.helpers=D.assign({},q),this.options={},this.configure(e),r&&this.set(r)}return Jr.prototype.set=function(e){return D.assign(this.options,e),this},Jr.prototype.configure=function(e){var r,t=this;if(D.isString(e)&&!(e=jr[r=e]))throw new Error('Wrong `markdown-it` preset "'+r+'", check name');if(!e)throw new Error("Wrong `markdown-it` preset, can't be empty");return e.options&&t.set(e.options),e.components&&Object.keys(e.components).forEach((function(r){e.components[r].rules&&t[r].ruler.enableOnly(e.components[r].rules),e.components[r].rules2&&t[r].ruler2.enableOnly(e.components[r].rules2)})),this},Jr.prototype.enable=function(e,r){var t=[];Array.isArray(e)||(e=[e]),["core","block","inline"].forEach((function(r){t=t.concat(this[r].ruler.enable(e,!0))}),this),t=t.concat(this.inline.ruler2.enable(e,!0));var n=e.filter((function(e){return t.indexOf(e)<0}));if(n.length&&!r)throw new Error("MarkdownIt. Failed to enable unknown rule(s): "+n);return this},Jr.prototype.disable=function(e,r){var t=[];Array.isArray(e)||(e=[e]),["core","block","inline"].forEach((function(r){t=t.concat(this[r].ruler.disable(e,!0))}),this),t=t.concat(this.inline.ruler2.disable(e,!0));var n=e.filter((function(e){return t.indexOf(e)<0}));if(n.length&&!r)throw new Error("MarkdownIt. Failed to disable unknown rule(s): "+n);return this},Jr.prototype.use=function(e){var r=[this].concat(Array.prototype.slice.call(arguments,1));return e.apply(e,r),this},Jr.prototype.parse=function(e,r){if("string"!=typeof e)throw new Error("Input data should be a String");var t=new this.core.State(e,this,r);return this.core.process(t),t.tokens},Jr.prototype.render=function(e,r){return r=r||{},this.renderer.render(this.parse(e,r),this.options,r)},Jr.prototype.parseInline=function(e,r){var t=new this.core.State(e,this,r);return t.inlineMode=!0,this.core.process(t),t.tokens},Jr.prototype.renderInline=function(e,r){return r=r||{},this.renderer.render(this.parseInline(e,r),this.options,r)},Jr}));
