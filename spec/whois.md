@@ -42,7 +42,7 @@ from the student), and verify the [[ref: KEL]]. Then it can look in the DID's
 
 Such checks can all be done with a handful of HTTPS requests and the processing
 of the verifiable presentations. The result is an efficient, verifiable
-credential-based, decentralized trust registries.
+credential-based, decentralized, multi-domain trust registry.
 
 [GLEIF]: https://gleif.org
 [https://www.usnews.com/best-colleges/rankings/national-universities]: https://www.usnews.com/education/best-global-universities
