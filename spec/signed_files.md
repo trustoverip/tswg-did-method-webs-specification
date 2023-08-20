@@ -68,7 +68,8 @@ might be useful in verifiable credential-related use cases include:
 
 In publishing a file, the controller of the DID may use the KERI [[ref: TEL]] to
 record the signing event, prior to publishing the file. In that case, in
-processing the KERI Audit log, the publication event can be found and verified.
+processing the KERI Audit log, the publication event can be found, verified, and
+ordered relative to key state changes and other signing events.
 
 [StatusList2021]: https://w3c.github.io/vc-status-list-2021/
 [Hyperledger AnonCreds]: https://www.hyperledger.org/projects/anoncreds
