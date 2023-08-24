@@ -190,7 +190,7 @@ The two data sets used to define service endpoints are called Location Schemes a
   }
 ```
 
-Endpoint Role Authorizations associate a role for one AID in relation to another AID.  Endpoint role authorizations are expressed in KERI `pry` events with the following structure:
+Endpoint Role Authorizations associate a role for one AID in relation to another AID.  Endpoint role authorizations are expressed in KERI `rpy` events with the following structure:
 
 
 ```json
