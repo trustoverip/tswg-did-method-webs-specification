@@ -29,6 +29,7 @@ rotations of the DID's key(s).
   - The HTTPS path to the associated JWS file MUST be `<HTTPS URL conversion of
   did:webs identifier>/<path to file>.jws`
 - The JWS web signature MUST:
+  - Use the [JSON Serialization] form of the JWS. This is necessary to support multi-signatures in the JWS.
   - Have a payload that is the [multiformat multihash] hash of the content of the associated signed file.
   - Be signed with a verification key(s) that is (are) either currently in the DIDDoc
     of the DID, or found in the [[ref: KEL]] associated with the DID. A verification
@@ -40,6 +41,7 @@ rotations of the DID's key(s).
     - If the DID has (or had at the time of signing) [[ref: multisig]]
       requirements, those requirements are met.
 
+[JSON Serialization]: https://datatracker.ietf.org/doc/html/rfc7515#section-3.2
 [multiformat multihash]: https://github.com/multiformats/multihash
 
 Examples:
