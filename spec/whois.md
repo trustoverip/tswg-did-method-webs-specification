@@ -26,12 +26,13 @@ from the student), and verify the [[ref: KEL]]. Then it can look in the DID's
 `whois` folder where it might find a couple of useful VCs or VPs with the
 `did:webs` DID as the subject. For example:
 
-- A verifiable presentation derived from a credential issued by [GLEIF]
-  containing the [LEI] of the school.
-  - Since the company knows about GLEIF, they can automate the lookup to get
-    more information about the school -- where it is registered, etc.
-- A verifiable presentation derived from a credential issued by the "Association
-  of Colleges and Universities" for the jurisdiction of the school.
+- A verifiable presentation derived from a credential issued by the Legal Entity
+  Registrar for the jurisdiction in which the school is headquartered.
+  - Since the company knows about the Legal Entity Registrar, they can automate
+    the lookup to get more information about the school -- its legal name, when
+    it was registered, contact information, etc.
+- A verifiable credential issued by the "Association of Colleges and
+  Universities" for the jurisdiction of the school.
   - Since they don't know about the Association for that jurisdiction, the company can
     repeat the process for the issuer of _that_ credential. They might (for
     example), learn that the Association has in its `did:webs` `whois` folder a
@@ -44,7 +45,6 @@ Such checks can all be done with a handful of HTTPS requests and the processing
 of the verifiable presentations. The result is an efficient, verifiable
 credential-based, decentralized, multi-domain trust registry.
 
-[GLEIF]: https://gleif.org
 [https://www.usnews.com/best-colleges/rankings/national-universities]: https://www.usnews.com/education/best-global-universities
 
 ### `whois` folder Conventions
@@ -68,6 +68,17 @@ presentation, the verifiable presentation proof must be signed with the
 accompanying [JSON Web Signature] file MUST be signed by the `did:webs` DID
 key(s).
 
+::: todo
+
+Rationalize/explain the redundant signature of the subject of the verifiable
+credential in a verifiable presentation, and the `signed files` signature of the
+controller of the DID in the JWS file beside the verifiable presentation. By
+definition, both must come from keys in the the DID, although perhaps at
+different points in the history of the DID, and that is verifiable by the
+resolver via the KEL/TEL.
+
+:::
+
 The verifiable credential or verifiable presentation format of the files can be
 (at least partially) identified by the file extension. The following extensions
 are recognized:
@@ -75,12 +86,16 @@ are recognized:
 - `.jsonld` a W3C Verifiable Credentials Data Model Standard JSON-LD signed with a Data Integrity proof.
 - `.jwt`  a W3C Verifiable Credentials Data Model Standard JSON Web Token.
 
-The naming of the verifiable presentation files (other than the file extension)
-is up to the DID controller. A future version of this specification may define
-rules that DID controllers should use to make it easier for those processing the
-presentations to understand them. Similarly, verifiable credential issuers and
-trust communities may define naming conventions for these files as used in their
-community. For example, a convention may be developed for the name of a `whois`
-file as an "authority to issue" for a certain type of credential, for any type of
-credential. Or, the Education Community might develop naming conventions
-specifically for the authority to issue an education credential.
+When the files are requested, the web server SHOULD be configured to include
+the applicable IANA media types in the response content header.
+
+The naming of the [verifiable credentials] or [verifiable presentations] files
+(other than the file extension) is up to the DID controller. A future version of
+this specification may define rules that DID controllers should use to make it
+easier for those processing the presentations to understand them (issuer,
+purpose, etc.). Similarly, verifiable credential issuers and trust communities
+may define naming conventions for these files as used in their community. For
+example, a registry might be created for the name of a `whois` file as an
+"authority to issue" a specific type of credential, for any type of credential.
+Or, the Education Community might develop naming conventions specifically for
+the authority to issue an education credential.
