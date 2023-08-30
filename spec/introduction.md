@@ -2,7 +2,7 @@
 
 DID methods answer many questions. Two noteworthy ones are:
 
-*   How is information about DIDs and DID docs published and discovered?
+*   How is information about DIDs (in the form of DID documents) published and discovered?
 *   How is the trustworthiness of this information evaluated?
 
 The previously released `did:web` method merges these two questions, giving one answer: _Information is published and secured using familiar web mechanisms_. This has wonderful adoption benefits, because the processes and tooling are familiar to millions of developers.

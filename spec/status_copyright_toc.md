@@ -1,6 +1,6 @@
 ## Status of This Memo
 
-This is document describes the specification for the `did:webs` DID Method.
+This document contains the specification for the `did:webs` DID method.
 
 Information about the current status of this document, any errata,
 and how to provide feedback on it may be obtained at

@@ -24,7 +24,7 @@ required. Deployment is straight forward. Cryptographic trust is strongly
 decentralized, and governance is transparent. Regulatory challenges around
 blockchain vanish. Any tech community or legal jurisdiction can use it. However,
 `did:webs` _does_ depend on the web for publication and discovery. This may
-color its decentralization and privacy. iFor its security, it adds [[ref: KERI]],
+color its decentralization and privacy. For its security, it adds [[ref: KERI]],
 imposing a modest learning curve as a result. For users, the method also raises
 the bar of accountability, thoughtfulness, and autonomy; this can be viewed as
 either a drawback or a benefit (or both).

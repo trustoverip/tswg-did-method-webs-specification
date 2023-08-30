@@ -14,13 +14,13 @@ Theoretically, a [[ref: transferrable]] AID could also be transformed into a `di
 
 Since `did:peer` with `numalgo=0` exactly matches the format, semantics, and intent of `did:key`, such peer DIDs have exactly the same transformation potential, in both directions, as `did:key`.
 
-Fancier peer DIDs have a numeric basis other than `numalgo=0`. Static peer DIDs in this category can store service endpoints and additional keys in a DID doc. A `did:webs` can express these same semantics via its [[ref: TEL]]. Thus, static peer DIDs may be transformable to [[ref: non-transferrable]] `did:webs` without witnesses. Dynamic peer DIDs cannot be transformed to a `did:webs` because they are [[ref: transferrable]] yet lack a _next_ key to satisfies KERI's pre-rotation feature.
+Fancier peer DIDs have a numeric basis other than `numalgo=0`. Static peer DIDs in this category can store service endpoints and additional keys in a DID document. A `did:webs` can express these same semantics via its [[ref: TEL]]. Thus, static peer DIDs may be transformable to [[ref: non-transferrable]] `did:webs` without witnesses. Dynamic peer DIDs cannot be transformed to a `did:webs` because they are [[ref: transferrable]] yet lack a _next_ key to satisfies KERI's pre-rotation feature.
 
 ### Other DIDs using KERI AIDs as MSI
 
-Any DID method that uses uses a KERI [[ref: AID]] as its [[ref: MSI]] is trivially and losslessly transformable in both directions, since the `did:webs` method defines all DID docs with the same AID to be instances of metadata for the same identifier. This could be the basis of future work on a DID method for environments using extremely constrained hardware or exotic transport protocols, for example.
+Any DID method that uses a KERI [[ref: AID]] as its [[ref: MSI]] is trivially and losslessly transformable in both directions, since the `did:webs` method defines all DID documents with the same AID to be instances of metadata for the same identifier. This could be the basis of future work on a DID method for environments using extremely constrained hardware or exotic transport protocols, for example.
 
-### Additional DID methods
+### Additional DID Methods
 
 A `did:webs` may also be transformable to or from other DID types as well (e.g., ones using a blockchain as a VDR). However, caveats apply:
 
