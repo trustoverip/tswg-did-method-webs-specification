@@ -9,6 +9,7 @@ There are several security characteristics necessary for `did:webs` to sufficien
 - Denial of service (DDoS) attack
 - Deletion attack
 - Duplicity detection
+- Eclipse attack
 - Impersonation attack
 - Key Compomise attack
 - Malleability attack
