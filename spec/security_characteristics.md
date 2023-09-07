@@ -9,6 +9,7 @@ There are several security characteristics necessary for `did:webs` to sufficien
 - Denial of service (DDoS) attack
 - Deletion attack
 - Duplicity detection
+- Eclipse attack
 - Forgery
 - Impersonation attack
 - Key Compromise attack
@@ -86,3 +87,4 @@ In addition, a did doc can be a discovery mechanism for an ACDC caching server b
 #### Narrowing the attack surface
 
 The above considerations have lead us to focus on [[ref: KEL Backed]] did document blocks and data (whois files, signatures, etc) so that the trusted (local) did:webs resolver is secure. Any future features that could leverage [[ref: BADA-RUN]] and [[ref: KRAM]] should be considered carefully according to the above considerations.
+
