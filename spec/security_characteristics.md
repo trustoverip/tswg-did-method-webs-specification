@@ -50,7 +50,7 @@ In [[ref: BADA-RUN]], the RUN stands for Read, Update, Nullify and is a replacem
 
 KERI Request Authentication Mechanism (KRAM) is the lowest security requirement and can only be used for ephemeral query/reply mechanisms that protect against replay attacks and key compromise attacks at the moment, not over time. This is done with [[ref: KRAM]] which is a non-interactive replay attack protection algorithm that uses a sliding window of date-time stamps and key state (similar to the the tuple as in [[ref: BADA-RUN]]) but the date-time is the replier’s not the querier’s. [[ref: KRAM]] is meant to protect a host when providing access to information to a client from replay attacks by a malicious client. It is not meant to protect the information provided by the host. For that we must use [[ref: BADA-RUN]] or KEL backing. Thus, by itself [[ref: KRAM]] is not suitable to protect on-disk storage (see [[ref: On-Disk Storage]] section below).
 
-The did:webs resolver should be using KRAM to access the service endpoints providing KERI event streams for verification of the did document. This is part of what makes the local resolver trusted, it must control who has access and KRAM provides the necessary “non-interactive” basis for non-replay attackable access.
+The `did:webs` resolver should be using KRAM to access the service endpoints providing KERI event streams for verification of the did document. This is part of what makes the local resolver trusted, it must control who has access and KRAM provides the necessary “non-interactive” basis for non-replay attackable access.
 
 ### [[def: On-Disk Storage]]
 
