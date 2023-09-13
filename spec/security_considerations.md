@@ -1,13 +1,18 @@
 ## Security Considerations
 
 Perfect protection from eavesdropping is not possible with HTTPS, for various
-reasons. However, [[ref: DDURLs]] SHOULD be hosted in a way that embodies accepted
+reasons. However, URLs of DID documents and [[ref: KERI event streams]]
+SHOULD be hosted in a way that embodies accepted
 cybersecurity best practice. This is not strictly necessary to guarantee the
 authenticity of the data. However, it safeguards privacy, discourages denial of
 service, accords with a defense-in-depth mindset, aids regulatory compliance,
-and makes it easier to troubleshoot. How a [[ref: DDURL]] is hosted should let clients
-fetch a DID doc and a KEL with roughly the same confidence that's associated
-with properly implemented online banking).
+and makes it easier to troubleshoot. How a URL is hosted should let clients
+fetch a DID document and a [[ref: KERI event stream]] with roughly the same confidence that's associated
+with properly implemented online banking.
+
+The fully qualified domain name of the [[ref: method-specific identifier]] is
+secured by a TLS/SSL certificate. The fully qualified domain name MUST match the common name used
+in the SSL/TLS certificate.
 
 The common name in the SSL/TLS certificate from the server MUST correspond to
 the way the server is referenced in the URL. This means that if the URL includes
@@ -24,12 +29,12 @@ be valid. This has two meanings, both of which are required:
 
 *   The certificate MUST satisfy whatever requirements are active in the client,
     such that the client does accept the certificate and use it to build and
-    communicate over the encrypted HTTPS session where a DID doc and KEL are
+    communicate over the encrypted HTTPS session where a DID document and [[ref: KERI event stream]] are
     fetched.
 *   The certificate MUST pass some common-sense validity tests, even if the
     client is very permissive: It MUST have a valid signature, it MUST NOT be
     expired or revoked or deny-listed, and it MUST NOT have any broken links in
     its chain of trust.
 
-If a [[ref: DDURL]] results in a redirect, each URL MUST satisfy the same security
-requirements. A [[ref: DDURL]] MAY come from a URL shortener.
+If a URL of a DID document or [[ref: KERI event streams]] results in a redirect, each URL MUST satisfy the same security
+requirements. A URL MAY come from a URL shortener.
