@@ -121,7 +121,7 @@ NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”
 described in BCP 14 [RFC2119] [RFC8174] when, and only when, they
 appear in all capitals, as shown here.</p>
 <h2 id="terminology"><a class="toc-anchor" href="#terminology" >§</a> Terminology</h2>
-<div id="todo-809" class="notice todo"><a class="notice-link" href="#todo-809">TODO</a></div>
+<div id="todo-1" class="notice todo"><a class="notice-link" href="#todo-1">TODO</a></div>
 <dl>
 <dt><span id="term:msi"><span id="term:method-specific-identifier">method-specific identifier</span></span></dt>
 <dd>The <code>method-specific-id</code> part of DID Syntax, as defined in <a path-0="www.w3.org"path-1="TR"path-2="did-core"path-3="#did-syntax"href="https://www.w3.org/TR/did-core/#did-syntax" >DID Core</a>. See section <a href="#method-specific-identifier" >Method-Specific Identifier</a>.</dd>
@@ -156,7 +156,7 @@ component of the path.</p>
 <pre><code>webs-did = &quot;did:webs:&quot; domain-name &quot;:&quot; aid
 webs-did = &quot;did:webs:&quot; domain-name * (&quot;:&quot; path) &quot;:&quot; aid
 </code></pre>
-<div id="todo-810" class="notice todo"><a class="notice-link" href="#todo-810">TODO</a><blockquote>
+<div id="todo-2" class="notice todo"><a class="notice-link" href="#todo-2">TODO</a><blockquote>
 <p>TODO: what about intl chars? Does DID spec allow them like URL spec does? What
 about localhost vs. 127.0.0.1 vs. ::1?</p>
 </blockquote>
@@ -252,7 +252,7 @@ KERI mechanisms, <em>together</em>, that constitutes this method’s verifiable 
 registry. In short, verifying the DID document by processing the <a class="term-reference" href="#term:keri-event-stream">KERI event stream</a> using KERI puts
 the “s” in <code>did:webs</code>.</p>
 <h3 id="equivalent-identifiers"><a class="toc-anchor" href="#equivalent-identifiers" >§</a> Equivalent Identifiers</h3>
-<div id="todo-811" class="notice todo"><a class="notice-link" href="#todo-811">TODO</a><p>TODO: Consider merging this and section <a href="#handling-web-redirection" >Handling Web Redirections</a>
+<div id="todo-3" class="notice todo"><a class="notice-link" href="#todo-3">TODO</a><p>TODO: Consider merging this and section <a href="#handling-web-redirection" >Handling Web Redirections</a>
 and propose that an entity
 SHOULD only publish one “current” <code>did:webs</code>, with defined support for redirects.
 Copies of a the <code>did:webs</code> data should be just that – copies.</p>
@@ -267,7 +267,7 @@ Notably, as defined in section <a href="#identifiers-in-a-didwebs-did-document" 
 well, different versions of the DID document and <a class="term-reference" href="#term:keri-event-stream">KERI event stream</a> may reside in different locations
 depending on the replication capabilities of the controlling entity. If the <a class="term-reference" href="#term:keri-event-streams">KERI event streams</a>
 differ for <code>did:webs</code> DIDs with the same AID, the smaller <a class="term-reference" href="#term:keri-event-stream">KERI event stream</a> MUST be a prefix
-of the larger <a class="term-reference" href="#term:keri-event-stream">KERI event stream</a> (e.g., the only difference in the <a class="term-reference" href="#term:keri-event-streams">KERI event streams</a> be extra events in one
+of the larger <a class="term-reference" href="#term:keri-event-stream">KERI event stream</a> (e.g., the only difference in the <a class="term-reference" href="#term:keri-event-streams">KERI event streams</a> being the extra events in one
 of the <a class="term-reference" href="#term:keri-event-streams">KERI event streams</a>, not yet reflected in the other). If the <a class="term-reference" href="#term:keri-event-streams">KERI event streams</a> diverge from one other
 (e.g., one is not a subset of the other), both the <a class="term-reference" href="#term:keri-event-streams">KERI event streams</a> and the DIDs MUST be
 considered invalid.</p>
@@ -298,7 +298,7 @@ resolution uncertainty.</p>
 <li>The <code>did:webs</code> is bound to its location via an event recording in the <a class="term-reference" href="#term:keri-event-stream">KERI event stream</a>, and
 as the <code>id</code> in the DID document.</li>
 <li>When a <code>did:webs</code> is permanently moved to some other location, an event in the
-<a class="term-reference" href="#term:keri-event-stream">KERI event stream</a> the change.
+<a class="term-reference" href="#term:keri-event-stream">KERI event stream</a> will reflect the change.
 <ul>
 <li>The <code>id</code> in the DID document is set to the new location.</li>
 <li>An <code>alsoKnownAs</code> entry is added to the DID document for the old location.</li>
@@ -322,7 +322,7 @@ of the DID document and <a class="term-reference" href="#term:keri-event-stream"
 purposes of the entity trying to resolve the DID. This specification does not
 rely on the Wayback Machine, but it might be a useful DID resolver tool.</p>
 <p>The DID document, <a class="term-reference" href="#term:keri-event-stream">KERI event stream</a> and other files related to a DID may be copied to other web
-location. For example, someone might want to keep a cache of DIDs they use, or
+locations. For example, someone might want to keep a cache of DIDs they use, or
 an entity might want to run a registry of “useful” DIDs for a cooperating group.
 While the combination of DID document and <a class="term-reference" href="#term:keri-event-stream">KERI event stream</a> make the DID and DID document verifiable, just
 as when published in their “intended” location, the absence of DIDs equivalent to those locations
@@ -960,7 +960,7 @@ presentation, the verifiable presentation proof must be signed with the
 <code>did:webs</code> DID key(s). As with any <a href="#signed-files" >signed files</a>, the
 accompanying [JSON Web Signature] file MUST be signed by the <code>did:webs</code> DID
 key(s).</p>
-<div id="todo-812" class="notice todo"><a class="notice-link" href="#todo-812">TODO</a><p>Rationalize/explain the redundant signature of the subject of the verifiable
+<div id="todo-4" class="notice todo"><a class="notice-link" href="#todo-4">TODO</a><p>Rationalize/explain the redundant signature of the subject of the verifiable
 credential in a verifiable presentation, and the <code>signed files</code> signature of the
 controller of the DID in the JWS file beside the verifiable presentation. By
 definition, both must come from keys in the the DID, although perhaps at
@@ -1091,20 +1091,20 @@ its chain of trust.</li>
 <p>If a URL of a DID document or <a class="term-reference" href="#term:keri-event-streams">KERI event streams</a> results in a redirect, each URL MUST satisfy the same security
 requirements. A URL MAY come from a URL shortener.</p>
 <h2 id="privacy-considerations"><a class="toc-anchor" href="#privacy-considerations" >§</a> Privacy Considerations</h2>
-<div id="todo-813" class="notice todo"><a class="notice-link" href="#todo-813">TODO</a><p>TODO: talk about ephemeral vs. long-lived identifiers, and about using witnesses.</p>
+<div id="todo-5" class="notice todo"><a class="notice-link" href="#todo-5">TODO</a><p>TODO: talk about ephemeral vs. long-lived identifiers, and about using witnesses.</p>
 </div>
 <h2 id="references"><a class="toc-anchor" href="#references" >§</a> References</h2>
 <h3 id="normative-references"><a class="toc-anchor" href="#normative-references" >§</a> Normative References</h3>
-<div id="todo-814" class="notice todo"><a class="notice-link" href="#todo-814">TODO</a><p>Add normative references</p>
+<div id="todo-6" class="notice todo"><a class="notice-link" href="#todo-6">TODO</a><p>Add normative references</p>
 </div>
 <h3 id="informative-references"><a class="toc-anchor" href="#informative-references" >§</a> Informative References</h3>
-<div id="todo-815" class="notice todo"><a class="notice-link" href="#todo-815">TODO</a><p>Add informative references</p>
+<div id="todo-7" class="notice todo"><a class="notice-link" href="#todo-7">TODO</a><p>Add informative references</p>
 </div>
 <h2 id="acknowledgements"><a class="toc-anchor" href="#acknowledgements" >§</a> Acknowledgements</h2>
-<div id="todo-816" class="notice todo"><a class="notice-link" href="#todo-816">TODO</a><p>Add Acknowledgements</p>
+<div id="todo-8" class="notice todo"><a class="notice-link" href="#todo-8">TODO</a><p>Add Acknowledgements</p>
 </div>
 <h2 id="authors-addresses"><a class="toc-anchor" href="#authors-addresses" >§</a> Authors’ Addresses</h2>
-<div id="todo-817" class="notice todo"><a class="notice-link" href="#todo-817">TODO</a><p>Add authors’ addresses.</p>
+<div id="todo-9" class="notice todo"><a class="notice-link" href="#todo-9">TODO</a><p>Add authors’ addresses.</p>
 </div>
 
                     </article>    

@@ -146,7 +146,7 @@ Notably, as defined in section [Identifiers in a `did:webs` DID document](#ident
 well, different versions of the DID document and [[ref: KERI event stream]] may reside in different locations
 depending on the replication capabilities of the controlling entity. If the [[ref: KERI event streams]]
 differ for `did:webs` DIDs with the same AID, the smaller [[ref: KERI event stream]] MUST be a prefix
-of the larger [[ref: KERI event stream]] (e.g., the only difference in the [[ref: KERI event streams]] be extra events in one
+of the larger [[ref: KERI event stream]] (e.g., the only difference in the [[ref: KERI event streams]] being the extra events in one
 of the [[ref: KERI event streams]], not yet reflected in the other). If the [[ref: KERI event streams]] diverge from one other
 (e.g., one is not a subset of the other), both the [[ref: KERI event streams]] and the DIDs MUST be
 considered invalid.
@@ -183,7 +183,7 @@ resolution uncertainty.
 - The `did:webs` is bound to its location via an event recording in the [[ref: KERI event stream]], and
   as the `id` in the DID document.
 - When a `did:webs` is permanently moved to some other location, an event in the
-  [[ref: KERI event stream]] the change.
+  [[ref: KERI event stream]] will reflect the change.
   - The `id` in the DID document is set to the new location.
   - An `alsoKnownAs` entry is added to the DID document for the old location.
   - If possible, the controller of the DID MAY use web redirects to allow
@@ -206,7 +206,7 @@ purposes of the entity trying to resolve the DID. This specification does not
 rely on the Wayback Machine, but it might be a useful DID resolver tool.
 
 The DID document, [[ref: KERI event stream]] and other files related to a DID may be copied to other web
-location. For example, someone might want to keep a cache of DIDs they use, or
+locations. For example, someone might want to keep a cache of DIDs they use, or
 an entity might want to run a registry of "useful" DIDs for a cooperating group.
 While the combination of DID document and [[ref: KERI event stream]] make the DID and DID document verifiable, just
 as when published in their "intended" location, the absence of DIDs equivalent to those locations
