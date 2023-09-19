@@ -26,13 +26,13 @@
         "informative_references.md",
         "acknowledgements_authors.md"
       ],
-      "logo": "https://raw.githubusercontent.com/dhh1128/did-method-webs/main/logo.png",
-      "logo_link": "https://github.com/dhh1128/did-method-webs",
+      "logo": "https://raw.githubusercontent.com/trustoverip/tswg-did-method-webs-specification/main/logo.png",
+      "logo_link": "https://github.com/trustoverip/tswg-did-method-webs-specification",
       "katex": true,
       "source": {
         "host": "github",
-        "account": "dhh1128",
-        "repo": "did-method-webs"
+        "account": "trustoverip",
+        "repo": "tswg-did-method-webs-specification"
       }
     }
   ]
