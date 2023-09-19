@@ -5,7 +5,7 @@ DID Method `did:webs` Specification
 
 **Latest Draft:**
 
-[https://github.com/dhh1128/did-method-webs](https://github.com/dhh1128/did-method-webs)
+[https://github.com/trustoverip/tswg-did-method-webs-specification](https://github.com/trustoverip/tswg-did-method-webs-specification)
 
 **Editors:**
 
@@ -17,7 +17,7 @@ DID Method `did:webs` Specification
 
 **Participate:**
 
-~ [GitHub repo](https://github.com/dhh1128/did-method-webs)
-~ [Commit history](https://github.com/dhh1128/did-method-webs/commits/main)
+~ [GitHub repo](https://github.com/trustoverip/tswg-did-method-webs-specification)
+~ [Commit history](https://github.com/trustoverip/tswg-did-method-webs-specification/commits/main)
 
 ------------------------------------
