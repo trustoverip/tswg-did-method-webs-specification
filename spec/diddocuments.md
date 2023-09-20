@@ -277,6 +277,89 @@ Data structures similar to Location Scheme and Endpoint Authorizations and manag
 
 TODO:  Propose new data structures in KERI and Detail the transformation
 
+### Transformation to `did:web` DID Document
+
+The DID document that exists as a resource on a webserver is compatible with the `did:web` DID method and therefore
+necessarily different from a `did:webs` DID document with regard to the `id`, `controller`, and `alsoKnownAs` properties. This section
+defines a simple transformation algorithm from a `did:webs` DID document to a `did:web` DID document.
+
+Given a `did:webs` DID document, construct a new `did:web` DID document with the following differences:
+
+- In the values of the top-level `id` and `controller` properties of the DID document, replace the `did:webs` prefix string with `did:web`.
+- In the value of the top-level `alsoKnownAs` property, replace the entry that is now the new value of the `id` property (using `did:web`)
+  with the old value of the `id` property (using `did:webs`).
+- All other content of the DID document is simply copied without modifications.
+
+This transformation is used during the [Create](#create) DID method operation.
+
+For example, given the following `did:webs` DID document:
+```json
+{
+  "id": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "alsoKnownAs": [
+    "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+    "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+  ],
+  ...
+}
+```
+
+The result of the transformation algorithm is the following `did:web` DID document:
+```json
+{
+  "id": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "controller": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "alsoKnownAs": [
+    "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+    "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+  ],
+  ...
+}
+```
+
+### Transformation to `did:webs` DID Document
+
+This section defines an inverse transformation algorithm from a `did:web` DID document to a `did:webs` DID document.
+
+Given a `did:web` DID document, construct a new `did:webs` DID document with the following differences:
+
+- In the values of the top-level `id` and `controller` properties of the DID document, replace the `did:web` prefix string with `did:webs`.
+- In the value of the top-level `alsoKnownAs` property, replace the entry that is now the new value of the `id` property (using `did:webs`)
+  with the old value of the `id` property (using `did:web`).
+- All other content of the DID document is simply copied without modifications.
+
+This transformation is used during the [Read (Resolve)](#read-resolve) DID method operation.
+
+For example, given the following `did:web` DID document:
+```json
+{
+  "id": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "controller": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "alsoKnownAs": [
+    "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+    "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+  ],
+  ...
+}
+```
+
+The result of the transformation algorithm is the following `did:webs` DID document:
+```json
+{
+  "id": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "alsoKnownAs": [
+    "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+    "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+  ],
+  ...
+}
+```
 
 ### Full Example
 The following blocks contain full annotated examples of a KERI AID with two events, an inception event and an interaction event, some witnesses, multiple public signing and rotation keys and an Agent with the resulting DID document that an implementation would generate assuming the implementation was running on the `example.com` domain with no unique port and no additional path defined:

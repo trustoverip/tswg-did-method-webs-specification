@@ -61,7 +61,9 @@ As with `did:web`, this method reads data from whatever web server is referenced
 when the domain name portion of one of its DIDs is resolved through the Domain
 Name System (DNS). In fact, a `did:webs` can be resolved to a [[ref: DID document]]
 using a simple text transformation to an HTTPS URL in the same way as a
-`did:web`. By design, a `did:web` and `did:webs` with the same [[ref: method-specific identifier]] will return the same DID document.
+`did:web`. By design, a `did:web` and `did:webs` with the same [[ref: method-specific identifier]] will return the same
+DID document, except for minor differences in the `id`, `controller`, and `alsoKnownAs` top-level properties that pertain
+to the identifiers themselves.
 
 However, this method introduces an important nuance about the target system. In
 many DID methods, the target system equals a [[ref: verifiable data registry]] —
@@ -216,40 +218,47 @@ DID-related documents have been copied.
 
 ### DID Method Operations
 
-#### Create (Register)
+#### Create
 
-Creating a DID involves these steps:
+Creating a `did:webs` DID involves the following steps:
 
-- Choose the web URL where the DID document for the DID will be published, excluding
-  the last element that will be the AID, once defined.
-- Create a KERI AID and add the appropriate KERI events that will (at least)
-  produce the DID document. That process is described in the [DID Document from KERI Events](#did-document-from-keri-events)
-  generation section of this specification.
-- Add the AID as the last element of the web URL for the DID.
-- Derive the DID document by processing the [[ref: KERI event stream]].
-- Create the AID folder on the web server at the selected location, and place
-the DID document and the [[ref: KERI event stream]] file into that folder.
+1. Choose the web URL where the DID document for the DID will be published, excluding
+   the last element that will be the AID, once defined.
+2. Create a KERI AID and add the appropriate KERI events that will correspond to
+   properties of the DID document, such as verification methods and service endpoints.
+3. Add the AID as the last element of the web URL for the DID.
+4. Derive the `did:webs` [[ref: DID document]] by processing the [[ref: KERI event stream]]
+   according to section [DID Document from KERI Events](#did-document-from-keri-events).
+5. Transform the derived `did:webs` DID document to the corresponding `did:web` DID document according
+   to section [Transformation to did:web DID Document](#transformation-to-didweb-did-document).
+6. Create the AID folder on the web server at the selected location, and place
+   the `did:web` DID document resource (`did.json`) and the [[ref: KERI event stream]] resource (`did.keri`)
+   into that folder. See section [Target System(s)](#target-systems) for further details about
+   the locations of these resources.
 
-Of course, the web server that serves the files when asked might be a simple
-file server (as implied above) or an active component that retrieves them
-dynamically. Further, the publisher of the files placed on the web can use
-capabilities like [CDNs] to distribute the files.
+Of course, the web server that serves the resources when asked might be a simple
+file server (as implied above) or an active component that generates them
+dynamically. Further, the publisher of the resources placed on the web can use
+capabilities like [CDNs] to distribute the resources.
 
 Likewise, an active component might be used by the controller of the DID to
-automate the process of publishing and updating the DID document and [[ref: KERI event stream]].
+automate the process of publishing and updating the DID document and [[ref: KERI event stream]] resources.
 
 #### Read (Resolve)
 
-Before a `did:webs` DID can undergo standard resolution, it must be converted
-back to an HTTPS URL [as described above](#method-specific-identifier). The
-reader then does a GET on both the URL for the DID document (ending in `/did.json`)
-and on the URL for the [[ref: KERI event stream]] (ending in `/did.keri`)
+Resolving a `did:webs` DID involves the following steps:
 
-On receipt of the two documents, the [[ref: KERI event stream]] is processed using [KERI Rules] to
-verify the validity of the [[ref: KERI event stream]] itself, and of the DID document.
+1. Convert the `did:webs` DID back to HTTPS URLs as described in section [Target System(s)](#target-systems).
+2. Execute HTTP GET requests on both the URL for the DID document (ending in `/did.json`)
+and the URL for the [[ref: KERI event stream]] (ending in `/did.keri`).
+3. Process the [[ref: KERI event stream]] using [KERI Rules] to verify it, then derive the `did:webs`
+   [[ref: DID document]] by processing the [[ref: KERI event stream]]
+   according to section [DID Document from KERI Events](#did-document-from-keri-events).
+4. Transform the retrieved `did:web` DID document to the corresponding `did:webs` DID document according
+   to section [Transformation to did:webs DID Document](#transformation-to-didwebs-did-document).
+5. Verify that the derived `did:webs` DID document (from step 3) equals the transformed DID document (from step 4).
 
-After retrieval, the [[ref: KERI event stream]] SHOULD BE processed using KERI rules by anyone
-resolving the DID document to verify its contents. Further, KERI-aware applications
+Further, KERI-aware applications
 MAY use the [[ref: KERI event stream]] to make use of additional capabilities enabled by the use of
 KERI. Capabilities beyond the verification of the DID document and [[ref: KERI event stream]] are outside
 the scope of this specification.
