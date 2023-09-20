@@ -1,6 +1,6 @@
 ## DID Parameters
 
-This section describes the support of the `did:webs` for certain DID parameters.
+This section describes the support of the `did:webs` method for certain DID parameters.
 
 ### Support for `versionId`
 
