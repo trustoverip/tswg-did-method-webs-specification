@@ -57,3 +57,5 @@ KERI uses [[[ref: CESR]] ](https://weboftrust.github.io/ietf-cesr/draft-ssmith-c
 *   Cryptographic primitives such as keys, hashes, and signatures are structured strings with a recognizable data type prefix and a standard representation. This means they are very terse, and there is no need for the variety of representation methods that create interoperability challenges in other DID methods (`publicKeyJwk` versus `publicKeyMultibase` versus other; see [section 5.2 of the DID spec](https://www.w3.org/TR/did-core/#verification-material)).
 
 Despite this rich set of features, KERI imposes only light dependencies on developers. The cryptography it uses is familiar and battle-hardened — exactly what you'd find in standard toolkits for big numbers and elliptic curves. For example, the python implementation uses just the `pysodium`, `blake3`, and `cryptography` packages. Libraries for KERI exist in javascript, rust, and python.
+
+In this spec we generically refer to the CESR event stream of KEL and TEL events as the [[ref: KERI event stream]] which is used to verify the did:webs DID document.

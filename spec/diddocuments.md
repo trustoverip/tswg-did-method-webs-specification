@@ -2,10 +2,8 @@
 
 ### Introduction
 DID documents in this method are generated or derived from the key state of the
-corresponding AID. If the AID in question is [[ref: non-transferrable]], then the
-DID document is generated algorithmically from the DID value itself, and nothing
-else. If the AID is [[ref: transferrable]], then the [[ref: KEL]] and the [[ref: TEL]]
-are also required inputs to the generation algorithm.
+corresponding AID. By processing the [[ref: KERI event stream]] of the AID, the generation algorithm will be reading the AID [[ref: KEL]] (and possibly [[ref: TEL]])
+to produce the DID document. 
 
 DID documents for this method are pure JSON. They may be processed as JSON-LD by
 prepending an `@context` if consumers of the documents wish.
@@ -15,16 +13,10 @@ is an approach similar to multibase, making them self-describing and terse.
 
 ### DID Document from KERI Events
 The [[ref: KERI event stream]] represents a cryptographic chain
-of custody from the [[ref: AID]] itself down to the current set of signing keys and next rotation key commitments,
-as well as other data such as service endpoints.  When generating a
-DID document an implementation must "walk the [[ref: KEL]]" (follow the chain of key events) to determine the current key state.  Due to the fact that the KERI protocol
-allows for non-establishment event (events that don't change key state) to be intermixed in a [[ref: KERI event stream]] with establishment
-events (those that change key state), the last event may not be an establishment event and thus can not be relied on to
-provide key information.  In addition, the current set of witnesses is calculated from the initial set declared in the
-inception event and "adds" and "cuts" declared in rotation events.
+of custody from the [[ref: AID]] itself down to the current set of keys and the cryptographic commitment to the next rotation key(s). The [[ref: KERI event stream]] also contains events that do not alter the [[ref: AID]] key state, but are useful for the DID document, such as the supported domains, current set of service endpoints, etc. A did:webs resolver produces the DID document by processing the [[ref: KERI event stream]] to determine the current key state. We detail the different events below and show how they change the DID Document. The mapping from [[ref: KERI event stream]] to the properties of the DID Document is the core of the did:webs resolver logic. There are many ways to receieve the [[ref: KERI event stream]], but only one way to process a [[ref: KERI event stream]] to produce the verifiable DID document. Understanding the optimal way to retrieve the [[ref: KERI event stream]] is beyond the scope of the spec, but a reference implementation of the resolver that details these techniques is being developed alongside this spec. The important concepts are that the entire [[ref: KERI event stream]] is used to produce and verify the DID document.
 
-In KERI the calculated values that result from walking the [[ref: KEL]] are referred to as the "current key state" and expressed
-in the Key State Notice (KSN) record.  An example of a KSN can be seen here:
+In KERI the calculated values that result from processing the [[ref: KERI event stream]] are referred to as the "current key state" and expressed
+in the Key State Notice (KSN) record.  An example of a KERI KSN record can be seen here:
 
 ```json
 {
@@ -226,12 +218,12 @@ For example, a KERI AID with only the following inception event in its KEL:
 ```
 
 #### Verification Relationships
-KERI AID public keys can be used to sign a variety of data.  This includes but is not limited to logging into a website, challenge-response exchanges and credential issuances.  It follows that for each public key in `k` two verification relationships must be generated in the DID document.  One verification relationship of type `authentication` and one verification relationship of type `assertionMethod`.  The `authentication` verification relationship defines that the DID controller can authenticate using each key and the `assertionMethod` verification relationship defines that the DID controller can express claims with each key (should we address multisig and thresholds here?).
+KERI AID public keys can be used to sign a variety of data.  This includes but is not limited to logging into a website, challenge-response exchanges and credential issuances.  It follows that for each public key in `k` two verification relationships must be generated in the DID document.  One verification relationship of type `authentication` and one verification relationship of type `assertionMethod`.  The `authentication` verification relationship defines that the DID controller can authenticate using each key and the `assertionMethod` verification relationship defines that the DID controller can express claims with each key (TODO: address multisig and thresholds).
 
 References to verification methods in the DID document MUST use the relative form of the identifier, e.g., `"authentication": ["#<identifier>"]`.
 
 #### Service Endpoints
-In KERI, service endpoints are defined by 2 sets of signed data that follow the Best Available Data - Read, Update, Nullify (BADA-RUN) (ref?) rules for data processing.  Detailing the rules of BADA-RUN is beyond the scope of this document but to summarize, the protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
+In KERI, service endpoints are defined by 2 sets of signed data that follow the Best Available Data - Read, Update, Nullify ([[ref: BADA-RUN]]) rules for data processing.  The protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
 
 The two data sets used to define service endpoints are called Location Schemes and Endpoint Role Authorizations and are expressed in KERI `rpy` events.  Location Schemes define URLs for any URL scheme that an AID has exposed.  For example, the following `rpy` method declares that the AID `EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1` exposes the URL `http://localhost:3902` for scheme `http`:
 
@@ -288,7 +280,7 @@ The current set of endpoint roles in KERI is contained in the following table:
 
 
 ##### KERI Service Endpoints as Services
-As defined above in [KERI Service Endpoints](#KERI-Service-Endpoints) service endpoints roles beyond `witness` can be defined using Location Scheme and Endpoint Authorization records in KERI.  This section will map the current roles in KERI to service `type` values in resulting DID documents and propose a new role in KERI to map to the existing `DIDCommMessaging` service type declared in DID Specification Registries (ref?).
+As defined above in [KERI Service Endpoints](#KERI-Service-Endpoints) service endpoints roles beyond `witness` can be defined using Location Scheme and Endpoint Authorization records in KERI.  This section will map the current roles in KERI to service `type` values in resulting DID documents and propose a new role in KERI to map to the existing [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging) service type declared in DID Specification Registries.
 
 ```json
 {
