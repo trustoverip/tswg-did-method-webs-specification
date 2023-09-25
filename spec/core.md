@@ -142,7 +142,7 @@ MUST be considered equivalent identifiers. Any `did:webs` DIDs that have the sam
 are by definition synonyms of one another, and MUST
 return an equivalent, although not necessarily identical, DID document and [[ref: KERI event stream]].
 Notably, as defined in section [Identifiers in a `did:webs` DID document](#identifiers-in-a-didwebs-did-document), the
-`id` field in the DID document will differ based the web location of the DID document. As
+`id` property in the DID document will differ based the web location of the DID document. As
 well, different versions of the DID document and [[ref: KERI event stream]] may reside in different locations
 depending on the replication capabilities of the controlling entity. If the [[ref: KERI event streams]]
 differ for `did:webs` DIDs with the same AID, the smaller [[ref: KERI event stream]] MUST be a prefix
