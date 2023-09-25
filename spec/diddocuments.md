@@ -160,7 +160,7 @@ For example, a KERI AID with only the following inception event in its KEL:
   "d": "EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
   "i": "EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
   "s": "0",
-  "kt": 1,
+  "kt": "1",
   "k": [
     "DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK",
   ]
@@ -198,7 +198,7 @@ For example, a KERI AID with only the following inception event in its KEL:
   "d": "EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
   "i": "EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
   "s": "0",
-  "kt": 1,
+  "kt": "1",
   "k": [
     "1AAAAmbFVu-Wf8NCd63B9V0zsy7EgB_ocX2_n_Nh1FCmgF0Y",
   ]
