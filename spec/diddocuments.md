@@ -96,8 +96,8 @@ The value of the `controller` property MUST be a single string that is the same 
 ```
 
 #### Also Known As
-The `alsoKnownAs` field in the root of the DID document MAY contain other equivalent,
-resolvable `did:webs` DIDs. The `alsoKnownAs` field MAY contain `did:web` versions of the `did:webs` DID(s).
+The `alsoKnownAs` property in the root of the DID document MAY contain other equivalent,
+resolvable `did:webs` DIDs. The `alsoKnownAs` property MAY contain `did:web` versions of the `did:webs` DID(s).
 
 It is anticipated that implementations of this DID method will be able to serve the same AID
 as multiple DIDs, all of which are synonymous for each other.  Any implementation will be able
@@ -127,14 +127,14 @@ entries could be created:
 KERI identifiers express public signing keys as Composable Event Streaming Representation (CESR) encoded strings in the
 `k` field of establishment events and the key state notice.  CESR encoding encapsulates all the information needed to
 determine the cryptographic algorithm used to generate the key pair.  For each key listed in the array value of the `k` field
-a corresponding verification method will be generated in the DID document.  The 'type' field  in the verification method for each
+a corresponding verification method will be generated in the DID document.  The 'type' property  in the verification method for each
 public key will be determined by the algorithm used to generate the public key.  At the time of this writing, KERI currently
 supports public key generation for Ed25519, Secp256k1 and Secp256r1 keys, however the protocol allows for others to be added at any time.
 We must define the subset of public key algorithms for KERI AIDs that this specification will accept, so we can define mappings to existing verification method types as registered in the DID Specification Registries.  As KERI evolves with more algorithms, new verification method types must be registered in the DID Specification Registries and added to this specification.
 
 The `id` property of the verification method must be a relative DID URL and use the KERI key CESR value as the value of the fragment component, e.g., `"id": "#<identifier>"`.
 
-The `controller` field of the verification method must be the value of the `id` field of DID document. (Does the method spec need to specify this?)
+The `controller` property of the verification method must be the value of the `id` property of DID document. (Does the method spec need to specify this?)
 
 For example, the key `DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK` in the DID document for the AID `EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2` becomes:
 
