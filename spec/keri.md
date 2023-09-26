@@ -25,7 +25,7 @@ The simplest AIDs (called [[ref: direct mode]] AIDs in KERI) have no additional 
 
 [[def: Pre-rotation]]
 
-Optionally, the inception event of an AID can also reference the hash of the _next_ key that will be used to control the AID. This changes how the AID is derived: `derive( initial_public_key, next_key_hash )`. KERI calls this feature [[ref: pre-rotation]]; AIDs that use it are called [[ref: transferrable]] AIDs because their control can be transferred to new keys. AIDs that do not use pre-rotation cannot change their keys, and are thus thus [[ref: non-transferrable]].
+Optionally, the inception event of an AID can also reference the hash of the _next_ key that will be used to control the AID. This changes how the AID is derived: `derive( initial_public_key, next_key_hash )`. KERI calls this feature [[ref: pre-rotation]]; AIDs that use it are called [[ref: transferrable]] AIDs because their control can be transferred to new keys. AIDs that do not use pre-rotation cannot change their keys, and are thus [[ref: non-transferrable]].
 
 Pre-rotation has profound security benefits. If a malicious party steals the private key for an AID with this feature, they only accomplish _temporary_ mischief, because the already-existing KEL contains a commitment to future state. This prevents them from rotating the stolen AID's key to an arbitrary value of their choosing. As soon as the AID owner suspects a compromise, they can do a valid rotation that locks the attacker out again.
 
