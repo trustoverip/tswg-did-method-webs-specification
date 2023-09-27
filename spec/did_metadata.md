@@ -104,6 +104,7 @@ Example:
   },
   "didDocumentMetadata": {
     "equivalentId": [
+      "did:webs:example.com%3A8080:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
       "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
       "did:webs:bar.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
     ]    
