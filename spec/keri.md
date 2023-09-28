@@ -25,7 +25,7 @@ The simplest AIDs (called [[ref: direct mode]] AIDs in KERI) have no additional 
 
 [[def: Pre-rotation]]
 
-Optionally, the inception event of an AID can also reference the hash of the _next_ key that will be used to control the AID. This changes how the AID is derived: `derive( initial_public_key, next_key_hash )`. KERI calls this feature [[ref: pre-rotation]]; AIDs that use it are called [[ref: transferrable]] AIDs because their control can be transferred to new keys. AIDs that do not use pre-rotation cannot change their keys, and are thus thus [[ref: non-transferrable]].
+Optionally, the inception event of an AID can also reference the hash of the _next_ key that will be used to control the AID. This changes how the AID is derived: `derive( initial_public_key, next_key_hash )`. KERI calls this feature [[ref: pre-rotation]]; AIDs that use it are called [[ref: transferrable]] AIDs because their control can be transferred to new keys. AIDs that do not use pre-rotation cannot change their keys, and are thus [[ref: non-transferrable]].
 
 Pre-rotation has profound security benefits. If a malicious party steals the private key for an AID with this feature, they only accomplish _temporary_ mischief, because the already-existing KEL contains a commitment to future state. This prevents them from rotating the stolen AID's key to an arbitrary value of their choosing. As soon as the AID owner suspects a compromise, they can do a valid rotation that locks the attacker out again.
 
@@ -57,3 +57,5 @@ KERI uses [[[ref: CESR]] ](https://weboftrust.github.io/ietf-cesr/draft-ssmith-c
 *   Cryptographic primitives such as keys, hashes, and signatures are structured strings with a recognizable data type prefix and a standard representation. This means they are very terse, and there is no need for the variety of representation methods that create interoperability challenges in other DID methods (`publicKeyJwk` versus `publicKeyMultibase` versus other; see [section 5.2 of the DID spec](https://www.w3.org/TR/did-core/#verification-material)).
 
 Despite this rich set of features, KERI imposes only light dependencies on developers. The cryptography it uses is familiar and battle-hardened — exactly what you'd find in standard toolkits for big numbers and elliptic curves. For example, the python implementation uses just the `pysodium`, `blake3`, and `cryptography` packages. Libraries for KERI exist in javascript, rust, and python.
+
+In this spec we generically refer to the CESR event stream of KEL and TEL events as the [[ref: KERI event stream]] which is used to verify the did:webs DID document.

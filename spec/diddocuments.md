@@ -2,10 +2,8 @@
 
 ### Introduction
 DID documents in this method are generated or derived from the key state of the
-corresponding AID. If the AID in question is [[ref: non-transferrable]], then the
-DID document is generated algorithmically from the DID value itself, and nothing
-else. If the AID is [[ref: transferrable]], then the [[ref: KEL]] and the [[ref: TEL]]
-are also required inputs to the generation algorithm.
+corresponding AID. By processing the [[ref: KERI event stream]] of the AID, the generation algorithm will be reading the AID [[ref: KEL]] (and possibly [[ref: TEL]])
+to produce the DID document. 
 
 DID documents for this method are pure JSON. They may be processed as JSON-LD by
 prepending an `@context` if consumers of the documents wish.
@@ -15,16 +13,10 @@ is an approach similar to multibase, making them self-describing and terse.
 
 ### DID Document from KERI Events
 The [[ref: KERI event stream]] represents a cryptographic chain
-of custody from the [[ref: AID]] itself down to the current set of signing keys and next rotation key commitments,
-as well as other data such as service endpoints.  When generating a
-DID document an implementation must "walk the [[ref: KEL]]" (follow the chain of key events) to determine the current key state.  Due to the fact that the KERI protocol
-allows for non-establishment event (events that don't change key state) to be intermixed in a [[ref: KERI event stream]] with establishment
-events (those that change key state), the last event may not be an establishment event and thus can not be relied on to
-provide key information.  In addition, the current set of witnesses is calculated from the initial set declared in the
-inception event and "adds" and "cuts" declared in rotation events.
+of custody from the [[ref: AID]] itself down to the current set of keys and the cryptographic commitment to the next rotation key(s). The [[ref: KERI event stream]] also contains events that do not alter the [[ref: AID]] key state, but are useful for the DID document, such as the supported domains, current set of service endpoints, etc. A did:webs resolver produces the DID document by processing the [[ref: KERI event stream]] to determine the current key state. We detail the different events in (KERI event details)[#KERI-event-details] below and show how they change the DID Document. The mapping from [[ref: KERI event stream]] to the properties of the DID Document is the core of the did:webs resolver logic. There are many ways to receive the [[ref: KERI event stream]], but only one way to process a [[ref: KERI event stream]] to produce the verifiable DID document. Understanding the optimal way to retrieve the [[ref: KERI event stream]] is beyond the scope of the spec, but a reference implementation of the resolver that details these techniques is being developed alongside this spec. The important concepts are that the entire [[ref: KERI event stream]] is used to produce and verify the DID document.
 
-In KERI the calculated values that result from walking the [[ref: KEL]] are referred to as the "current key state" and expressed
-in the Key State Notice (KSN) record.  An example of a KSN can be seen here:
+In KERI the calculated values that result from processing the [[ref: KERI event stream]] are referred to as the "current key state" and expressed
+in the Key State Notice (KSN) record.  An example of a KERI KSN record can be seen here:
 
 ```json
 {
@@ -97,8 +89,8 @@ The value of the `controller` property MUST be a single string that is the same 
 ```
 
 #### Also Known As
-The `alsoKnownAs` field in the root of the DID document MAY contain other equivalent,
-resolvable `did:webs` DIDs. The `alsoKnownAs` field MAY contain `did:web` versions of the `did:webs` DID(s).
+The `alsoKnownAs` property in the root of the DID document MAY contain other equivalent,
+resolvable `did:webs` DIDs. The `alsoKnownAs` property MAY contain `did:web` versions of the `did:webs` DID(s).
 
 It is anticipated that implementations of this DID method will be able to serve the same AID
 as multiple DIDs, all of which are synonymous for each other.  Any implementation will be able
@@ -128,14 +120,14 @@ entries could be created:
 KERI identifiers express public signing keys as Composable Event Streaming Representation (CESR) encoded strings in the
 `k` field of establishment events and the key state notice.  CESR encoding encapsulates all the information needed to
 determine the cryptographic algorithm used to generate the key pair.  For each key listed in the array value of the `k` field
-a corresponding verification method will be generated in the DID document.  The 'type' field  in the verification method for each
+a corresponding verification method will be generated in the DID document.  The 'type' property  in the verification method for each
 public key will be determined by the algorithm used to generate the public key.  At the time of this writing, KERI currently
 supports public key generation for Ed25519, Secp256k1 and Secp256r1 keys, however the protocol allows for others to be added at any time.
 We must define the subset of public key algorithms for KERI AIDs that this specification will accept, so we can define mappings to existing verification method types as registered in the DID Specification Registries.  As KERI evolves with more algorithms, new verification method types must be registered in the DID Specification Registries and added to this specification.
 
 The `id` property of the verification method must be a relative DID URL and use the KERI key CESR value as the value of the fragment component, e.g., `"id": "#<identifier>"`.
 
-The `controller` field of the verification method must be the value of the `id` field of DID document. (Does the method spec need to specify this?)
+The `controller` property of the verification method must be the value of the `id` property of DID document. (Does the method spec need to specify this?)
 
 For example, the key `DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK` in the DID document for the AID `EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2` becomes:
 
@@ -150,7 +142,9 @@ For example, the key `DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK` in the DID d
 ```
 
 ##### Ed25519
-Ed25519 public keys must be converted to a verification method with a type of `Ed25519VerificationKey2020` with a cooresponding `publicKeyMultibase` field whose value is generated by decoding the CESR representation of the public key out of the KEL into its binary form and re-encoding is as multibase. For example, a KERI AID with only the following inception event in its KEL:
+Ed25519 public keys must be converted to a verification method with a type of `JsonWebKey` and `publicKeyJwk` property whose value is generated by decoding the CESR representation of the public key out of the KEL and into its binary form (minus the leading 'B' or 'D' CESR codes) and generating the corresponding representation of the key in JSON Web Key form.
+
+For example, a KERI AID with only the following inception event in its KEL:
 
 ```json
 {
@@ -159,31 +153,70 @@ Ed25519 public keys must be converted to a verification method with a type of `E
   "d": "EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
   "i": "EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
   "s": "0",
-  "kt": 1,
+  "kt": "1",
   "k": [
     "DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK",
   ]
-  // ...  
+  // ...
 }
 ```
 
-would result in a DID document with the following verification methods array:
+... would result in a DID document with the following verification methods array:
 
 ```json
   "verificationMethod": [
     {
-      "id": "did:webs:example.com:EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2#DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK",
-      "type": "Ed25519VerificationKey2020",
+      "id": "#DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK",
+      "type": "JsonWebKey",
       "controller": "did:webs:example.com:EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
-      "publicKeyMultibase": "zFC8PE5Ney3ScmNawy1e1bzXJZQmN7ENGDRy1iPuBPUtr"
+      "publicKeyJwk": {
+        "kid": "DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK",
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "FkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwI"
+      }
     }
   ]
 ```
 
 ##### Secp256k1
-Secp256k1 public keys must be converted to a verification method with a type of `EcdsaSecp256k1VerificationKey2019` with a cooresponding `publicKeyJwk` field whose value is generated by decoding the CESR representation of the public key out of the KEL and into its binary form and generating the mapping representation of the key in JSON Web Key form.
+Secp256k1 public keys must be converted to a verification method with a type of `JsonWebKey` and `publicKeyJwk` property whose value is generated by decoding the CESR representation of the public key out of the KEL and into its binary form (minus the leading '1AAA' or '1AAB' CESR codes) and generating the corresponding representation of the key in JSON Web Key form.
 
-TODO: Add example of Secp256k1 key in a KEL and the resultant verification method
+For example, a KERI AID with only the following inception event in its KEL:
+
+```json
+{
+  "v": "KERI10JSON0001ad_",
+  "t": "icp",
+  "d": "EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
+  "i": "EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
+  "s": "0",
+  "kt": "1",
+  "k": [
+    "1AAAAmbFVu-Wf8NCd63B9V0zsy7EgB_ocX2_n_Nh1FCmgF0Y",
+  ]
+  // ...
+}
+```
+
+... would result in a DID document with the following verification methods array:
+
+```json
+  "verificationMethod": [
+    {
+      "id": "#1AAAAmbFVu-Wf8NCd63B9V0zsy7EgB_ocX2_n_Nh1FCmgF0Y",
+      "type": "JsonWebKey",
+      "controller": "did:webs:example.com:EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
+      "publicKeyJwk": {
+        "kid": "1AAAAmbFVu-Wf8NCd63B9V0zsy7EgB_ocX2_n_Nh1FCmgF0Y",
+        "kty": "EC",
+        "crv": "secp256k1",
+        "x": "ZsVW75Z_w0J3rcH1XTOzLsSAH-hxfb-Q82HUUKaAXRg",
+        "y": "Lu6Uw785U3K05D-NPNoUInHPNUz9cGqWwjKjm5KL8FI"
+      }
+    }
+  ]
+```
 
 ##### Thresholds
 If the current signing keys threshold (the value of the `kt` field) is a string containing a number that is greater than 1,
@@ -390,7 +423,7 @@ If the value of `kt` > 1 or if the value of `kt` is an array containing fraction
 References to verification methods in the DID document MUST use the relative form of the identifier, e.g., `"authentication": ["#<identifier>"]`.
 
 #### Service Endpoints
-In KERI, service endpoints are defined by 2 sets of signed data that follow the Best Available Data - Read, Update, Nullify (BADA-RUN) (ref?) rules for data processing.  Detailing the rules of BADA-RUN is beyond the scope of this document but to summarize, the protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
+In KERI, service endpoints are defined by 2 sets of signed data that follow the Best Available Data - Read, Update, Nullify ([[ref: BADA-RUN]]) rules for data processing.  The protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
 
 The two data sets used to define service endpoints are called Location Schemes and Endpoint Role Authorizations and are expressed in KERI `rpy` events.  Location Schemes define URLs for any URL scheme that an AID has exposed.  For example, the following `rpy` method declares that the AID `EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1` exposes the URL `http://localhost:3902` for scheme `http`:
 
@@ -447,7 +480,7 @@ The current set of endpoint roles in KERI is contained in the following table:
 
 
 ##### KERI Service Endpoints as Services
-As defined above in [KERI Service Endpoints](#KERI-Service-Endpoints) service endpoints roles beyond `witness` can be defined using Location Scheme and Endpoint Authorization records in KERI.  This section will map the current roles in KERI to service `type` values in resulting DID documents and propose a new role in KERI to map to the existing `DIDCommMessaging` service type declared in DID Specification Registries (ref?).
+As defined above in [KERI Service Endpoints](#KERI-Service-Endpoints) service endpoints roles beyond `witness` can be defined using Location Scheme and Endpoint Authorization records in KERI.  This section will map the current roles in KERI to service `type` values in resulting DID documents and propose a new role in KERI to map to the existing [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging) service type declared in DID Specification Registries.
 
 ```json
 {
@@ -473,7 +506,7 @@ TODO:  Detail the transformation
 
 
 #### Other Key Commitments
-Data structures similar to Location Scheme and Endpoint Authorizations and managed in KERI using BADA-RUN could be created that would be used for declaring other types of keys, for example encryption keys, etc
+Data structures similar to Location Scheme and Endpoint Authorizations and managed in KERI using [[ref: BADA-RUN]] could be created that would be used for declaring other types of keys, for example encryption keys, etc
 
 TODO:  Propose new data structures in KERI and Detail the transformation
 
@@ -666,3 +699,18 @@ Resulting DID document:
   ]
 }
 ```
+
+### Basic KERI event details
+[DID Document from KERI Events](#did-document-from-keri-events) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the basic types of KERI events and how they relate to the DID document.
+
+#### Key state events
+When processing the [[ref: KERI event stream]] there are two broad types of key state events (KERI parlance is 'establishment events') that can alter the key state of the DID document.  Every [[ref: AID]] starts with an [[ref: inception event]]. If that inception event does not commit to a future set of rotation key hashes, then the AID is non-transferrable because the identifier can never change key state. If the inception event does commit to a future set of rotation key hashes, then the AID is transferrable and there could be future rotation events that transfer the key state from the current keys to the rotation keys that were committed to in the previous key state event.
+* [[def: Inception event]]: The inception event is the first event in the [[ref: KEL]] that establishes the AID. This defines the initial key set and if the controller(s) desire future key rotation (transfer) then the inception event must commit to a set of future rotation key hashes. When processing the [[ref: KERI event stream]], if there are no rotation events after the inception event, then this is the current key state of the AID and will be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). You can learn more about the inception event in the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-basic-terminology) and you can see an [example inception event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-inception-event). To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [KERI specification section on pre-rotation](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-key-pre-rotation-concept)
+* [[def: Rotation event]]: Rotation events come after inception events and can only change the key state to the previously committed to rotation keys and if the controller(s) desires future key rotation (transfer) then the rotation event must commit to a set of future rotation key hashes. When processing the [[ref: KERI event stream]], if there are rotation events after the inception event, then the last rotation event is the current key state of the AID and will be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). You can learn more about rotation events in the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-basic-terminology) and you can see an [example rotation event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-rotation-event-message-body). To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [KERI specification section on pre-rotation](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-key-pre-rotation-concept)
+
+### Delegation KERI event details
+This section focuses on delegation relationships between KERI AIDs. [DID Document from KERI Events](#did-document-from-keri-events) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the basic types of KERI events and how they relate to the DID document. [Basic KERI event details](#basic-keri-event-details) provides additional details on the basic types of KERI events and how they relate to the DID document.
+
+#### Delegation key state events
+* [[def: Delegated inception event]]: Establishes a delegated identifier for which either the delegator or the delegate can end the delegation commitment. All delegation relationships start with a delegated inception event. The KERI specification provides [an example of a delegated inception event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-delegated-inception-event-m).
+* [[def: Delegated rotation event]]: Updates the delegated identifier commitment. Either the delegator or the delegate can end the delegation commitment. Any change to the [[ref: Delegated inception event]] key state or delegated rotation event key state requires a delegated rotation event. The KERI specification provides [an example of a delegated rotation event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#section-8.2)

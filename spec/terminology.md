@@ -16,4 +16,4 @@
 ~ As defined by KERI.
 
 [[def: KERI event stream, KERI event streams]]
-~ A stream of verifiable KERI data, consisting of the [[ref: key event log]] ([[ref: KEL]]) and other data such as [[ref: transaction event log]] ([[ref: TEL]]). This data may be serialized in a file using [[ref: CESR]] encoding.
+~ A stream of verifiable KERI data, consisting of the [[ref: key event log]] ([[ref: KEL]]) and other data such as [[ref: transaction event log]] ([[ref: TEL]]). This data is a [[ref: CESR]] event stream (TODO: link to IANA application/cesr media type) and may be serialized in a file using [[ref: CESR]] encoding. We refer to these CESR stream resources as KERI event streams to simplify the vocabulary.
