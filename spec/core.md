@@ -89,9 +89,10 @@ A GET on that URL MUST return the DID document.
 
 The location of the [[ref: KERI event stream]] is determined by transforming the previous URL as follows:
 
-- Replace the trailing "`/did.json`" with "`/did.keri`".
+- Replace the trailing "`/did.json`" with "`/keri.cesr`".
 
 A GET on that URL MUST return the [[ref: KERI event stream]] for the AID in the `did:webs` identifier.
+The [[ref: KERI event stream]] MUST be CESR-formatted (media type of application/cesr) and the KERI events must be verifiable using the KERI rules.
 
 The following are some `did:webs` DIDs and their corresponding DID document and [[ref: KERI event stream]]
 URLs, based on the examples from the [DID Web Specification](https://github.com/w3c-ccg/did-method-web/), but with the (faked) AID
@@ -99,16 +100,16 @@ URLs, based on the examples from the [DID Web Specification](https://github.com/
 
 - `did:webs:w3c-ccg.github.io:12124313423525`
   - DID document URL: https://w3c-ccg.github.io/12124313423525/did.json
-  - [[ref: KERI event stream]] URL: https://w3c-ccg.github.io/12124313423525/did.keri
+  - [[ref: KERI event stream]] URL: https://w3c-ccg.github.io/12124313423525/keri.cesr
 - `did:webs:w3c-ccg.github.io:user:alice:12124313423525`
   - DID document URL: https://w3c-ccg.github.io/user/alice/12124313423525/did.json
-  - [[ref: KERI event stream]] URL: https://w3c-ccg.github.io/user/alice/12124313423525/did.keri
+  - [[ref: KERI event stream]] URL: https://w3c-ccg.github.io/user/alice/12124313423525/keri.cesr
 - `did:webs:example.com%3A3000:user:alice:12124313423525`
   - DID document URL: https://example.com:3000/user/alice/12124313423525/did.json
-  - [[ref: KERI event stream]] URL: https://example.com:3000/user/alice/12124313423525/did.keri
+  - [[ref: KERI event stream]] URL: https://example.com:3000/user/alice/12124313423525/keri.cesr
 
 The `did:web` version of the DIDs are the same (minus the `s`) and point
-to the same `did.json` file, but have no knowledge of the `did.keri` file.
+to the same `did.json` file, but have no knowledge of the `keri.cesr` file.
 
 The set of KERI features needed
 for most `did:webs` use cases is modest, with limited dependencies. These basics
@@ -232,7 +233,7 @@ Creating a `did:webs` DID involves the following steps:
 5. Transform the derived `did:webs` DID document to the corresponding `did:web` DID document according
    to section [Transformation to did:web DID Document](#transformation-to-didweb-did-document).
 6. Create the AID folder on the web server at the selected location, and place
-   the `did:web` DID document resource (`did.json`) and the [[ref: KERI event stream]] resource (`did.keri`)
+   the `did:web` DID document resource (`did.json`) and the [[ref: KERI event stream]] resource (`keri.cesr`)
    into that folder. See section [Target System(s)](#target-systems) for further details about
    the locations of these resources.
 
@@ -250,7 +251,7 @@ Resolving a `did:webs` DID involves the following steps:
 
 1. Convert the `did:webs` DID back to HTTPS URLs as described in section [Target System(s)](#target-systems).
 2. Execute HTTP GET requests on both the URL for the DID document (ending in `/did.json`)
-and the URL for the [[ref: KERI event stream]] (ending in `/did.keri`).
+and the URL for the [[ref: KERI event stream]] (ending in `/keri.cesr`).
 3. Process the [[ref: KERI event stream]] using [KERI Rules] to verify it, then derive the `did:webs`
    [[ref: DID document]] by processing the [[ref: KERI event stream]]
    according to section [DID Document from KERI Events](#did-document-from-keri-events).
