@@ -4,7 +4,24 @@ This section describes the support of the `did:webs` method for certain DID para
 
 ### Support for `versionId`
 
-TODO, see https://github.com/trustoverip/tswg-did-method-webs-specification/issues/24
+The `did:webs` DID method supports the `versionId` DID parameter. This DID parameter is defined
+[here](https://www.w3.org/TR/did-core/#did-parameters). (TODO: Add proper references to external documents).
+
+This allows clients to instruct a DID Resolver to return a specific version of a DID document, as opposed to the
+latest version. The `did:webs` DID method is ideally suited for this functionality, since a continuous, self-certifying
+stream of events lies at the heart of the DID method's design, see section [KERI Fundamentals](#keri-fundamentals).
+
+Valid values for this DID parameter are sequence numbers of events in the [[ref: KERI event stream]]. When a `did:webs`
+DID is resolved with this DID parameter, then the DID Resolver constructs the DID document based on an AID's
+associated KERI events from the [[ref: KERI event stream]] only up to (and including) the event with the sequence
+number (i.e. the `s` field) that corresponds to the value of the `versionId` DID parameter. See section
+[DID Document from KERI Events](#did-document-from-keri-events) for details.
+
+Example:
+
+```
+did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M?versionId=1
+```
 
 ### Support for `transformKeys`
 
@@ -14,6 +31,12 @@ Add proper references to external documents).
 
 This allows clients to instruct a DID Resolver to return verification methods in a DID document in a desired format,
 such as `JsonWebKey` or `Ed25519VerificationKey2020`. 
+
+Example:
+
+```
+did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M?transformKeys=CesrKey
+```
 
 #### `CesrKey` and `publicKeyCesr`
 
