@@ -57,10 +57,11 @@ in the Key State Notice (KSN) record.  An example of a KERI KSN record can be se
 Using this key state as reference, we can identify the fields from the current key state that will translate to values
 in the DID document.  The following table lists the values from the example KSN and their associated values in a DID document:
 
-| Key State Field | Definition                                            | DID Document Value                                                                           |
-|:---------------:|:------------------------------------------------------|:---------------------------------------------------------------------------------------------| 
-|       `i`       | The AID value                                         | The DID Subject and DID Controller                                                           |
-|       `k`       | The current set of public signing keys                | Verification Methods with associated authentication and assertion verification relationships |
+| Key State Field | Definition                             | DID Document Value                                                                           |
+|:---------------:|:---------------------------------------|:---------------------------------------------------------------------------------------------|
+|       `i`       | The AID value                          | The DID Subject and DID Controller                                                           |
+|       `k`       | The current set of public signing keys | Verification Methods with associated authentication and assertion verification relationships |
+|      `kt`       | The current signing keys threshold     | The threshold in a Verification Method of type `ConditionalProof2022`                        |
 
 In several cases above, the value from the key state is not enough by itself to populate the DID document.  The following
 sections detail the algorithm to follow for each case.
@@ -217,8 +218,207 @@ For example, a KERI AID with only the following inception event in its KEL:
   ]
 ```
 
+##### Thresholds
+If the current signing keys threshold (the value of the `kt` field) is a string containing a number that is greater than 1,
+or if it is an array containing fractionally weighted thresholds, then in addition to the verification
+methods generated according to the rules in the previous sections, another verification method
+with a type of `ConditionalProof2022` will be generated in the DID document. This verification method type is defined here:
+https://w3c-ccg.github.io/verifiable-conditions/ (TODO: add proper references).
+
+It is constructed according to the following rules:
+
+* The `id` property of the verification method MUST be a relative DID URL and use the AID as the value of the fragment component, e.g., `"id": "#<aid>"`.
+
+* The `controller` property of the verification method MUST be the value of the `id` property of the DID document. (Does the method spec need to specify this?)
+
+* If the value of the `kt` field is a string containing a number that is greater than 1:
+
+    * The `threshold` property of the verification method MUST be the integer value of the `kt` field in the current key state.
+    * The `conditionThreshold` property of the verification method MUST contain an array. For each key listed in the array value of the `k` field in the
+      key state:
+      * The relative DID URL corresponding to the key MUST be added to the array value of the `conditionThreshold` property.
+
+For example, a KERI AID with only the following inception event in its KEL:
+
+```json
+{
+  "v": "KERI10JSON0001b7_",
+  "t": "icp",
+  "d": "Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "i": "Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "s": "0",
+  "kt": "2",  // Signing Threshold
+  "k": [
+    "1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",  // Secp256k1 Key
+    "DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",      // Ed25519 Key
+    "DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"       // Ed25519 Key
+  ],
+}
+```
+
+... would result in a DID document with the following verification methods array:
+
+```json
+{
+  "verificationMethod": [
+    {
+      "id": "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "type": "ConditionalProof2022",
+      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "threshold": 2,
+      "conditionThreshold": [
+        "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+        "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+        "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"
+      ]
+    },
+    {
+      "id": "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "type": "ConditionalProof2022",
+      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "threshold": 2,
+      "conditionThreshold": [
+        "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+        "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+        "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"
+      ]
+    },
+    {
+      "id": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+      "type": "JsonWebKey",
+      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "publicKeyJwk": {
+        "kid": "1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+        "kty": "EC",
+        "crv": "secp256k1",
+        "x": "NtngWpJUr-rlNNbs0u-Aa8e16OwSJu6UiFf0Rdo1oJ4",
+        "y": "qN1jKupJlFsPFc1UkWinqljv4YE0mq_Ickwnjgasvmo"
+      }
+    },
+    {
+      "id": "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+      "type": "JsonWebKey",
+      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "publicKeyJwk": {
+        "kid": "DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "A-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE"
+      }
+    },
+    {
+      "id": "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
+      "type": "JsonWebKey",
+      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "publicKeyJwk": {
+        "kid": "DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "LWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNws"
+      }
+    }
+  ]
+}
+```
+
+* If the value of the `kt` field is an array containing fractionally weighted thresholds:
+
+    * The `threshold` property of the verification method MUST be half of the lowest common denominator (LCD) of all the fractions
+      in the `kt` array.
+    * The `conditionWeightedThreshold` property of the verification method MUST contain an array. For each key listed in the array value of the `k` field in the
+      key state, and for each corresponding fraction listed in the array value of the `kt` field:
+      * A JSON object MUST be added to the array value of the `conditionWeightedThreshold` property.
+      * The JSON object MUST contain a property `condition` whose value is the relative DID URL corresponding to the key.
+      * The JSON object MUST contain a property `weight` whose value is the numerator of the fraction after it has been expanded over the lowest common denominator (LCD) of all the fractions.
+
+For example, a KERI AID with only the following inception event in its KEL:
+
+```json
+{
+  "v": "KERI10JSON0001b7_",
+  "t": "icp",
+  "d": "Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "i": "Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "s": "0",
+  "kt": ["1/2", "1/3", "1/4"],  // Signing Threshold
+  "k": [
+    "1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",  // Secp256k1 Key
+    "DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",      // Ed25519 Key
+    "DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"       // Ed25519 Key
+  ],
+}
+```
+
+... would result in a DID document with the following verification methods array:
+
+```json
+{
+  "verificationMethod": [
+    {
+      "id": "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "type": "ConditionalProof2022",
+      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "threshold": 6,
+      "conditionWeightedThreshold": [
+        {
+          "condition": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+          "weight": 6
+        },
+        {
+          "condition": "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+          "weight": 4
+        },
+        {
+          "condition": "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "id": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+      "type": "EcdsaSecp256k1VerificationKey2019",
+      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "publicKeyJwk": {
+        "crv": "secp256k1",
+        "x": "NtngWpJUr-rlNNbs0u-Aa8e16OwSJu6UiFf0Rdo1oJ4",
+        "y": "qN1jKupJlFsPFc1UkWinqljv4YE0mq_Ickwnjgasvmo",
+        "kty": "EC",
+        "kid": "WjKgJV7VRw3hmgU6--4v15c0Aewbcvat1BsRFTIqa5Q"
+      }
+    },
+    {
+      "id": "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+      "type": "Ed25519VerificationKey2020",
+      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "publicKeyMultibase": "zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
+    },
+    {
+      "id": "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
+      "type": "Ed25519VerificationKey2020",
+      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "publicKeyMultibase": "zDqYpw38nznAUJeeFdhKBQutRKpyDXeXxxi1HjYUQXLas"
+    }
+  ]
+}
+```
+
 #### Verification Relationships
-KERI AID public keys can be used to sign a variety of data.  This includes but is not limited to logging into a website, challenge-response exchanges and credential issuances.  It follows that for each public key in `k` two verification relationships must be generated in the DID document.  One verification relationship of type `authentication` and one verification relationship of type `assertionMethod`.  The `authentication` verification relationship defines that the DID controller can authenticate using each key and the `assertionMethod` verification relationship defines that the DID controller can express claims with each key (TODO: address multisig and thresholds).
+KERI AID public keys can be used to sign a variety of data.  This includes but is not limited to logging into a website,
+challenge-response exchanges and credential issuances.  It follows that:
+
+If the value of `kt` == 1:
+- For each public key in `k` and its corresponding verification method, two verification relationships MUST be generated
+  in the DID document.  One verification relationship of type `authentication` and one
+  verification relationship of type `assertionMethod`.  The `authentication` verification relationship defines that the
+  DID controller can authenticate using each key, and the `assertionMethod` verification relationship defines that the DID
+  controller can express claims using each key.
+
+If the value of `kt` > 1 or if the value of `kt` is an array containing fractionally weighted thresholds:
+- For the verification method of type `ConditionalProof2022` (see section [Thresholds](#thresholds)), two verification relationships MUST be generated
+  in the DID document.  One verification relationship of type `authentication` and one
+  verification relationship of type `assertionMethod`.  The `authentication` verification relationship defines that the
+  DID controller can authenticate using a combination of multiple keys above the threshold, and the `assertionMethod` verification relationship defines that the DID
+  controller can express claims using a combination of multiple keys above the threshold.
 
 References to verification methods in the DID document MUST use the relative form of the identifier, e.g., `"authentication": ["#<identifier>"]`.
 
@@ -439,6 +639,17 @@ Resulting DID document:
   ],
   "verificationMethod": [
     {
+      "id": "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "type": "ConditionalProof2022",
+      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "threshold": 2,
+      "conditionThreshold": [
+        "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+        "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+        "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"
+      ]
+    },
+    {
       "id": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
       "type": "JsonWebKey",
       "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
@@ -474,14 +685,10 @@ Resulting DID document:
     }
   ],
   "authentication": [
-    "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
-    "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
-    "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"
+    "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
   ],
   "assertionMethod": [
-    "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
-    "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
-    "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"
+    "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
   ],
   "service": [
     {
