@@ -92,7 +92,7 @@ The location of the [[ref: KERI event stream]] is determined by transforming the
 - Replace the trailing "`/did.json`" with "`/keri.cesr`".
 
 A GET on that URL MUST return the [[ref: KERI event stream]] for the AID in the `did:webs` identifier.
-The [[ref: KERI event stream]] MUST be a CESR formated stream with media type of application/cesr and the KERI events must be verifiable using the KERI rules.
+The [[ref: KERI event stream]] MUST be CESR-formatted (media type of application/cesr) and the KERI events must be verifiable using the KERI rules.
 
 The following are some `did:webs` DIDs and their corresponding DID document and [[ref: KERI event stream]]
 URLs, based on the examples from the [DID Web Specification](https://github.com/w3c-ccg/did-method-web/), but with the (faked) AID
