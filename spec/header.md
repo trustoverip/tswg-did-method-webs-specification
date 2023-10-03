@@ -16,7 +16,7 @@ DID Method `did:webs` Specification
 
 **Contributors:**
 
-- [Markus Sabadello](https://www.linkedin.com/in/johnjordandigitaltrust/), [Danube Tech](https://danubetech.com/) and [DIF](https://identity.foundation)
+- [Markus Sabadello](https://www.linkedin.com/in/markus-sabadello-353a0821/), [Danube Tech](https://danubetech.com/) and [DIF](https://identity.foundation)
 - [John Jordan](https://www.linkedin.com/in/johnjordandigitaltrust/), [Government of British Columbia](https://www2.gov.bc.ca/gov/content/home) and [Trust Over IP Foundation](https://trustoverip.org)
 - [Kevin Griffin](https://github.com/m00sey), [GLEIF](https://gleif.org)
 - [Lance Byrd](https://github.com/2byrds), [GLEIF](https://gleif.org) and [RootsID](https://rootsid.com/)
