@@ -250,7 +250,7 @@ automate the process of publishing and updating the DID document and [[ref: KERI
 Resolving a `did:webs` DID involves the following steps:
 
 1. Convert the `did:webs` DID back to HTTPS URLs as described in section [Target System(s)](#target-systems).
-2. Execute HTTP GET requests on both the URL for the DID document (ending in `/did.json`).
+2. Execute HTTP GET requests on both the URL for the DID document (ending in `/did.json`)
 and the URL for the [[ref: KERI event stream]] (ending in `/keri.cesr`).
 3. Process the [[ref: KERI event stream]] using [KERI Rules] to verify it, then derive the `did:webs`
    [[ref: DID document]] by processing the [[ref: KERI event stream]]
