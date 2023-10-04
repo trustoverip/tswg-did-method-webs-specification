@@ -240,7 +240,7 @@ Creating a `did:webs` DID involves the following steps:
 Of course, the web server that serves the resources when asked might be a simple
 file server (as implied above) or an active component that generates them
 dynamically. Further, the publisher of the resources placed on the web can use
-capabilities like [CDNs] to distribute the resources.
+capabilities like [CDNs] to distribute the resources. How the resources are posted at the required location is not defined by this spec; complying implementations need not support any HTTP methods other than GET.
 
 Likewise, an active component might be used by the controller of the DID to
 automate the process of publishing and updating the DID document and [[ref: KERI event stream]] resources.
