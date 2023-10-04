@@ -422,6 +422,12 @@ If the value of `kt` > 1 or if the value of `kt` is an array containing fraction
 
 References to verification methods in the DID document MUST use the relative form of the identifier, e.g., `"authentication": ["#<identifier>"]`.
 
+##### Key Agreement
+There are multiple ways to establish key agreement in KERI. We detail common considerations and techniques:
+* *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we are specify endpoints, domain migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
+* *Key agreement from `k` field keys:* It is important to note that KERI is cryptographically agile and can support a variety of keys and signatures. If the 'k' field references a Ed25519 key, then key agreement could be established using the corresponding x25519 key for Diffie-Helman key exchange. Alternatively if the key is an ECDSA or other NIST algorithms key then it will be the same key for signatures and encryption and can be used for key agreement.
+* *Key agreement anchored in KEL:* It is always possible to anchor arbitrary data, like a key agreement key, to the KEL. Likely the best mechanism is to anchor an ACDC credential to a [[ref: TEL]] which is anchored to the KEL.
+
 #### Service Endpoints
 `did:webs` supports service endpoints, including types declared in the DID Specification Registries, such as [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging).  For additional details about the mapping between KERI events and the Service Endpoints in the DID Document, see [Service Endpoint KERI events](#service-endpoint-event-details).  It is important to note that DID document service endpoints are different than the KERI service endpoints detailed in [KERI Service Endpoints as DID Document Metadata](#keri-service-endpoints-as-did-document-metadata).
 
