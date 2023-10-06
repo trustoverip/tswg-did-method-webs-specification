@@ -6,11 +6,11 @@ The method name that identifies this DID method SHALL be: `webs`.
 
 > Note: when pronounced aloud, "webs" SHOULD become two syllables: the word
 > "web" and the letter "s" (which stands for "secure"). Separating the final
-> letter this way emphasizes that the method offers a security upgrade analogous
-> to the one HTTPS gives to HTTP.
+> letter this way emphasizes that the method offers a security upgrade surpassing
+> the one HTTPS gives to HTTP.
 
 A DID that uses this method MUST begin with the following prefix: `did:webs:`.
-Per the DID specification, this string MUST be lower-case. The remainder of the
+Per the DID specification, this string MUST be lower case. The remainder of the
 DID, after the prefix, is the case-sensitive [[ref: method-specific identifier]]
 ([[ref: MSI]]) described [below](#method-specific-identifier).
 
@@ -27,6 +27,7 @@ The ABNF definition of a `did:webs` DID is as follows:
 webs-did = "did:webs:" domain-name ":" aid
 webs-did = "did:webs:" domain-name * (":" path) ":" aid
 ```
+`ABNF` stands for Augmented Backus-Naur Form, which is a formal notation used for describing syntax rules in various kinds of languages and protocols. We need to ensure that our implementation aligns with W3C standards and the ABNF rules specified in the DID documentation. These rules serve as a kind of "grammar" for DIDs, ensuring that they are formatted and used consistently.
 
 ::: todo
 > TODO: what about intl chars? Does DID spec allow them like URL spec does? What
