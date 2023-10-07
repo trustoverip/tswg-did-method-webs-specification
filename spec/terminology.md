@@ -18,3 +18,15 @@
 [[def: KERI event stream, KERI event streams]]
 ~ A stream of verifiable KERI data, consisting of the [[ref: key event log]] ([[ref: KEL]]) and other data such as a [[ref: transaction event log]] ([[ref: TEL]]). This data is a [[ref: CESR]] event stream (TODO: link to IANA application/cesr media type) and may be serialized in a file using [[ref: CESR]] encoding. We refer to these CESR stream resources as KERI event streams to simplify the vocabulary.  
 Definition absorbed by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/keri-event-stream).
+
+[[def: pre-rotation, pre-rotated]]
+~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/pre-rotation).
+
+[[def: authentic chained data container, ACDC, ACDCs]]
+~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/authentic-chained-data-container).
+
+[[def: authentic chained data container, ACDC, ACDCs]]
+~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/authentic-chained-data-container).
+
+[[def: out-of-band introduction, OOBI, OOBI specification]]
+~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/out-of-band-introduction).
