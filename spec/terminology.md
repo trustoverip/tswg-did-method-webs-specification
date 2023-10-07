@@ -27,6 +27,3 @@ Definition absorbed by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/keri-
 
 [[def: out-of-band introduction, OOBI, OOBI specification]]
 ~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/out-of-band-introduction).
-
-[[def: last seen]]
-~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/authentic-chained-data-container).
