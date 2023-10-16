@@ -53,13 +53,14 @@ The `did:webs` resolver should be using KRAM to access the service endpoints pro
 
 ### [[def: On-Disk Storage]]
 
-Both KEL-backed and [[ref: BADA-RUN]] are suitable for storing information on disk because both provide a link between the keystate and date-time on some data when a signature by the source of the data was created. [[ref: BADA-RUN]] is too weak for important information because an attacker who has access to the database on disk can overwrite data on disk without being detected by a verifier hosting the on-disk data either through a replay of stale data (data regression attack) or if in addition to disk access the attacker has compromised a given key state, then the attacker can forge new data with a new date-time stamp for a given compromised key and do a regression attack so that the last seen key state is the compromised key state.
+Both KEL-backed and [[ref: BADA-RUN]] are suitable for storing information on disk because both provide a link between the keystate and date-time on some data when a signature by the source of the data was created.
+[More on Security Characteristics](./security_characteristics_more.md) elaborates on why [[ref: BADA-RUN]] and [[ref: KRAM]] are too weak for important information if an attacker has access to the database on disk.
 
-With BADA, protection from a deletion (regression) attack requires redundant disk storage. At any point in time where there is a suspicion of loss of custody of the disk, a comparison to the redundant disks is made and if any disk has a later event given [[ref: BADA-RUN]] rules then recovery from the deletion attack is possible.
 
-[[ref: KRAM]] on a query is not usable for on disk storage by itself. Because its just a bare signature (the datetime is not of the querier but of the host at the time of a query). But the reply to a query can be stored on disk if the querier applies BADA to the reply. To elaborate, Data obtained via a KRAMed query-reply may be protected on-disk by being using BADA on the reply. This is how KERI stores service endpoints. But KERI currently only uses BADA for discovery data not more important data. More important data should be wrapped (containerized) in an [[ref: ACDC]] that is [[ref: KEL backed]] and then stored on-disk
+In the hierarchy of attack surfaces. Exposure as on disk (unencrypted) is the weakest. Much stronger is exposure that is only in-memory. How various attacks work out in either situations see the matching section in [More on Security Characteristics](./security_characteristics_more.md) 
 
-In the hierarchy of attack surfaces. Exposure as on disk (unencrypted) is the weakest. Much stronger is exposure that is only in-memory. To attack in-memory usually means compromising the code supply chain which is harder than merely gaining disk access. Encrypting data on disk does not necessarily solve attacks that require a key compromise (because decryption keys can be compromised) and it does not prevent a deletion attack. Encryption does not provide authentication protection. But encryption does protect the confidentiality of data.
+
+To attack in-memory usually means compromising the code supply chain which is harder than merely gaining disk access. Encrypting data on disk does not necessarily solve attacks that require a key compromise (because decryption keys can be compromised) and it does not prevent a deletion attack. Encryption does not provide authentication protection. But encryption does protect the confidentiality of data.
 
 The use of DH key exchange as a weak form of authentication is no more secure than an HMAC for authentication. Its sharing secrets and anyone with the secret can impersonate any other member of the group that has the shared secret.
 
