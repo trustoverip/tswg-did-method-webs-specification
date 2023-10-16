@@ -32,7 +32,7 @@ The ordering of events in the KEL is strictly verifiable because the KEL is a ha
 
 [[ref: BADA-RUN]] stands for Best available data acceptance - Read/Update/Nullify and is described in the ToIP KERI [[ref: OOBI specification]]. It makes sure events are ordered in a consistent way, using a combination of date-time and a key state.
 
-The latest event is the one with the latest date-time for the latest key state. This level of security is sufficient for discovery information because the worst-case attack on discovery information is a DDoS attack where nothing gets discovered. This is because what gets discovered in KERI must be end-verifiable (anchored to a KEL). So a malicious discovery (mal-discovery) is no different than a mis-discovery or a non-discovery.
+The latest event is the one with the latest date-time for the latest key state. This level of security is sufficient for [[ref: discovery]] information because the worst-case attack on discovery information is a DDoS attack where nothing gets discovered. This is because what gets discovered in KERI must be end-verifiable (anchored to a KEL). So a malicious discovery (mal-discovery) is no different than a mis-discovery or a non-discovery.
 
  The mitigation for such a DDoS attack is to have redundant discovery sources. We use [[ref: BADA-RUN]] for service end-points as discovery mechanisms. Of course we could anchor service endpoints to KELs and make them more secure. All things considered, due to the dynamics of discovery mechanisms we decided to not bloat the KEL with discovery anchors. Because the worst case can be mitigated with redundant discovery, BADA-RUN is a defensible choice.
 
@@ -60,15 +60,11 @@ Both KEL-backed and [[ref: BADA-RUN]] are suitable for storing information on di
 In the hierarchy of attack surfaces. Exposure as on disk (unencrypted) is the weakest. Much stronger is exposure that is only in-memory. How various attacks work out in either situations see the matching section in [More on Security Characteristics](./security_characteristics_more.md) 
 
 
-To attack in-memory usually means compromising the code supply chain which is harder than merely gaining disk access. Encrypting data on disk does not necessarily solve attacks that require a key compromise (because decryption keys can be compromised) and it does not prevent a deletion attack. Encryption does not provide authentication protection. But encryption does protect the confidentiality of data.
-
-The use of DH key exchange as a weak form of authentication is no more secure than an HMAC for authentication. Its sharing secrets and anyone with the secret can impersonate any other member of the group that has the shared secret.
-
 Often did methods have focused on features that erode security characteristics. The paper [Five DID Attacks](https://github.com/WebOfTrustInfo/rwot11-the-hague/blob/master/final-documents/taking-out-the-crud-five-fabulous-did-attacks.pdf) highlights some attacks to which `did:webs` should NOT be vulnerable. So when a pull request exposes `did:webs` to a known attack, it should not be accepted.
 
 ### Alignment of Information to Security Posture
 
-As a general security principle each block of information should have the same security posture for all the sub-blocks. One should not attempt to secure a block of information that mixes security postures across is constituent sub-blocks. The reason is that the security of the block can be no stronger than the weakest security posture of any sub-block in the block. Mixing security postures forces all to have the lowest common denominator security. The only exception to this rule is if the block of information is purely informational for discovery purposes and where it is expected that each constituent sub-block is meant to be verified independently.
+As a general security principle each block of information should have the same security posture for all the sub-blocks. One should not attempt to secure a block of information that mixes security postures across is constituent sub-blocks. The reason is that the security of the block can be no stronger than the weakest security posture of any sub-block in the block. Mixing security postures forces all to have the lowest common denominator security. The only exception to this rule is if the block of information is purely informational for [[ref: discovery]] purposes and where it is expected that each constituent sub-block is meant to be verified independently.
 
 This means that any recipient of such a block information with mixed security postures across its constituent sub-blocks must explode the block into sub-blocks and then independently verify the security of each sub-block. But this is only possible if the authentication factors for each sub-block are provided independently. Usually when information is provided in a block of sub-blocks, only one set of authentication factors are provided for the block as a whole and therefore there is no way to independently verify each sub-block of information.
 

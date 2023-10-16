@@ -27,3 +27,6 @@ Definition absorbed by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/keri-
 
 [[def: out-of-band introduction, OOBI, OOBI specification]]
 ~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/out-of-band-introduction).
+
+[[def: discovery, discovery mechanism]]
+~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/discovery).
