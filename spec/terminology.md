@@ -30,3 +30,6 @@ Definition absorbed by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/keri-
 
 [[def: discovery, discovery mechanism]]
 ~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/discovery).
+
+[[def: BOLA, broken object level authorization]]
+~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/broken-object-level-authorization).

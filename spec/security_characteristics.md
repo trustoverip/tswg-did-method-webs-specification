@@ -5,7 +5,7 @@ There are several security characteristics necessary for `did:webs` to sufficien
 ### Common security threats
 
 `did:webs` strives to narrow the attack surface against these common threats:
-- Broken Object Level Authorization (BOLA)
+- Broken Object Level Authorization ([[ref: BOLA]])
 - Denial of service (DDoS) attack
 - Deletion attack
 - Duplicity detection
@@ -68,7 +68,7 @@ As a general security principle each block of information should have the same s
 
 This means that any recipient of such a block information with mixed security postures across its constituent sub-blocks must explode the block into sub-blocks and then independently verify the security of each sub-block. But this is only possible if the authentication factors for each sub-block are provided independently. Usually when information is provided in a block of sub-blocks, only one set of authentication factors are provided for the block as a whole and therefore there is no way to independently verify each sub-block of information.
 
-Unfortunately what happens in practice is that users are led into a false sense of security because they assume that they don’t have to explode and re-verify but merely may accept the lowest common denominator verification on the whole block of information. This creates a pernicious problem for down stream use of the data. A down stream use of a constituent sub-block doesn’t know that it was not independently verified to its higher level of security. This widens the attack surface to any point of down-stream usage. This is a root cause of the most prevalent type of attack called a BOLA.
+Unfortunately what happens in practice is that users are led into a false sense of security because they assume that they don’t have to explode and re-verify but merely may accept the lowest common denominator verification on the whole block of information. This creates a harmful problem for down-stream use of the data. A down-stream use of a constituent sub-block doesn’t know that it was not independently verified to its higher level of security. This widens the attack surface to any point of down-stream usage. This is a root cause of the most common type of attack called a [[ref: BOLA]].
 
 #### Applying the concepts
 
