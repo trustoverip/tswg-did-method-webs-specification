@@ -17,7 +17,7 @@ blockchain ecosystems. Also, without directly supporting environments where the
 web is not practical (e.g., IOT, Lo-Ra, BlueTooth, NFC), the method builds on a
 foundation that fully supports those environments, making future interop of
 identifiers between web and non-web a manageable step.
-<!-- Nothing is 'easy' in our line of work -->
+
 All DID methods make tradeoffs. The ones in `did:webs` result in a method that
 is cheap, easy to implement, and scalable. No exotic or unproven cryptography is
 required. Deployment is straightforward. Cryptographic trust is strongly

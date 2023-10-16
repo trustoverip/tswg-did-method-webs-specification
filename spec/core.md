@@ -71,7 +71,7 @@ besides publishing data, its security attributes make that data trustworthy. In
 this DID method, the target system's role is more limited. It is expected to
 serve data about the DID, and to follow acknowledged cybersecurity best
 practices to preserve good hygiene.
-<!-- What are these acknowledges rules and what is good hygiene? -->
+
 However, the authenticity of data is
 guaranteed by the DID value itself, in conjunction with a digitally signed
 data structure called a [[ref: KERI event stream]], which includes the
@@ -140,7 +140,6 @@ SHOULD only publish one "current" `did:webs`, with defined support for redirects
 Copies of a the `did:webs` data should be just that -- copies.
 
 :::
-<!-- Below I suggest to use inseparably instead of inextricably. Non-native speakers will like us more-->
 Since an AID is a unique identifier that is inseparably bound to the [[ref: KERI event stream]] from
 which it is associated, any AIDs and any `did:webs` DIDs that have the same AID component
 MUST be considered equivalent identifiers. Any `did:webs` DIDs that have the same AID
@@ -227,9 +226,8 @@ Creating a `did:webs` DID involves the following steps:
 
 1. Choose the web URL where the DID document for the DID will be published, excluding
    the last element that will be the AID, once defined.
-2. Create a KERI AID and add the appropriate KERI events that will correspond to
-   properties of the DID document, such as verification methods and service endpoints.
-3. Add the AID as the last element of the web URL for the DID.
+2. Create a KERI AID and add it as the last element of the web URL for the DID.
+3. Add the appropriate KERI events to the AID's KERI logs that will correspond to properties of the DID document, such as verification methods and service endpoints.
 4. Derive the `did:webs` [[ref: DID document]] by processing the [[ref: KERI event stream]]
    according to section [DID Document from KERI Events](#did-document-from-keri-events).
 5. For compatibility reasons, transform the derived `did:webs` DID document to the corresponding `did:web` DID document according to section [Transformation to did:web DID Document](#transformation-to-didweb-did-document).
@@ -237,8 +235,7 @@ Creating a `did:webs` DID involves the following steps:
    the `did:web` DID document resource (`did.json`) and the [[ref: KERI event stream]] resource (`keri.cesr`)
    into that folder. See section [Target System(s)](#target-systems) for further details about
    the locations of these resources.
-<!-- Why can't 2. be " Create a KERI AID and add it as the last element of the web URL for the DID" and 3. "Add the appropriate KERI events to the AID's KERI logs that will correspond to properties of the DID document, such as verification methods and service endpoints" ? The AID won't change if we add events to KEL/TEL. I am not 100% sure about this though. -->
-<!-- 5. is courtesy / (backward) compatibility, am I right? -->
+
 Of course, the web server that serves the resources when asked might be a simple
 file server (as implied above) or an active component that generates them
 dynamically. Further, the publisher of the resources placed on the web can use

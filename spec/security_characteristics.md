@@ -19,6 +19,7 @@ There are several security characteristics necessary for `did:webs` to sufficien
 ### Concepts for securing `did:webs` information
 
 The following security concepts are used to secure the data, files, signatures and other information in `did:webs`. We characterize each concept with high, medium and low security to orient readers to the situational relevance.
+We use KEL-backed security for the highest possible security of on-disk storage, but also the most costly because it uses space in KELs. BADA-RUN is medium security and makes sure events are ordered in a consistent way, using a combination of date-time and a key state. Without having to negotiate security in did:webs we use a lower level of security when appropriate.
 
 #### [[def: KEL backed]] data: High Security
 
@@ -29,7 +30,7 @@ The ordering of events in the KEL is strictly verifiable because the KEL is a ha
 #### [[def: BADA-RUN]]: Medium Security
 
 [[ref: BADA-RUN]] stands for Best available data acceptance - Read/Update/Nullify and is described in the ToIP KERI [[ref: OOBI specification]]. It makes sure events are ordered in a consistent way, using a combination of date-time and a key state.
-<!-- "It imposes a monotonicity on order of events using a tuple of date-time and key state." -> Don't do this to us! please. It would be labeled "level 4" explanation by the KERI team: only Sam Smith might understand. And he has most probably produced it. The painful reality is: it'll chase 99,99% of the readers away or leave them in a incurable depression. :) -->
+
 The latest event is the one with the latest date-time for the latest key state. This level of security is sufficient for discovery information because the worst-case attack on discovery information is a DDoS attack where nothing gets discovered. This is because what gets discovered in KERI must be end-verifiable (anchored to a KEL). So a malicious discovery (mal-discovery) is no different than a mis-discovery or a non-discovery. The mitigation for such a DDoS attack is to have redundant discovery sources. We use [[ref: BADA-RUN]] for service end-points as discovery mechanisms. Of course we could anchor service endpoints to KELs and make them more secure. All things considered, due to the dynamics of discovery mechanisms we decided to not bloat the KEL with discovery anchors. Because the worst case can be mitigated with redundant discovery, BADA-RUN is a defensible choice.
 
 Monotonicity (or consistent ordering) protects against replay attacks and stale key compromise impersonation attacks. It does not provide strict ordering because there may be missed events and stale events but the last seen event always wins. So the only event that is end-verifiable is the last seen event but that event may be stale.
@@ -37,7 +38,6 @@ Monotonicity (or consistent ordering) protects against replay attacks and stale 
 BADA policy provides guarantees that the latest data-state cannot be compromised via a replay of an earlier data-state where early is determined by the monotonicity of the associated (date-time, key state) tuple. It also protects against forgery of new data-state given the compromise of any state key state. It does not protect against the forgery of new data-state, given a compromise of the _current_ key state. It does not provide ordering of all data-states but ensures that the data-state _last seen_ by a given verifier cannot be replaced with an earlier data-state without compromising either the latest key state of the source or by compromising the storage of the verifier.
 
 To reiterate, because the monotonic (date-time, key state) tuple includes key state, then a verifier is protected from any compromise of an earlier key state relative to that which has been last seen by a verifier.
-<!-- Imho this BADA-RUN stuff above till here needs to be simplified and the stuff below needs to be moved / explained elsewhere outside this specification -->
 
 To elaborate, the only key-compromise that can succeed is that which corresponds to the latest key state seen by the verifier. The exposure to exploit of the source’s latest key state is then bounded by the time it takes for the source to detect key compromise and then perform a rotation recovery. An eco-system governance framework could impose liability on the source for any compromise of the latest data-state for a given latest key state since it is entirely under the control of the source to protect its key state from compromise. The difference between BADA and KEL backing is that with [[ref: KEL backed]] update a compromise of the current key state is always detectable because the attacker must publish a new event to the KEL on infrastructure (such as witnesses) controlled by the AID’s legitimate controller. Whereas with BADA there is no mechanism that guarantees the AID’s legitimate controller can detect that its current key has been compromised.
 

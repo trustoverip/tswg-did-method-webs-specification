@@ -11,6 +11,6 @@ Unfortunately, that answer works better for the first question than the second. 
 
 Furthermore, familiar web mechanisms are almost always operated by corporate IT staff. This makes them an awkward fit for the ideal of decentralized autonomy — even if individuals can publish a DID on IT's web servers, those individuals are at the mercy of IT for their security.
 
-The `did:webs` method described in this spec separates these two questions and answers them distinctively. _Information about DIDs_ is still published on the web, but _its trustworthiness_ derives from mechanisms entirely governed by individual DID controllers. This preserves most of the delightful convenience of `did:web`, while drastically upgrading security and decentralized trust.
-<!-- What is decentralized trust? We might need to describe edge cases that are either in or out this container term -->
+The `did:webs` method described in this spec separates these two questions and answers them distinctively. _Information about DIDs_ is still published on the web, but _its trustworthiness_ derives from mechanisms entirely governed by individual DID controllers. This preserves most of the delightful convenience of `did:web`, while drastically upgrading security through authentic data that is end-verifiable.
+
 Within the context of `did:webs` the term *decentralized trust* includes verifiability, confidentiality and privacy, but excludes veracity of the content. The latter is always a matter of (personal) evaluation of available reputational data and verifiable credentials (VCs).
