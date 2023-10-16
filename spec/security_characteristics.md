@@ -66,9 +66,7 @@ Often did methods have focused on features that erode security characteristics. 
 
 As a general security principle each block of information should have the same security posture for all the sub-blocks. One should not attempt to secure a block of information that mixes security postures across is constituent sub-blocks. The reason is that the security of the block can be no stronger than the weakest security posture of any sub-block in the block. Mixing security postures forces all to have the lowest common denominator security. The only exception to this rule is if the block of information is purely informational for [[ref: discovery]] purposes and where it is expected that each constituent sub-block is meant to be verified independently.
 
-This means that any recipient of such a block information with mixed security postures across its constituent sub-blocks must explode the block into sub-blocks and then independently verify the security of each sub-block. But this is only possible if the authentication factors for each sub-block are provided independently. Usually when information is provided in a block of sub-blocks, only one set of authentication factors are provided for the block as a whole and therefore there is no way to independently verify each sub-block of information.
-
-Unfortunately what happens in practice is that users are led into a false sense of security because they assume that they don’t have to explode and re-verify but merely may accept the lowest common denominator verification on the whole block of information. This creates a harmful problem for down-stream use of the data. A down-stream use of a constituent sub-block doesn’t know that it was not independently verified to its higher level of security. This widens the attack surface to any point of down-stream usage. This is a root cause of the most common type of attack called a [[ref: BOLA]].
+See [More on security characteristics](security_characteristics_more.md) for what happens when mixing of security postures takes place and the most common associated attack: [[ref: BOLA]].
 
 #### Applying the concepts
 
