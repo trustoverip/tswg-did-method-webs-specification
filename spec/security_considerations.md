@@ -1,14 +1,20 @@
 ## Security Considerations
 
+
 Perfect protection from eavesdropping is not possible with HTTPS, for various
 reasons. However, URLs of DID documents and [[ref: KERI event streams]]
 SHOULD be hosted in a way that embodies accepted
-cybersecurity best practice. This is not strictly necessary to guarantee the
-authenticity of the data. However, it safeguards privacy, discourages denial of
-service, accords with a defense-in-depth mindset, aids regulatory compliance,
-and makes it easier to troubleshoot. How a URL is hosted should let clients
-fetch a DID document and a [[ref: KERI event stream]] with roughly the same confidence that's associated
-with properly implemented online banking.
+cybersecurity best practice. Mind you, this **is not strictly necessary to guarantee the
+authenticity of the data**. However, there are several other reasons to stick to best practises around HTTPS and URLs, also for `did:webs`.
+
+1. it safeguards privacy, 
+2. discourages denial of service attacks, 
+3. accords with a defense-in-depth mindset, 
+4. aids regulatory compliance,
+5. establishes backwards compatibility with `did-web`,
+6. and makes it easier to troubleshoot. 
+
+How a URL is hosted should let clients fetch a DID document and a [[ref: KERI event stream]] with roughly the same confidence that's associated with properly implemented online banking.
 
 The fully qualified domain name of the [[ref: method-specific identifier]] is
 secured by a TLS/SSL certificate. The fully qualified domain name MUST match the common name used
