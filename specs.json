@@ -26,7 +26,8 @@
         "privacy_considerations.md",
         "normative_references.md",
         "informative_references.md",
-        "acknowledgements_authors.md"
+        "acknowledgements_authors.md",
+        "security_characteristics_more.md"
       ],
       "logo": "https://raw.githubusercontent.com/trustoverip/tswg-did-method-webs-specification/main/logo.png",
       "logo_link": "https://github.com/trustoverip/tswg-did-method-webs-specification",
