@@ -7,7 +7,7 @@ SHOULD be hosted in a way that embodies accepted
 cybersecurity best practice. Mind you, this **is not strictly necessary to guarantee the
 authenticity of the data**. However, there are several other reasons to stick to best practises around HTTPS and URLs, also for `did:webs`.
 
-1. it safeguards privacy (this is implicitly offered by the https protocol)
+1. it safeguards privacy
 2. discourages denial of service attacks, 
 3. accords with a defense-in-depth mindset, 
 4. aids regulatory compliance (because we'd comply with common technologic practise),
