@@ -1,6 +1,6 @@
-## More on Security Characteristics
+## Addendum: [[def: More on security characteristics]]
 
-The elaboration below combine with [Security Characteristics](./security_characteristics.md)
+The elaboration below combines well with [[ref: Security characteristics]] above.
 
 ### KEL backed data: High Security
 
