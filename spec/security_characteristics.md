@@ -21,7 +21,7 @@ There are several security characteristics necessary for `did:webs` to sufficien
 The following security concepts are used to secure the data, files, signatures and other information in `did:webs`. We characterize each concept with high, medium and low security to orient readers to the situational relevance.
 We use KEL-backed security for the highest possible security of on-disk storage, but also the most costly because it uses space in KELs. BADA-RUN is medium security and makes sure events are ordered in a consistent way, using a combination of date-time and a key state. Without having to negotiate security in did:webs we use a lower level of security when appropriate.
 
-#### [[def: KEL backed]] data: High Security
+####  [[def: KEL backed]]  data: High Security
 
 KEL backed information in `did:webs` can either be found in the KEL or found anchored to the KEL. This means the signatures on the events in the KEL are strongly bound to the key state at the time the events are entered in the KEL. This provides the strongest guarantee of duplicity evidence so that any verifier is protected. The information is end-verifiable and any evidence of duplicity means do not trust.  
 More on detection of various compromises on stale keys and current keys in [[ref: More on security characteristics]]
