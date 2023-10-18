@@ -40,7 +40,7 @@ Monotonicity (or consistent ordering) protects against replay attacks and stale 
 
 More on detection of various compromises on BADA policy, such as replay attacks and forgery, in [[ref: More on security characteristics]].
 
-Abeit weaker than KEL backing, BADA is a significant performance and security improvment over token based systems. It also has performance advantages over KEL backing. As a result BADA is approapriate for information that does not benefit from verifiable ordering of all data-states but only the latest data-state such as a distributed data-base.
+Albeit weaker than KEL backing, BADA is a significant performance - and security improvment over token based systems. It also has performance advantages over KEL backing. As a result BADA is approapriate for information that does not benefit from verifiable ordering of all data-states but only the latest data-state such as a distributed data-base.
 
 In [[ref: BADA-RUN]], the RUN stands for *Read, Update, Nullify* and is a replacement for CRUD in an API. 
 Read in [[ref: More on security characteristics]] why this has proven necessary and adequate to keep up BADA security.
