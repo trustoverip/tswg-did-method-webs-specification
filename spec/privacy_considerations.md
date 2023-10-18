@@ -35,10 +35,7 @@ TODO: link to KERI docs for additional information about direct and indirect mod
 ### Identification
 
 The root of trust for KERI identifiers is entropy and therefore offers no direct means of identification.  In addition, KERI provides
-two modes of communication, direct mode and indirect mode.  Direct mode allows for pairwise (n-wise as well) relationships that
-can be used to establish private relationships.
-
-TODO: link to KERI docs for additional information regarding prefix generation and for a comparison between Direct and Indirect modes.
+two modes of communication, [[ref: direct mode]] and [[ref: indirect mode]].  Direct mode allows for pairwise (n-wise as well) relationships that can be used to establish private relationships.
 
 ### Secondary Use
 
