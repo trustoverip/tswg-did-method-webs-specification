@@ -32,3 +32,12 @@ Distilled from [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/authentic-cha
 [[def: Out-of-band introduction, OOBI, OOBI specification]]
 ~ Out-of-band Introductions are discovery and validation of IP resources for KERI's autonomic identifiers. Discovery via URI, trust via KERI.  
 As further defined in [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/out-of-band-introduction) glossary.
+
+[[def: Direct mode]]
+~ In the direct (one-to-one) mode, the identity controller establishes control via verified signatures of the controlling key-pair. The direct mode doesn't use witnesses nor KERLs but has direct (albeit intermittent) network contact with the validator.
+Elaborated on in [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/direct-mode) glossary.
+
+[[def: Indirect mode]]
+~ The indirect mode extends a KERI [[ref: direct mode]] trust basis with witnessed key event receipt logs (KERL) for validating events. The security and accountability guarantees of indirect mode are provided by KA2CE or KERI’s Agreement Algorithm for Control Establishment among a set of witnesses.
+Elaborated on in [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/indirect-mode) glossary.
+
