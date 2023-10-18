@@ -10,8 +10,8 @@ authenticity of the data**. However, there are several other reasons to stick to
 1. it safeguards privacy
 2. discourages denial of service attacks, 
 3. accords with a defense-in-depth mindset, 
-4. aids regulatory compliance (because we'd comply with common technologic practise),
-5. establishes backwards compatibility with `did-web` (for we would use exactly the same form),
+4. aids regulatory compliance,
+5. establishes backwards compatibility with `did-web`,
 6. and makes it easier to troubleshoot. 
 
 How a URL is hosted should let clients fetch a DID document and a [[ref: KERI event stream]] with roughly the same confidence that's associated with properly implemented online banking.
