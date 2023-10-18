@@ -41,3 +41,5 @@ Elaborated on in [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/direct-mode
 ~ The indirect mode extends a KERI [[ref: direct mode]] trust basis with witnessed key event receipt logs (KERL) for validating events. The security and accountability guarantees of indirect mode are provided by KA2CE or KERI’s Agreement Algorithm for Control Establishment among a set of witnesses.
 Elaborated on in [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/indirect-mode) glossary.
 
+[[def: ABNF]]
+~ `ABNF` stands for Augmented Backus-Naur Form, which is a formal notation used for describing syntax rules in various kinds of languages and protocols. We need to ensure that our implementation aligns with W3C standards and the ABNF rules specified in the DID documentation. These rules serve as a kind of "grammar" for DIDs, ensuring that they are formatted and used consistently.
