@@ -21,13 +21,12 @@ parts, a fully qualified domain name with an optional path (identical to
 `did:web`), plus a KERI AID (autonomic identifier) that is always the final
 component of the path.
 
-The ABNF definition of a `did:webs` DID is as follows:
+The [[ref: ABNF]] definition of a `did:webs` DID is as follows:
 
 ```
 webs-did = "did:webs:" domain-name ":" aid
 webs-did = "did:webs:" domain-name * (":" path) ":" aid
 ```
-`ABNF` stands for Augmented Backus-Naur Form, which is a formal notation used for describing syntax rules in various kinds of languages and protocols. We need to ensure that our implementation aligns with W3C standards and the ABNF rules specified in the DID documentation. These rules serve as a kind of "grammar" for DIDs, ensuring that they are formatted and used consistently.
 
 ::: todo
 > TODO: what about intl chars? Does DID spec allow them like URL spec does? What
