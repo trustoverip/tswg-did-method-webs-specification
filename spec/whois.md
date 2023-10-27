@@ -1,4 +1,4 @@
-## The `whois` Folder
+## The `whois` DID URL
 
 The `did:webs` method defines that a controller MAY publish a W3C Verifiable
 Credentials Data Model Standard [[ref: Verifiable Presentation]] beside the DID
