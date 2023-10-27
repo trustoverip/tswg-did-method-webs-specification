@@ -72,17 +72,19 @@ DID Document or a valid previous version of the DID Document. All of the
 Verifiable Credentials in the Verifiable Presentation MUST have the `did:webs`
 DID as the credential subject.
 
-The Verifiable Presentation may be in one of two formats:
+The Verifiable Presentation may be in one of three formats:
 
 - A W3C Verifiable Credentials Data Model Standard JSON-LD [Data Integrity Proof
   Verifiable Presentation].
-- `A W3C Verifiable Credentials Data Model Standard [JSON Web Token
+- A W3C Verifiable Credentials Data Model Standard [JSON Web Token
   Verifiable Presentation].
+- [An ACDC Verifiable Presentation].
 
 [Data Integrity Proof Verifiable Presentation]: https://www.w3.org/TR/vc-data-model/#data-integrity-proofs
 [JSON Web Token Verifiable Presentation]: https://www.w3.org/TR/vc-data-model/#example-verifiable-presentation-using-jwt-compact-serialization-non-normative
+[An ACDC Verifiable Presentation]: https://www.ietf.org/archive/id/draft-ssmith-acdc-02.html
 
-When the Verifiable Presentation is requested, the resolved object must
+When the Verifiable Presentation is requested, the resolved object MUST
 contain the appropriate MIME type of the Verifiable Presentation format.
 
 It is up to the DID Controller to decide to publish a Verifiable Presentation
