@@ -1,101 +1,91 @@
 ## The `whois` Folder
 
-The `did:webs` method defines that a controller MAY place a folder called
-`whois` within the root folder of the `did:webs` web location and place into
-that [signed files](#signed-files) that are [verifiable credentials] (VCs) or
-[verifiable presentations] (VPs) in which the `did:webs` DID is the subject of the
-verifiable credential. This convention enables those that have the DID for the
-controller to retrieve and verify any VCs or VPs the DID controller has
-decided to publish about itself. The intention is that anyone interested in a
-particular `did:webs` DID can see if there is a `whois` web folder, and if so,
-see if it contains any useful (to the resolver) VCs or VPs that might help
-in learning more about the controller of the DID (the subject of the VCs or VPs).
+The `did:webs` method defines that a controller MAY publish a W3C Verifiable
+Credentials Data Model Standard [[ref: Verifiable Presentation]] beside the DID
+Doc (`did.json`). The Verifiable Presentation is referenced using the [[ref: DID
+URL]] `<did>/whois` and can be resolved using the HTTPS DID path `<DID
+URL>/whois.vp`. The Verifiable Presentation MUST ONLY contain Verifiable
+Credentials where the `did:webs` DID is the subject of the Credential.
+
+This convention enables those that receive the DID to retrieve and verify the
+Verifiable Presentation (and embedded Verifiable Credentials) the DID controller
+has decided to publish about itself. The intention is that anyone interested in
+a particular `did:webs` DID can see if there is a `whois` Verifiable
+Presentation, and if so, if it contains any useful (to the resolver)
+Verifiable Credentials that might help in learning more about who is the
+controller of the DID.
 
 ### `whois` Use Case
 
 The following is a use case for this capability. Consider an example of the
 `did:webs` controller being an educational institution that issues "degree"
 verifiable credentials to its graduate students. A graduate from the school
-submits as part of their job application to a company a [verifiable
-presentation] derived from the verifiable credential they received from the
+submits as part of their job application to a company a [[ref: Verifiable
+Presentation]] derived from the verifiable credential they received from the
 school. The company receiving the presentation can verify the cryptography of
 the presentation, but can they trust the school that issued the verifiable
 credential? If the school issued the verifiable credential using its `did:webs`
-DID, the company can resolve the DID (included in the verifiable presentation
-from the student), and verify the [[ref: KEL]]. Then it can look in the DID's
-`whois` folder where it might find a couple of useful VCs or VPs with the
+DID, the company can resolve the DID. It can also resolve the DID's
+`whois` DID URL where it might find VCs from issuers it trusts with the
 `did:webs` DID as the subject. For example:
 
-- A verifiable presentation derived from a credential issued by the Legal Entity
-  Registrar for the jurisdiction in which the school is headquartered.
+- A verifiable credential issued by the Legal Entity Registrar for the
+  jurisdiction in which the school is headquartered.
   - Since the company knows about the Legal Entity Registrar, they can automate
-    the lookup to get more information about the school -- its legal name, when
-    it was registered, contact information, etc.
+    this lookup to get more information about the school from the verifiable
+    credential -- its legal name, when it was registered, contact information,
+    etc.
 - A verifiable credential issued by the "Association of Colleges and
   Universities" for the jurisdiction of the school.
-  - Since they don't know about the Association for that jurisdiction, the company can
-    repeat the process for the issuer of _that_ credential. They might (for
-    example), learn that the Association has in its `did:webs` `whois` folder a
-    verifiable credential issued by the government of the jurisdiction, and
-    the company recognizes that government.
-- A verifiable presentation derived from a credential issued by US News about
-  the school's placement on the [US News Rankings of Colleges and Universities].
+  - Perhaps the company does not know about the Association for that
+    jurisdiction. The company can repeat the `whois` resolution process for the
+    issuer of _that_ credential. The company might (for example), resolve and
+    verify the `did:webs` DID for the Association, and then resolve the `whois`
+    DID URL to find a verifiable credential issued by the government of the
+    jurisdiction. The company recognizes and trusts that government's authority,
+    and so can decide to recognize and trust the Association.
+- A verifiable credential issued by US News magazine about the school's
+  placement on the [US News Rankings of Colleges and Universities].
 
 Such checks can all be done with a handful of HTTPS requests and the processing
-of the verifiable presentations. The result is an efficient, verifiable
+of the DIDs and verifiable presentations. The result is an efficient, verifiable
 credential-based, decentralized, multi-domain trust registry.
 
-[https://www.usnews.com/best-colleges/rankings/national-universities]: https://www.usnews.com/education/best-global-universities
+[US News Rankings of Colleges and Universities]: https://www.usnews.com/education/best-global-universities
 
-### `whois` folder Conventions
+### `whois` DID URL Conventions
 
-The `whois` folder, if it exists, MUST be directly below the web root folder of
-the DID. The [DID URL path] to the folder MUST be `<did:webs DID>/whois`.
+The `whois` object, if it exists, MUST be directly beside the `did:json`
+file, the DID Document for the DID. The [DID URL path] to the folder MUST be
+`<did:webs DID>/whois`.
 
 The HTTPS path to the `whois` folder MUST be `<HTTPS URL conversion of did:webs
-identifier>/whois`. The Web Server that serves the `did:webs` documents MUST
-respond to a request for the HTTPS path to the `whois` folder with a list of the
-files within the folder so that an entity looking for information about the
-controller of the `did:webs` DID can see what verifiable credentials or
-verifiable presentations are available for review.
+identifier>/whois.vp`. The Web Server that serves the `did:webs` documents
+MUST respond to a request for the HTTPS `whois` URL the `Verifiable
+Presentation` published there by the DID Controller. If the controller of the
+`did:webs` DID has not published a `whois` Verifiable Presentation, the Web
+Server must respond with an HTTP `404` response ("Not Found").
 
-The files in the `whois` folder must be [signed files](#signed-files), each with
-an associated [JSON Web Signature] file. The files in the folder must be either
-[verifiable credentials] or [verifiable presentations] with the verifiable
-credential subject `id` being the `did:webs` DID. If the file is a verifiable
-presentation, the verifiable presentation proof must be signed with the
-`did:webs` DID key(s). As with any [signed files](#signed-files), the
-accompanying [JSON Web Signature] file MUST be signed by the `did:webs` DID
-key(s).
+The resolved `whois` DID URL MUST resolve to a Verifiable Presentation in which
+the presentation proof is signed by a key or keys from the current `did:webs`
+DID Document or a valid previous version of the DID Document. All of the
+Verifiable Credentials in the Verifiable Presentation MUST have the `did:webs`
+DID as the credential subject.
 
-::: todo
+The Verifiable Presentation may be in one of three formats:
 
-Rationalize/explain the redundant signature of the subject of the verifiable
-credential in a verifiable presentation, and the `signed files` signature of the
-controller of the DID in the JWS file beside the verifiable presentation. By
-definition, both must come from keys in the the DID, although perhaps at
-different points in the history of the DID, and that is verifiable by the
-resolver via the KEL/TEL.
+- A W3C Verifiable Credentials Data Model Standard JSON-LD [Data Integrity Proof
+  Verifiable Presentation].
+- A W3C Verifiable Credentials Data Model Standard [JSON Web Token
+  Verifiable Presentation].
+- [An ACDC Verifiable Presentation].
 
-:::
+[Data Integrity Proof Verifiable Presentation]: https://www.w3.org/TR/vc-data-model/#data-integrity-proofs
+[JSON Web Token Verifiable Presentation]: https://www.w3.org/TR/vc-data-model/#example-verifiable-presentation-using-jwt-compact-serialization-non-normative
+[An ACDC Verifiable Presentation]: https://trustoverip.github.io/tswg-acdc-specification/draft-ssmith-acdc.html
 
-The verifiable credential or verifiable presentation format of the files can be
-(at least partially) identified by the file extension. The following extensions
-are recognized:
+When the Verifiable Presentation is requested, the resolved object MUST
+contain the appropriate MIME type of the Verifiable Presentation format.
 
-- `.jsonld` a W3C Verifiable Credentials Data Model Standard JSON-LD signed with a Data Integrity proof.
-- `.jwt`  a W3C Verifiable Credentials Data Model Standard JSON Web Token.
-
-When the files are requested, the web server SHOULD be configured to include
-the applicable IANA media types in the response content header.
-
-The naming of the [verifiable credentials] or [verifiable presentations] files
-(other than the file extension) is up to the DID controller. A future version of
-this specification may define rules that DID controllers should use to make it
-easier for those processing the presentations to understand them (issuer,
-purpose, etc.). Similarly, verifiable credential issuers and trust communities
-may define naming conventions for these files as used in their community. For
-example, a registry might be created for the name of a `whois` file as an
-"authority to issue" a specific type of credential, for any type of credential.
-Or, the Education Community might develop naming conventions specifically for
-the authority to issue an education credential.
+It is up to the DID Controller to decide to publish a Verifiable Presentation
+and if so, which Verifiable Credentials to put into the Verifiable Presentation.
