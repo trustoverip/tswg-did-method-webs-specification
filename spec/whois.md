@@ -82,7 +82,7 @@ The Verifiable Presentation may be in one of three formats:
 
 [Data Integrity Proof Verifiable Presentation]: https://www.w3.org/TR/vc-data-model/#data-integrity-proofs
 [JSON Web Token Verifiable Presentation]: https://www.w3.org/TR/vc-data-model/#example-verifiable-presentation-using-jwt-compact-serialization-non-normative
-[An ACDC Verifiable Presentation]: https://www.ietf.org/archive/id/draft-ssmith-acdc-02.html
+[An ACDC Verifiable Presentation]: https://trustoverip.github.io/tswg-acdc-specification/draft-ssmith-acdc.html
 
 When the Verifiable Presentation is requested, the resolved object MUST
 contain the appropriate MIME type of the Verifiable Presentation format.
