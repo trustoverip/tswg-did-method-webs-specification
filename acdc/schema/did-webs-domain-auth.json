@@ -1,0 +1,181 @@
+{
+    "$id": Schema SAID,
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "did:webs Domain Authorization Credential",
+    "description": "An Authorization Credential issued by a did:webs controller AID, to authorize a domain to host the did:webs DID document",
+    "type": "object",
+    "credentialType": "DIDWebsDomainAuthorizationCredential",
+    "version": "1.0.0",
+    "properties": {
+        "v": {
+            "description": "Version",
+            "type": "string"
+        },
+        "d": {
+            "description": "Credential SAID",
+            "type": "string"
+        },
+        "u": {
+            "description": "One time use nonce",
+            "type": "string"
+        },
+        "i": {
+            "description": "Controller AID",
+            "type": "string"
+        },
+        "ri": {
+            "description": "Credential status registry",
+            "type": "string"
+        },
+        "s": {
+            "description": "Schema SAID",
+            "type": "string"
+        },
+        "a": {
+            "oneOf": [
+                {
+                    "description": "Attributes block SAID",
+                    "type": "string"
+                },
+                {
+                    "$id": Block Said,
+                    "description": "Attributes block",
+                    "type": "object",
+                    "properties": {
+                        "d": {
+                            "description": "Attributes block SAID",
+                            "type": "string"
+                        },
+                        "i": {
+                            "description": "Authorized Domain",
+                            "type": "string"
+                        },
+                        "dt": {
+                            "description": "Authorization date time",
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "i",
+                        "dt",
+                        "AID"
+                    ]
+                }
+            ]
+        },
+        "e": {
+            "oneOf": [
+                {
+                    "description": "Edges block SAID",
+                    "type": "string"
+                },
+                {
+                    "$id": "EB6E1GJvVen5NqkKb2TG5jqX66vYOL3md-xkXQqQBySX",
+                    "description": "Edges block",
+                    "type": "object",
+                    "properties": {
+                        "d": {
+                            "description": "Edges block SAID",
+                            "type": "string"
+                        },
+                        "domain": {
+                            "description": "Chain to other did:webs domain authorizations",
+                            "type": "object",
+                            "properties": {
+                                "n": {
+                                    "description": "Most recent did:webs domain authorization credential SAID",
+                                    "type": "string"
+                                },
+                                "s": {
+                                    "description": "SAID of required schema of the credential pointed to by this node",
+                                    "type": "string",
+                                    "const": DIDwebsDomainAuthorizationSchema
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": [
+                                "n",
+                                "s"
+                            ]
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "d",
+                        "le"
+                    ]
+                }
+            ]
+        },
+        "r": {
+            "oneOf": [
+                {
+                    "description": "Rules block SAID",
+                    "type": "string"
+                },
+                {
+                    "$id": SAID of rules block,
+                    "description": "Rules block",
+                    "type": "object",
+                    "properties": {
+                        "d": {
+                            "description": "Rules block SAID",
+                            "type": "string"
+                        },
+                        "usageDisclaimer": {
+                            "description": "Usage Disclaimer",
+                            "type": "object",
+                            "properties": {
+                                "l": {
+                                    "description": "Associated legal language",
+                                    "type": "string",
+                                    "const": "This credentials makes no assertion about the controller of the domain. It only asserts that the controller of this AID authorizes a Decentralized Identifier (DID) that is also controlled by this AID to be created and published to the domain."
+                                }
+                            }
+                        },
+                        "issuanceDisclaimer": {
+                            "description": "Issuance Disclaimer",
+                            "type": "object",
+                            "properties": {
+                                "l": {
+                                    "description": "Associated legal language",
+                                    "type": "string",
+                                    "const": "All information in a valid, unexpired, and non-revoked Domain Authorization Credential is accurate as of the date specified."
+                                }
+                            }
+                        },
+                        "privacyDisclaimer": {
+                            "description": "Privacy Disclaimer",
+                            "type": "object",
+                            "properties": {
+                                "l": {
+                                    "description": "Associated legal language",
+                                    "type": "string",
+                                    "const": "This credential should be presented in a privacy-preserving manner using the mechanisms provided in the Issuance and Presentation Exchange (IPEX) protocol in the Authentic Chained Data Container (ACDC) specification. https://github.com/trustoverip/tswg-acdc-specification."
+                                }
+                            }
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "d",
+                        "usageDisclaimer",
+                        "issuanceDisclaimer",
+                        "privacyDisclaimer"
+                    ]
+                }
+            ]
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "i",
+        "ri",
+        "s",
+        "d",
+        "e",
+        "r"
+    ]
+}
