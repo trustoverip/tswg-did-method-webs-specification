@@ -65,50 +65,6 @@
                 }
             ]
         },
-        "e": {
-            "oneOf": [
-                {
-                    "description": "Edges block SAID",
-                    "type": "string"
-                },
-                {
-                    "$id": "EB6E1GJvVen5NqkKb2TG5jqX66vYOL3md-xkXQqQBySX",
-                    "description": "Edges block",
-                    "type": "object",
-                    "properties": {
-                        "d": {
-                            "description": "Edges block SAID",
-                            "type": "string"
-                        },
-                        "domain": {
-                            "description": "Chain to other did:webs domain authorizations",
-                            "type": "object",
-                            "properties": {
-                                "n": {
-                                    "description": "Most recent did:webs domain authorization credential SAID",
-                                    "type": "string"
-                                },
-                                "s": {
-                                    "description": "SAID of required schema of the credential pointed to by this node",
-                                    "type": "string",
-                                    "const": DIDwebsDomainAuthorizationSchema
-                                }
-                            },
-                            "additionalProperties": false,
-                            "required": [
-                                "n",
-                                "s"
-                            ]
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "d",
-                        "le"
-                    ]
-                }
-            ]
-        },
         "r": {
             "oneOf": [
                 {
@@ -142,7 +98,7 @@
                                 "l": {
                                     "description": "Associated legal language",
                                     "type": "string",
-                                    "const": "All information in a valid, unexpired, and non-revoked Domain Authorization Credential is accurate as of the date specified."
+                                    "const": "All information in a valid and non-revoked Domain Authorization Credential is accurate as of the date specified."
                                 }
                             }
                         },
@@ -153,7 +109,7 @@
                                 "l": {
                                     "description": "Associated legal language",
                                     "type": "string",
-                                    "const": "This credential should be presented in a privacy-preserving manner using the mechanisms provided in the Issuance and Presentation Exchange (IPEX) protocol in the Authentic Chained Data Container (ACDC) specification. https://github.com/trustoverip/tswg-acdc-specification."
+                                    "const": "When appropriate, this credential should be presented in a privacy-preserving manner using the mechanisms provided in the Issuance and Presentation Exchange (IPEX) protocol in the Authentic Chained Data Container (ACDC) specification. https://github.com/trustoverip/tswg-acdc-specification."
                                 }
                             }
                         }
@@ -175,7 +131,6 @@
         "ri",
         "s",
         "d",
-        "e",
         "r"
     ]
 }
