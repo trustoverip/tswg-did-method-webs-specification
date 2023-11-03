@@ -90,7 +90,9 @@ guaranteed by the DID method itself.
 
 In the case of `did:webs`, this metadata property SHOULD contain a list of other known `did:webs` DIDs that differ
 in the domain name and/or port portion of the [[ref: method-specific identifier]]
-but share the same AID. Also see section [Equivalent Identifiers](#equivalent-identifiers).
+but share the same AID. Also see section [[ref:AID controlled identifiers]].
+
+Note that [[ref:AID controlled identifiers]] like did:web and did:keri identifiers with the same AID are not listed in equivalentId because they do not have the same DID method. Also, even though a did:web identifier with the same domain and AID is available, it does not have the same security characteristics. Similarly, a did:keri identifier with the same AID has the same security characterisitcs but not the same dependence on the web. For these reasons, they are not listed in equivalentId.
 
 Example:
 
