@@ -14,7 +14,7 @@ Theoretically, a [[ref: transferrable]] AID could also be transformed into a `di
 
 Since `did:peer` with `numalgo=0` exactly matches the format, semantics, and intent of `did:key`, such peer DIDs have exactly the same transformation potential, in both directions, as `did:key`.
 
-Fancier peer DIDs have a numeric basis other than `numalgo=0`. Static peer DIDs in this category can store service endpoints and additional keys in a DID document. A `did:webs` can express these same semantics via its [[ref: TEL]]. Thus, static peer DIDs may be transformable to [[ref: non-transferrable]] `did:webs` without witnesses. Dynamic peer DIDs cannot be transformed to a `did:webs` because they are [[ref: transferrable]] yet lack a _next_ key to satisfies KERI's pre-rotation feature.
+Fancier peer DIDs have a numeric basis other than `numalgo=0`. Static peer DIDs in this category can store service endpoints and additional keys in a DID document. A `did:webs` can express these same semantics via its [[ref: TEL]]. Thus, static peer DIDs may be transformable to [[ref: non-transferrable]] `did:webs` without witnesses. Dynamic peer DIDs cannot be transformed to a `did:webs` because they are [[ref: transferrable]] yet lack a _next_ key to satisfy KERI's pre-rotation feature.
 
 ### Other DIDs using KERI AIDs as MSI
 

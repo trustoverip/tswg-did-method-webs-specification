@@ -1,10 +1,10 @@
 {
-    "$id": Schema SAID,
+    "$id": <Insert Schema SAID>,
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "did:webs Domain Authorization Credential",
-    "description": "An Authorization Credential issued by a did:webs controller AID, to authorize a domain to host the did:webs DID document",
+    "title": "Identifier Authorization attestation",
+    "description": "An Authorization attestation by an AID controller, to acknowledge and authorize a namespaced identifier whose AID post-fix matches the controller AID.",
     "type": "object",
-    "credentialType": "DIDWebsDomainAuthorizationCredential",
+    "credentialType": "IdentifierAuthorizationAttestation",
     "version": "1.0.0",
     "properties": {
         "v": {
@@ -12,7 +12,7 @@
             "type": "string"
         },
         "d": {
-            "description": "Credential SAID",
+            "description": "Attestation SAID",
             "type": "string"
         },
         "u": {
@@ -24,12 +24,21 @@
             "type": "string"
         },
         "ri": {
-            "description": "Credential status registry",
+            "description": "Attestation status registry",
             "type": "string"
         },
         "s": {
-            "description": "Schema SAID",
-            "type": "string"
+            "description": "schema section",
+            "oneOf": [
+                {
+                    "description": "schema section SAID",
+                    "type": "string"
+                },
+                {
+                    "description": "schema detail",
+                    "type": "object"
+                }
+            ]
         },
         "a": {
             "oneOf": [
@@ -38,7 +47,7 @@
                     "type": "string"
                 },
                 {
-                    "$id": Block Said,
+                    "$id": <Insert Block SAID>,
                     "description": "Attributes block",
                     "type": "object",
                     "properties": {
@@ -47,7 +56,11 @@
                             "type": "string"
                         },
                         "i": {
-                            "description": "Authorized Domain",
+                            "description": "Authorized Identifier is a string that ends in the AID of the controller, making it an AID controlled identifier. Everything prior to the AID is regarded as the namespace portion of the identifier",
+                            "type": "string"
+                        },
+                        "u": {
+                            "description": "One time use nonce",
                             "type": "string"
                         },
                         "dt": {
@@ -58,9 +71,9 @@
                     },
                     "additionalProperties": false,
                     "required": [
+                        "d",
                         "i",
-                        "dt",
-                        "AID"
+                        "dt"
                     ]
                 }
             ]
@@ -72,7 +85,7 @@
                     "type": "string"
                 },
                 {
-                    "$id": SAID of rules block,
+                    "$id": <Insert SAID of rules block>,
                     "description": "Rules block",
                     "type": "object",
                     "properties": {
@@ -85,9 +98,9 @@
                             "type": "object",
                             "properties": {
                                 "l": {
-                                    "description": "Associated legal language",
+                                    "description": "Clarification regarding control",
                                     "type": "string",
-                                    "const": "This credentials makes no assertion about the controller of the domain. It only asserts that the controller of this AID authorizes a Decentralized Identifier (DID) that is also controlled by this AID to be created and published to the domain."
+                                    "const": "This attestation only asserts an authorization from the controller of the AID, that the AID controlled namespaced identifier is known and authorized by the controller. It does not assert that the controller of this AID has control of the infrastructure or other systems related to the hosting of the namespaced AID identifier. For instance, a did:webs DID is controlled by an AID but the domain name hosting that DID is not necessarily under the control of the AID controller."
                                 }
                             }
                         },
@@ -96,9 +109,9 @@
                             "type": "object",
                             "properties": {
                                 "l": {
-                                    "description": "Associated legal language",
+                                    "description": "Accuracy of information",
                                     "type": "string",
-                                    "const": "All information in a valid and non-revoked Domain Authorization Credential is accurate as of the date specified."
+                                    "const": "All information in a valid and non-revoked Identifier Authorization assertion is accurate as of the date specified."
                                 }
                             }
                         },
@@ -107,9 +120,9 @@
                             "type": "object",
                             "properties": {
                                 "l": {
-                                    "description": "Associated legal language",
+                                    "description": "Privacy-preservation expectations",
                                     "type": "string",
-                                    "const": "When appropriate, this credential should be presented in a privacy-preserving manner using the mechanisms provided in the Issuance and Presentation Exchange (IPEX) protocol in the Authentic Chained Data Container (ACDC) specification. https://github.com/trustoverip/tswg-acdc-specification."
+                                    "const": "If the assertioin is blinded with the UUID field the assertion should be used in a non-correlating and privacy-preserving manner."
                                 }
                             }
                         }
@@ -127,10 +140,12 @@
     },
     "additionalProperties": false,
     "required": [
+        "v",
+        "d",
         "i",
         "ri",
         "s",
-        "d",
+        "a",
         "r"
     ]
 }

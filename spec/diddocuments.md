@@ -89,7 +89,7 @@ The value of the `controller` property MUST be a single string that is the same 
 ```
 
 #### Also Known As
-The `alsoKnownAs` property in the root of the DID document MAY contain any DID that has the same [[ref: AID controlled identifier]].
+The `alsoKnownAs` property in the root of the DID document MAY contain any DID that has the same AID, see [[ref: AID controlled identifier]].
 
 It is anticipated that implementations of this DID method will be able to serve the same AID
 as multiple DIDs, all of which are synonymous for each other.  Any implementation will be able
