@@ -89,8 +89,7 @@ The value of the `controller` property MUST be a single string that is the same 
 ```
 
 #### Also Known As
-The `alsoKnownAs` property in the root of the DID document MAY contain other equivalent,
-resolvable `did:webs` DIDs. The `alsoKnownAs` property MAY contain `did:web` versions of the `did:webs` DID(s).
+The `alsoKnownAs` property in the root of the DID document MAY contain any DID that has the same [[ref: AID controlled identifier]].
 
 It is anticipated that implementations of this DID method will be able to serve the same AID
 as multiple DIDs, all of which are synonymous for each other.  Any implementation will be able
@@ -100,8 +99,12 @@ as a `did:webs` DID and as a `did:keri` DID as well.  Finally, the same AID may 
 multiple domains at the same time and they should be considered the same DID since the AID portion
 of the DIDs are the same.
 
+<<<<<<< HEAD
 For each synonymous DID defined above (TODO: we need a way in KERI to declare other domains it is being
 served under, unless this is an implementation specific detail) an entry in the `alsoKnownAs` array
+=======
+For each synonymous DID defined above an entry in the `alsoKnownAs` array
+>>>>>>> 576cd75 (improved clarity about equivalentId metadata)
 in the DID document should be created.  For the DID
 `did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M` the following `alsoKnownAs`
 entries could be created:

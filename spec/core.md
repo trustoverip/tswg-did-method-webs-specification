@@ -129,21 +129,12 @@ KERI mechanisms, _together_, that constitutes this method's verifiable data
 registry. In short, verifying the DID document by processing the [[ref: KERI event stream]] using KERI puts
 the "s" of "security" in `did:webs`.
 
-### Equivalent Identifiers
+### AID controlled identifiers
 
-::: todo
-
-TODO: Consider merging this and section [Handling Web Redirections](#handling-web-redirection)
-and propose that an entity
-SHOULD only publish one "current" `did:webs`, with defined support for redirects.
-Copies of a the `did:webs` data should be just that -- copies.
-
-:::
-Since an AID is a unique identifier that is inseparably bound to the [[ref: KERI event stream]] from
+Since an AID is a unique cryptographic identifier that is inseparably bound to the [[ref: KERI event stream]] from
 which it is associated, any AIDs and any `did:webs` DIDs that have the same AID component
-MUST be considered equivalent identifiers. Any `did:webs` DIDs that have the same AID
-are by definition synonyms of one another, and MUST
-return an equivalent, although not necessarily identical, DID document and [[ref: KERI event stream]].
+have the same controller(s). [[def: AID controlled identifiers]], including any `did:webs` DIDs that have the same AID,
+are by definition referencing the same identity, although they may vary in how quickly they reflect the current identity information, DID document and [[ref: KERI event stream]].
 Notably, as defined in section [Identifiers in a `did:webs` DID document](#identifiers-in-a-didwebs-did-document), the
 `id` property in the DID document will differ based on the web location of the DID document. As
 well, different versions of the DID document and [[ref: KERI event stream]] may reside in different locations
