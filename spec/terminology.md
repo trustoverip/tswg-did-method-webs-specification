@@ -81,5 +81,8 @@
 [[def: out-of-band introduction, OOBI, OOBI specification]]
 ~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/out-of-band-introduction).
 
+[[def: AID controlled identifiers, AID controlled identifier]]
+~ Any identifier, including `did:webs` DIDs, that have the same AID are by definition referencing the same identity. As defined by [KERI]() TODO: Add link to KERI documentation here.
+
 [[def: Authorized Identifier, Authorized Identifiers]]
-~ A set of [[ref: AID controlled identifier]]s that are authorized by the AID controller. ~ As defined by [KERI]() TODO: Add link to KERI documentation here.
+~ A set of [[ref: AID controlled identifiers]] that are authorized by the AID controller. As defined by [KERI]() TODO: Add link to KERI documentation here.
