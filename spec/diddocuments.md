@@ -89,17 +89,15 @@ The value of the `controller` property MUST be a single string that is the same 
 ```
 
 #### Also Known As
-The `alsoKnownAs` property in the root of the DID document MAY contain any DID that has the same AID, see [[ref: AID controlled identifier]].
+The `alsoKnownAs` property in the root of the DID document MAY contain any non-`did:webs` DID that has the same AID, see [[ref: AID controlled identifier]].
+See the [[ref: Authorized Identifier]]s section for information on how an AID anchors the `alsoKnownAs` identifiers to their [[ref: KERI event stream]].
 
-It is anticipated that implementations of this DID method will be able to serve the same AID
-as multiple DIDs, all of which are synonymous for each other.  Any implementation will be able
-to provide the URL endpoint required to serve any AID it is serving as a `did:webs` DID as for
-`did:web` resolution.  Likewise, any implementation should be able to serve any AID it is serving
-as a `did:webs` DID and as a `did:keri` DID as well.  Finally, the same AID may be served under
-multiple domains at the same time and they should be considered the same DID since the AID portion
-of the DIDs are the same.
+It is anticipated that implementations of this DID method will serve the `did:webs` and corresponding `did:web`
+as an `alsoKnownAs` identifier.  Likewise, any implementation of `did:webs` will provide the corresponding `did:keri` as an `alsoKnownAs` identifier.
+Finally, the same `did:webs` may be served under
+multiple domains at the same time but will only be considered [[ref: Authorized Identifier]]s if they are listed in the `equivalentId` DID document metadata property.
 
-For each synonymous DID defined above an entry in the `alsoKnownAs` array
+For each [[ref: AID controlled identifier]] DID defined above an entry in the `alsoKnownAs` array
 in the DID document should be created.  For the DID
 `did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M` the following `alsoKnownAs`
 entries could be created:
@@ -108,7 +106,6 @@ entries could be created:
 {
   "alsoKnownAs": [
     "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
     "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
   ]
 }
@@ -808,3 +805,10 @@ This section focuses on delegation relationships between KERI AIDs. [DID Documen
 
 ### Service Endpoint event details
 TODO:  Define and detail the service endpoint events
+
+### Authorized Identifiers
+An AID can specify the [[ref: Authorized Identifier]]s that will be listed in the `equivalentId` and `alsoKnownAs` properties by issuing an "Authorized Identifiers" verifiable attestation.
+This attestation contains a set of [[ref: AID controlled identifiers]] that the AID controller authorizes.
+If the identifier is a `did:webs` identifier then it is truly equivalent and will be listed in the `equivalentId` property.
+If the identifier is a non-`did:webs` DID then it will be listed in the `alsoKnownAs` property.
+TODO: Should we specifify that non-DID [[ref: Authorized Identifiers]] are not listed?

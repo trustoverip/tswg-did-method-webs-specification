@@ -37,4 +37,4 @@ be valid. This has two meanings, both of which are required:
     its chain of trust.
 
 If a URL of a DID document or [[ref: KERI event streams]] results in a redirect, each URL MUST satisfy the same security
-requirements. A URL MAY come from a URL shortener.
+requirements. A URL MAY come from a URL shortener as long as it is still a [[ref: AID controlled identifier]] and is in the set of [[ref: Authorized Identifiers]] attestation per this spec.

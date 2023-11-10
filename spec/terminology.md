@@ -27,3 +27,6 @@ Definition absorbed by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/keri-
 
 [[def: out-of-band introduction, OOBI, OOBI specification]]
 ~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/out-of-band-introduction).
+
+[[def: Authorized Identifier, Authorized Identifiers]]
+~ A set of [[ref: AID controlled identifier]]s that are authorized by the AID controller. ~ As defined by [KERI]() TODO: Add link to KERI documentation here.
