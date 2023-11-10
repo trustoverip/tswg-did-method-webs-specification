@@ -77,3 +77,9 @@
 
 [[def: witness, witnesses]]
 ~ An entity that is designated by the [[ref: controller]] of an [[ref: AID]] to verify, sign, and keep the key events associated with the AID, as defined by the [KERI whitepaper](https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/witness) for more detail.
+
+[[def: out-of-band introduction, OOBI, OOBI specification]]
+~ As defined by [KERI](https://github.com/WebOfTrust/WOT-terms/wiki/out-of-band-introduction).
+
+[[def: Authorized Identifier, Authorized Identifiers]]
+~ A set of [[ref: AID controlled identifier]]s that are authorized by the AID controller. ~ As defined by [KERI]() TODO: Add link to KERI documentation here.
