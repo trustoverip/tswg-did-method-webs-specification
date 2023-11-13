@@ -1,5 +1,5 @@
 {
-    "$id": <Insert Schema SAID>,
+    "$id": "EPi_tVS3zDN4wo-T3NQb5pUtdeup98yoJ_hrNReD86xO",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Identifier Authorization attestation",
     "description": "An Authorization attestation by an AID controller, to acknowledge and authorize a namespaced identifier whose AID post-fix matches the controller AID.",
@@ -47,16 +47,12 @@
                     "type": "string"
                 },
                 {
-                    "$id": <Insert Block SAID>,
+                    "$id": "EDrKz5DhueGqlJYOYktdPDX0wJ9f-dVSiuwcJWCDAavF",
                     "description": "Attributes block",
                     "type": "object",
                     "properties": {
                         "d": {
                             "description": "Attributes block SAID",
-                            "type": "string"
-                        },
-                        "i": {
-                            "description": "Authorized Identifier is a string that ends in the AID of the controller, making it an AID controlled identifier. Everything prior to the AID is regarded as the namespace portion of the identifier",
                             "type": "string"
                         },
                         "u": {
@@ -67,13 +63,20 @@
                             "description": "Authorization date time",
                             "type": "string",
                             "format": "date-time"
+                        },
+                        "ids": {
+                            "description": "Set of namespaced/controlled AID identifiers that the AID controller authorizes",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     },
                     "additionalProperties": false,
                     "required": [
                         "d",
-                        "i",
-                        "dt"
+                        "dt",
+                        "ids"
                     ]
                 }
             ]
@@ -85,7 +88,7 @@
                     "type": "string"
                 },
                 {
-                    "$id": <Insert SAID of rules block>,
+                    "$id": "ECLt7Scjsf1inplLDNLoOpcPqq-nX8h5l56t1lY4HuyN",
                     "description": "Rules block",
                     "type": "object",
                     "properties": {

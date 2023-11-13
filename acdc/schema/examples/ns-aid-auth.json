@@ -1,0 +1,26 @@
+{
+    "v": "ACDC10JSON000644_",
+    "d": "",
+    "i": "EPmX8LcHyBCoFZhvrGsnlZcL6m3wad5x97XsEefxDVHl",
+    "ri": "",
+    "s": "EPi_tVS3zDN4wo-T3NQb5pUtdeup98yoJ_hrNReD86xO",
+    "a": {
+        "d": "EJe8AdTwaPfIh1NGq2iAN7DRUVLRie4ktbovbSwR7yBG",
+        "dt": "2023-11-13T17:41:37.710691+00:00",
+        "ids": [
+            "did:webs:example.org:EPmX8LcHyBCoFZhvrGsnlZcL6m3wad5x97XsEefxDVHl"
+        ]
+    },
+    "r": {
+        "d": "EGew6U0wBSfe9kISRrMrBHmKrcaIncMLhl87AboKMbv_",
+        "usageDisclaimer": {
+            "l": "This attestation only asserts an authorization from the controller of the AID, that the AID controlled namespaced identifier is known and authorized by the controller. It does not assert that the controller of this AID has control of the infrastructure or other systems related to the hosting of the namespaced AID identifier. For instance, a did:webs DID is controlled by an AID but the domain name hosting that DID is not necessarily under the control of the AID controller."
+        },
+        "issuanceDisclaimer": {
+            "l": "All information in a valid and non-revoked Identifier Authorization assertion is accurate as of the date specified."
+        },
+        "privacyDisclaimer": {
+            "l": "If the assertioin is blinded with the UUID field the assertion should be used in a non-correlating and privacy-preserving manner."
+        }
+    }
+}
