@@ -16,7 +16,7 @@
 ~ A globally unique persistent identifier, as defined by the [DID Core](https://www.w3.org/TR/did-core/#dfn-decentralized-identifiers).
 
 [[def: DID document, DID documents]]
-~ A set of data describing the subject of a [[ref: DID]], s defined by [DID Core](https://www.w3.org/TR/did-core/#dfn-did-documents). See also section [DID Documents](#did-documents).
+~ A set of data describing the subject of a [[ref: DID]], as defined by [DID Core](https://www.w3.org/TR/did-core/#dfn-did-documents). See also section [DID Documents](#did-documents).
 
 [[def: direct mode]]
 ~ an operational mode of the [[ref: KERI]] protocol where a controller and a verifier of an [[ref: AID]] exchange the [[ref: KEL]] of the AID directly, as defined by the [KERI whitepaper](https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf). See [WebOfTrust wiki](https://github.com/WebOfTrust/WOT-terms/wiki/direct-mode) for more detail.
