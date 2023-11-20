@@ -67,7 +67,7 @@
 ~ An identifier that is uniquely and cryptographically bound to a serialization of data (content-addressable) while also being included as a component in that serialization (self-referential), as defined by the [draft SAID specification](https://trustoverip.github.io/tswg-said-specification/draft-ssmith-said.html). See [WebOfTrust wiki](https://github.com/WebOfTrust/WOT-terms/wiki/self-addressing-identifier) for more detail.
 
 [[def: transaction event log (TEL), TEL, TELs]]
-~ A verifiable append-only log of transaction data that are cryptographically anchored to a [[ref: KEL]]. The transaction events of a TEL may be used to establish the issuance or revocation state of [[ref: ACDC]]s. See [WebOfTrust wiki](https://github.com/WebOfTrust/WOT-terms/wiki/transaction-event-log) for more detail.
+~ A verifiable append-only log of transaction data that are cryptographically anchored to a [[ref: KEL]]. The transaction events of a TEL may be used to establish the issuance or revocation state of [[ref: ACDCs]]. See [WebOfTrust wiki](https://github.com/WebOfTrust/WOT-terms/wiki/transaction-event-log) for more detail.
 
 [[def: verifier, verifiers]]
 ~ An entity or component that cryptographically verifies the signature(s) on an event message. See [WebOfTrust wiki](https://github.com/WebOfTrust/WOT-terms/wiki/verifier) for more detail.
