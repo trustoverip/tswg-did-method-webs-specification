@@ -49,7 +49,7 @@
 ~ A stream of verifiable KERI data, consisting of the [[ref: key event log]] ([[ref: KEL]]) and other data such as a [[ref: transaction event log]] ([[ref: TEL]]). This data is a [[ref: CESR]] event stream (TODO: link to IANA application/cesr media type) and may be serialized in a file using [[ref: CESR]] encoding. We refer to these CESR stream resources as KERI event streams to simplify the vocabulary. See [WebOfTrust wiki](https://github.com/WebOfTrust/WOT-terms/wiki/keri-event-stream) for more detail. 
 
 [[def: key state, key states]]
-~ The set of currently authoritative keypairs (current keys) for an [[ref: AID]] and any other information necessary to secure or establish control authority over the AID. See [WebOfTrust wiki](https://github.com/WebOfTrust/WOT-terms/wiki/key-state) for more detail.
+~ The set of currently authoritative key pairs (current keys) for an [[ref: AID]] and any other information necessary to secure or establish control authority over the AID. See [WebOfTrust wiki](https://github.com/WebOfTrust/WOT-terms/wiki/key-state) for more detail.
 
 [[def: method-specific identifier, MSI]]
 ~ The `method-specific-id` part of DID Syntax, as defined in [DID Core](https://www.w3.org/TR/did-core/#did-syntax). See section [Method-Specific Identifier](#method-specific-identifier).
