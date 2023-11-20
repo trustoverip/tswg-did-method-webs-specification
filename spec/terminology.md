@@ -25,7 +25,7 @@
 ~ A key event that provides the incepting information needed to derive an [[ref: AID]] and establish its initial [[ref: key state]], as defined by the [draft KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#section-2). See [WebOfTrust wiki](https://github.com/WebOfTrust/WOT-terms/wiki/inception-event) for more detail.
 
 [[def: indirect mode]]
-~ An operational mode of the [[ref: KERI]] protocol where the [[ref: KEL]] of an [[ref: AID]] is discovered a [[ref: verifier]] via [[ref: witnesses]], as defined by the [KERI whitepaper](https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf). See [WebOfTrust wiki](https://github.com/WebOfTrust/WOT-terms/wiki/indirect-mode) for more detail.
+~ An operational mode of the [[ref: KERI]] protocol where the [[ref: KEL]] of an [[ref: AID]] is discovered by a [[ref: verifier]] via [[ref: witnesses]], as defined by the [KERI whitepaper](https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf). See [WebOfTrust wiki](https://github.com/WebOfTrust/WOT-terms/wiki/indirect-mode) for more detail.
 
 [[def: interaction event, interaction events]]
 ~ A key event that anchors external data to an [[ref: AID]], as defined by the [draft KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#section-2). An interaction event does not change the [[ref: key state]] of the [[ref: AID]]. See [WebOfTrust wiki](https://github.com/WebOfTrust/WOT-terms/wiki/interaction-event) for more detail.
