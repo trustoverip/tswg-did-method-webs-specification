@@ -803,7 +803,7 @@ If the identifier is a non-`did:webs` DID then it will be listed in the `alsoKno
 
 #### Designated Aliases event details
 
-[[ref: Designated Aliases]] ACDC attestation example showing two designated aliases:
+This is an example [[ref: designated aliases]] ACDC attestation showing two designated aliases:
 ```json
 {
     "v": "ACDC10JSON000514_",
@@ -837,7 +837,11 @@ If the identifier is a non-`did:webs` DID then it will be listed in the `alsoKno
 }
 ```
 
-Resulting DID document metadata contains one `equivalentId` (did:webs:foo.com) and two `alsoKnownAs` identifiers, the did:web:example.com is a designated alias and the did:keri identifier was automatically generated for the AID:
+The resulting DID document based on the [[ref: designated aliases]] attestation above, contains:
+* An `equivalentId` metadata for the did:webs:foo.com identifier
+* Two `alsoKnownAs` identifiers:
+  * the did:web:example.com is a [[ref: designated alias]]
+  * the did:keri identifier is automatically generated based on the AID
 ```json
 {
   "id": "did:webs:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
