@@ -90,12 +90,12 @@ The value of the `controller` property MUST be a single string that is the same 
 
 #### Also Known As
 The `alsoKnownAs` property in the root of the DID document MAY contain any non-`did:webs` DID that has the same AID, see [[ref: AID controlled identifier]].
-See the [[ref: Authorized Identifier]]s section for information on how an AID anchors the `alsoKnownAs` identifiers to their [[ref: KERI event stream]].
+See the [[ref: designated aliases]] section for information on how an AID anchors the `alsoKnownAs` identifiers to their [[ref: KERI event stream]].
 
 It is anticipated that implementations of this DID method will serve the `did:webs` and corresponding `did:web`
 as an `alsoKnownAs` identifier.  Likewise, any implementation of `did:webs` will provide the corresponding `did:keri` as an `alsoKnownAs` identifier.
 Finally, the same `did:webs` may be served under
-multiple domains at the same time but will only be considered [[ref: Authorized Identifier]]s if they are listed in the `equivalentId` DID document metadata property.
+multiple domains at the same time but will only be verifiable if they are listed in the `equivalentId` DID document metadata property.
 
 For each [[ref: AID controlled identifier]] DID defined above an entry in the `alsoKnownAs` array
 in the DID document should be created.  For the DID
@@ -794,3 +794,9 @@ This section focuses on delegation relationships between KERI AIDs. [DID Documen
 
 ### Service Endpoint event details
 TODO:  Define and detail the service endpoint events
+
+### Designated Aliases
+An AID can specify the [[ref: Designated Aliases]] that will be listed in the `equivalentId` and `alsoKnownAs` properties by issuing an "Designated Identifiers" verifiable attestation.
+This attestation contains a set of [[ref: AID controlled identifiers]] that the AID controller authorizes.
+If the identifier is a `did:webs` identifier then it is truly equivalent and will be listed in the `equivalentId` property.
+If the identifier is a non-`did:webs` DID then it will be listed in the `alsoKnownAs` property.

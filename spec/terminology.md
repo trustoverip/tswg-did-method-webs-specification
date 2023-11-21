@@ -15,6 +15,9 @@
 [[def: decentralized identifier (DID), DID, DIDs]]
 ~ A globally unique persistent identifier, as defined by [DID Core](https://www.w3.org/TR/did-core/#dfn-decentralized-identifiers).
 
+[[def:  designated aliases, designated alias]]
+~ An array of AID controlled identifiers that have been designated by the AID controller to be used as aliases for `equivalentId` and `alsoKnownAs` did document metadata and to foster verification of redirection from old to current did:webs identifiers. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/designated-aliases) for more detail.
+
 [[def: DID document, DID documents]]
 ~ A set of data describing the subject of a [[ref: DID]], as defined by [DID Core](https://www.w3.org/TR/did-core/#dfn-did-documents). See also section [DID Documents](#did-documents).
 

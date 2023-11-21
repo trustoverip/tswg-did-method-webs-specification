@@ -173,11 +173,11 @@ the AID for uniqueness and the [[ref: KERI event stream]] for validity, but that
 The following are the capabilities in `did:webs` to help in the face of
 resolution uncertainty.
 
-- The `did:webs` is bound to other [[ref: Authorized Identifiers]] that are anchored to the [[ref: KERI event stream]], and
+- The `did:webs` is bound to other [[ref: designated aliases]] that are anchored to the [[ref: KERI event stream]], and
   as the `id` in the DID document.
-- When a `did:webs` is permanently moved to some other location the resolver can redirect to any other Authorized Identifier.
+- When a `did:webs` is permanently moved to some other location the resolver can redirect to any other [[ref: designated aliases]].
   - The `id` in the DID document is set to the new location.
-  - An `equivalentId` entry of the old location will be revoked an anchored to the [[ref: KERI event stream]].
+  - An `equivalentId` entry of the old location will be revoked and anchored to the [[ref: KERI event stream]]. See section [Use of `equivalentId`](#use-of-equivalentid) for more details.
   - If possible, the controller of the DID MAY use web redirects to allow
     resolution of the old location of the DID to the new location.
 
@@ -201,7 +201,7 @@ The DID document, [[ref: KERI event stream]] and other files related to a DID ma
 locations. For example, someone might want to keep a cache of DIDs they use, or
 an entity might want to run a registry of "useful" DIDs for a cooperating group.
 While the combination of DID document and [[ref: KERI event stream]] make the DID and DID document verifiable, just
-as when published in their "intended" location, the absence of the `did:webs` in the [[ref: Authorized Identifiers]] for those locations
+as when published in their "intended" location, the absence of the `did:webs` in the [[ref: designated aliases]] for those locations
 in the DID document `equivalentId` means that the controller of the DID is
 not self-asserting any sort of tie between the DID and the location to which the
 DID-related documents have been copied. In contrast, if the controller confirms the link between the source and the copy with an `equivalentId`, the related copies will have to be looked after.
