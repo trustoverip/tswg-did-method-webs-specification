@@ -525,7 +525,6 @@ For example, given the following `did:webs` DID document:
   "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
   "alsoKnownAs": [
     "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
     "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
   ],
   ...
@@ -580,7 +579,6 @@ The result of the transformation algorithm is the following `did:webs` DID docum
   "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
   "alsoKnownAs": [
     "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
     "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
   ],
   ...
@@ -708,9 +706,11 @@ Resulting DID document:
 ```json
 {
   "id": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+  "didDocumentMetadata": {
+      "equivalentId": ["did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"]
+  },
   "alsoKnownAs": [
     "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
     "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
   ],
   "verificationMethod": [
@@ -796,7 +796,58 @@ This section focuses on delegation relationships between KERI AIDs. [DID Documen
 TODO:  Define and detail the service endpoint events
 
 ### Designated Aliases
-An AID can specify the [[ref: Designated Aliases]] that will be listed in the `equivalentId` and `alsoKnownAs` properties by issuing an "Designated Identifiers" verifiable attestation.
+An AID can specify the [[ref: designated aliases]] that will be listed in the `equivalentId` and `alsoKnownAs` properties by issuing a [[ref: designated aliases]] verifiable attestation.
 This attestation contains a set of [[ref: AID controlled identifiers]] that the AID controller authorizes.
 If the identifier is a `did:webs` identifier then it is truly equivalent and will be listed in the `equivalentId` property.
 If the identifier is a non-`did:webs` DID then it will be listed in the `alsoKnownAs` property.
+
+#### Designated Aliases event details
+
+[[ref: Designated Aliases]] ACDC attestation example showing two designated aliases:
+```json
+{
+    "v": "ACDC10JSON000514_",
+    "d": "EMVnFMfhcw67coSNnH5nqi5fWtFreCNuw6pGVGdMFuSx",
+    "i": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "ri": "EFfjfmq3DiHAbVWiF4VA24fP5OEIV1EhWoO-v3ZqmVG6",
+    "s": "EN6Oh5XSD5_q2Hgu-aqpdfbVepdpYpFlgz6zvJL5b_r5",
+    "a": {
+        "d": "EHQgqNNSueVmVjlErrGtzjl-HJya9rMUiNadDSkZQ1kV",
+        "dt": "2023-11-13T17:41:37.710691+00:00",
+        "ids": [
+            "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+        ]
+    },
+    "r": {
+        "d": "EEVTx0jLLZDQq8a5bXrXgVP0JDP7j8iDym9Avfo8luLw",
+        "aliasDesignation": {
+            "l": "The issuer of this ACDC designates the identifiers in the ids field as the only allowed namespaced aliases of the issuer's AID."
+        },
+        "usageDisclaimer": {
+            "l": "This attestation only asserts designated aliases of the controller of the AID, that the AID controlled namespaced alias has been designated by the controller. It does not assert that the controller of this AID has control over the infrastructure or anything else related to the namespace other than the included AID."
+        },
+        "issuanceDisclaimer": {
+            "l": "All information in a valid and non-revoked alias designation assertion is accurate as of the date specified."
+        },
+        "termsOfUse": {
+            "l": "Designated aliases of the AID must only be used in a manner consistent with the expressed intent of the AID controller."
+        }
+    }
+}
+```
+
+Resulting DID document metadata contains one `equivalentId` (did:webs:foo.com) and two `alsoKnownAs` identifiers, the did:web:example.com is a designated alias and the did:keri identifier was automatically generated for the AID:
+```json
+{
+  "id": "did:webs:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+  "didDocumentMetadata": {
+      "equivalentId": ["did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"]
+  },
+  "alsoKnownAs": [
+    "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "did:keri:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+  ],
+  "verificationMethod": [...
+}
+```
