@@ -1,14 +1,13 @@
 ## The `whois` DID URL
 
-The `did:webs` method defines that a controller MAY publish a W3C Verifiable
-Credentials Data Model Standard [[ref: Verifiable Presentation]] beside the DID
-Doc (`did.json`). The Verifiable Presentation is referenced using the [[ref: DID
+The `did:webs` method defines that a controller MAY publish a [W3C verifiable presentation](https://www.w3.org/TR/vc-data-model/#presentations-0) beside the DID
+Doc (`did.json`). The verifiable presentation is referenced using the [[ref: DID
 URL]] `<did>/whois` and can be resolved using the HTTPS DID path `<DID
-URL>/whois.vp`. The Verifiable Presentation MUST ONLY contain Verifiable
+URL>/whois.vp`. The verifiable presentation MUST ONLY contain Verifiable
 Credentials where the `did:webs` DID is the subject of the Credential.
 
 This convention enables those that receive the DID to retrieve and verify the
-Verifiable Presentation (and embedded Verifiable Credentials) the DID controller
+verifiable presentation (and embedded Verifiable Credentials) the DID controller
 has decided to publish about itself. The intention is that anyone interested in
 a particular `did:webs` DID can see if there is a `whois` Verifiable
 Presentation, and if so, if it contains any useful (to the resolver)
@@ -63,16 +62,16 @@ The HTTPS path to the `whois` folder MUST be `<HTTPS URL conversion of did:webs
 identifier>/whois.vp`. The Web Server that serves the `did:webs` documents
 MUST respond to a request for the HTTPS `whois` URL the `Verifiable
 Presentation` published there by the DID Controller. If the controller of the
-`did:webs` DID has not published a `whois` Verifiable Presentation, the Web
+`did:webs` DID has not published a `whois` verifiable presentation, the Web
 Server must respond with an HTTP `404` response ("Not Found").
 
-The resolved `whois` DID URL MUST resolve to a Verifiable Presentation in which
+The resolved `whois` DID URL MUST resolve to a verifiable presentation in which
 the presentation proof is signed by a key or keys from the current `did:webs`
 DID Document or a valid previous version of the DID Document. All of the
-Verifiable Credentials in the Verifiable Presentation MUST have the `did:webs`
+Verifiable Credentials in the verifiable presentation MUST have the `did:webs`
 DID as the credential subject.
 
-The Verifiable Presentation may be in one of three formats:
+The verifiable presentation may be in one of three formats:
 
 - A W3C Verifiable Credentials Data Model Standard JSON-LD [Data Integrity Proof
   Verifiable Presentation].
@@ -84,8 +83,8 @@ The Verifiable Presentation may be in one of three formats:
 [JSON Web Token Verifiable Presentation]: https://www.w3.org/TR/vc-data-model/#example-verifiable-presentation-using-jwt-compact-serialization-non-normative
 [An ACDC Verifiable Presentation]: https://trustoverip.github.io/tswg-acdc-specification/draft-ssmith-acdc.html
 
-When the Verifiable Presentation is requested, the resolved object MUST
-contain the appropriate MIME type of the Verifiable Presentation format.
+When the verifiable presentation is requested, the resolved object MUST
+contain the appropriate MIME type of the verifiable presentation format.
 
-It is up to the DID Controller to decide to publish a Verifiable Presentation
-and if so, which Verifiable Credentials to put into the Verifiable Presentation.
+It is up to the DID Controller to decide to publish a verifiable presentation
+and if so, which Verifiable Credentials to put into the verifiable presentation.
