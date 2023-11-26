@@ -392,7 +392,7 @@ For example, a KERI AID with only the following inception event in its KEL:
 ```
 
 #### Verification Relationships
-KERI AID public keys can be used to sign a variety of data.  This includes but is not limited to logging into a website,
+Private keys of a KERI AID can be used to sign a variety of data.  This includes but is not limited to logging into a website,
 challenge-response exchanges and credential issuances.  It follows that:
 
 If the value of `kt` == 1:
@@ -413,7 +413,7 @@ References to verification methods in the DID document MUST use the relative for
 
 ##### Key Agreement
 There are multiple ways to establish key agreement in KERI. We detail common considerations and techniques:
-* *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we are specify endpoints, domain migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
+* *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we specify endpoints, domain migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
 * *Key agreement from `k` field keys:* It is important to note that KERI is cryptographically agile and can support a variety of keys and signatures. If the 'k' field references a Ed25519 key, then key agreement could be established using the corresponding x25519 key for Diffie-Helman key exchange. Alternatively if the key is an ECDSA or other NIST algorithms key then it will be the same key for signatures and encryption and can be used for key agreement.
 * *Key agreement anchored in KEL:* It is always possible to anchor arbitrary data, like a key agreement key, to the KEL. Likely the best mechanism is to anchor an ACDC to a [[ref: TEL]] which is anchored to the KEL.
 
