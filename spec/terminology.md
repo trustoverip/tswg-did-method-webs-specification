@@ -33,7 +33,7 @@
 [[def: key event, key events]]
 ~ A serialized data structure of an entry in the [[ref: key event log]]([[ref: KEL]]) for an [[ref: AID]], as defined by the [draft KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#section-2). There are three types of key events, namely [[ref: inception event]], [[ref: rotation event]], and [[ref: interaction event]]. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/key-event) for more detail.
 
-[[def: key event log, KEL, KELs]]
+[[def: key event log (KEL), KEL, KELs]]
 ~ A verifiable append-only log of [[ref: key events]] for an [[ref: AID]] that is both backward and forward-chained, as defined by the [draft KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#section-2). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/key-event-log) for more detail.
 
 [[def: key event receipt]]
@@ -51,7 +51,7 @@
 [[def: key state, key states]]
 ~ The set of currently authoritative key pairs (current keys) for an [[ref: AID]] and any other information necessary to secure or establish control authority over the AID. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/key-state) for more detail.
 
-[[def: method-specific identifier, MSI]]
+[[def: method-specific identifier (MSI), MSI]]
 ~ The `method-specific-id` part of DID Syntax, as defined in [DID Core](https://www.w3.org/TR/did-core/#did-syntax). See section [Method-Specific Identifier](#method-specific-identifier).
 
 [[def: out-of-band introduction (OOBI), OOBI, OOBIs, OOBI specification]]
