@@ -273,17 +273,6 @@ For example, a KERI AID with only the following inception event in its KEL:
       ]
     },
     {
-      "id": "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "type": "ConditionalProof2022",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "threshold": 2,
-      "conditionThreshold": [
-        "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
-        "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
-        "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"
-      ]
-    },
-    {
       "id": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
       "type": "JsonWebKey",
       "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
@@ -358,7 +347,7 @@ For example, a KERI AID with only the following inception event in its KEL:
       "id": "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
       "type": "ConditionalProof2022",
       "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "threshold": 6,
+      "threshold": 12,
       "conditionWeightedThreshold": [
         {
           "condition": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
@@ -403,7 +392,7 @@ For example, a KERI AID with only the following inception event in its KEL:
 ```
 
 #### Verification Relationships
-KERI AID public keys can be used to sign a variety of data.  This includes but is not limited to logging into a website,
+Private keys of a KERI AID can be used to sign a variety of data.  This includes but is not limited to logging into a website,
 challenge-response exchanges and credential issuances.  It follows that:
 
 If the value of `kt` == 1:
@@ -424,7 +413,7 @@ References to verification methods in the DID document MUST use the relative for
 
 ##### Key Agreement
 There are multiple ways to establish key agreement in KERI. We detail common considerations and techniques:
-* *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we are specify endpoints, domain migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
+* *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we specify endpoints, domain migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
 * *Key agreement from `k` field keys:* It is important to note that KERI is cryptographically agile and can support a variety of keys and signatures. If the 'k' field references a Ed25519 key, then key agreement could be established using the corresponding x25519 key for Diffie-Helman key exchange. Alternatively if the key is an ECDSA or other NIST algorithms key then it will be the same key for signatures and encryption and can be used for key agreement.
 * *Key agreement anchored in KEL:* It is always possible to anchor arbitrary data, like a key agreement key, to the KEL. Likely the best mechanism is to anchor an ACDC to a [[ref: TEL]] which is anchored to the KEL.
 
@@ -798,15 +787,15 @@ Resulting DID document:
 #### Key state events
 When processing the [[ref: KERI event stream]] there are two broad types of key state events (KERI parlance is 'establishment events') that can alter the key state of the AID. Any change in key state of the AID will be reflected in the DID document.
 If a key state event does not commit to a future set of rotation key hashes, then the AID can't be rotated to new keys in the future (KERI parlance is that the key state of the AID becomes 'non-transferrable'). If a key state event does commit to a future set of rotation key hashes, then any future key state rotation must be to those commitment keys. This is the foundation of [[ref: pre-rotation]], is post-quantum safe, and allows the controller to recover from key compromise.
-* [[def: Inception event]]: The inception event is the first event in the [[ref: KEL]] that establishes the AID. This defines the initial key set and if the controller(s) desire future key rotation (transfer) then the inception event must commit to a set of future rotation key hashes. When processing the [[ref: KERI event stream]], if there are no rotation events after the inception event, then this is the current key state of the AID and will be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). You can learn more about the inception event in the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-basic-terminology) and you can see an [example inception event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-inception-event). To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [KERI specification section on pre-rotation](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-key-pre-rotation-concept)
-* [[def: Rotation event]]: Rotation events come after inception events and can only change the key state to the previously committed to rotation keys and if the controller(s) desires future key rotation (transfer) then the rotation event must commit to a set of future rotation key hashes. When processing the [[ref: KERI event stream]], if there are rotation events after the inception event, then the last rotation event is the current key state of the AID and will be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). You can learn more about rotation events in the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-basic-terminology) and you can see an [example rotation event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-rotation-event-message-body). To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [KERI specification section on pre-rotation](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-key-pre-rotation-concept)
+* [[ref: Inception event]]: The inception event is the first event in the [[ref: KEL]] that establishes the AID. This defines the initial key set and if the controller(s) desire future key rotation (transfer) then the inception event must commit to a set of future rotation key hashes. When processing the [[ref: KERI event stream]], if there are no rotation events after the inception event, then this is the current key state of the AID and will be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). You can learn more about the inception event in the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-basic-terminology) and you can see an [example inception event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-inception-event). To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [KERI specification section on pre-rotation](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-key-pre-rotation-concept)
+* [[ref: Rotation event]]: Rotation events come after inception events and can only change the key state to the previously committed to rotation keys and if the controller(s) desires future key rotation (transfer) then the rotation event must commit to a set of future rotation key hashes. When processing the [[ref: KERI event stream]], if there are rotation events after the inception event, then the last rotation event is the current key state of the AID and will be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). You can learn more about rotation events in the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-basic-terminology) and you can see an [example rotation event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-rotation-event-message-body). To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [KERI specification section on pre-rotation](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-key-pre-rotation-concept)
 
 ### Delegation KERI event details
 This section focuses on delegation relationships between KERI AIDs. [DID Document from KERI Events](#did-document-from-keri-events) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the basic types of KERI events and how they relate to the DID document. [Basic KERI event details](#basic-keri-event-details) provides additional details on the basic types of KERI events and how they relate to the DID document.
 
 #### Delegation key state events
-* [[def: Delegated inception event]]: Establishes a delegated identifier for which either the delegator or the delegate can end the delegation commitment. All delegation relationships start with a delegated inception event. The KERI specification provides [an example of a delegated inception event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-delegated-inception-event-m).
-* [[def: Delegated rotation event]]: Updates the delegated identifier commitment. Either the delegator or the delegate can end the delegation commitment. Any change to the [[ref: Delegated inception event]] key state or delegated rotation event key state requires a delegated rotation event. The KERI specification provides [an example of a delegated rotation event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#section-8.2)
+* Delegated [[ref: inception event]]: Establishes a delegated identifier for which either the delegator or the delegate can end the delegation commitment. All delegation relationships start with a delegated inception event. The KERI specification provides [an example of a delegated inception event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-delegated-inception-event-m).
+* Delegated [[ref: rotation event]]: Updates the delegated identifier commitment. Either the delegator or the delegate can end the delegation commitment. Any change to the [[ref: Delegated inception event]] key state or delegated rotation event key state requires a delegated rotation event. The KERI specification provides [an example of a delegated rotation event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#section-8.2)
 
 ### Service Endpoint event details
 TODO:  Define and detail the service endpoint events
