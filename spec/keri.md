@@ -47,7 +47,7 @@ Unlike a blockchain with a distributed consensus mechanism, witnesses do not coo
 
 ### Web Independence
 
-Although _this DID method_ depends on web technology, _KERI itself_ does not. It's as easy to create AIDs on IOT devices as it is on the web. AIDs offer the same features regardless of their origin, and besides HTTP, they are shareable over Lo-Ra, BlueTooth, NFC, Low Earth Orbit satellite protocols, service buses on medical devices, and so forth. Thus, KERI's AIDs offer a bridge between a web-centric DID method and lower-level IOT ecosystems.
+Although _this DID method_ depends on web technology, _KERI itself_ does not. It's as easy to create AIDs on IOT devices as it is on the web. AIDs offer the same features regardless of their origin, and besides HTTP, they are shareable over Lo-Ra, Bluetooth, NFC, Low Earth Orbit satellite protocols, service buses on medical devices, and so forth. Thus, KERI's AIDs offer a bridge between a web-centric DID method and lower-level IOT ecosystems.
 
 ### Flexible Serialization
 
