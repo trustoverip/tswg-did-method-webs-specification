@@ -1,6 +1,6 @@
 ## The `whois` DID URL
 
-The `did:webs` method defines that a controller MAY publish a [W3C verifiable presentation](https://www.w3.org/TR/vc-data-model/#presentations-0) beside the DID
+The `did:webs` method defines that a controller MAY publish a [W3C verifiable presentation](https://www.w3.org/TR/vc-data-model/#presentations-0) in addition to the DID
 Doc (`did.json`). The verifiable presentation is referenced using the [[ref: DID
 URL]] `<did>/whois` and can be resolved using the HTTPS DID path `<DID
 URL>/whois.vp`. The verifiable presentation MUST ONLY contain Verifiable
