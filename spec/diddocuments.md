@@ -100,7 +100,7 @@ as a `did:webs` DID and as a `did:keri` DID as well.  Finally, the same AID may 
 multiple domains at the same time and they should be considered the same DID since the AID portion
 of the DIDs are the same.
 
-For each synonymous DID defined above (we need a way in KERI to declare other domains it is being
+For each synonymous DID defined above (TODO: we need a way in KERI to declare other domains it is being
 served under, unless this is an implementation specific detail) an entry in the `alsoKnownAs` array
 in the DID document should be created.  For the DID
 `did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M` the following `alsoKnownAs`
@@ -122,12 +122,12 @@ KERI identifiers express public signing keys as Composable Event Streaming Repre
 determine the cryptographic algorithm used to generate the key pair.  For each key listed in the array value of the `k` field
 a corresponding verification method will be generated in the DID document.  The 'type' property  in the verification method for each
 public key will be determined by the algorithm used to generate the public key.  At the time of this writing, KERI currently
-supports public key generation for Ed25519, Secp256k1 and Secp256r1 keys, however the protocol allows for others to be added at any time.
+supports public key generation for Ed25519, Secp256k1 and Secp256r1 keys, and the protocol allows for others to be added at any time.
 We must define the subset of public key algorithms for KERI AIDs that this specification will accept, so we can define mappings to existing verification method types as registered in the DID Specification Registries.  As KERI evolves with more algorithms, new verification method types must be registered in the DID Specification Registries and added to this specification.
 
 The `id` property of the verification method must be a relative DID URL and use the KERI key CESR value as the value of the fragment component, e.g., `"id": "#<identifier>"`.
 
-The `controller` property of the verification method must be the value of the `id` property of DID document. (Does the method spec need to specify this?)
+The `controller` property of the verification method must be the value of the `id` property of DID document. (TODO: Does the method spec need to specify this?)
 
 For example, the key `DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK` in the DID document for the AID `EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2` becomes:
 
