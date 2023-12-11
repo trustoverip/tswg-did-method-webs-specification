@@ -14,7 +14,7 @@ The `did:webs` method does not need blockchains for trust. However, its use of
 KERI allows for the referencing of arbitrary blockchains as an extra, optional
 publication mechanism. This offers an interoperability bridge from (or between)
 blockchain ecosystems. Also, without directly supporting environments where the
-web is not practical (e.g., IOT, Lo-Ra, BlueTooth, NFC), the method builds on a
+web is not practical (e.g., IOT, Lo-Ra, Bluetooth, NFC), the method builds on a
 foundation that fully supports those environments, making future interop of
 identifiers between web and non-web a manageable step.
 

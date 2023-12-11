@@ -73,7 +73,7 @@ practices to preserve good hygiene.
 
 However, the authenticity of data is
 guaranteed by the DID value itself, in conjunction with a digitally signed
-data structure called a [[ref: KERI event stream]], which includes the
+data structure called a [[ref: KERI event stream]], which includes for a given AID its 
 [[ref: key event log]] ([[ref: KEL]]) and [[ref: transaction event log]] ([[ref: TEL]]). These trust
 mechanisms — the integrity checks built into the DID value, and the workings of
 the [[ref: KERI event stream]] — are defined by [[ref: KERI]].
@@ -95,7 +95,7 @@ The location of the [[ref: KERI event stream]] is determined by transforming the
 A GET on that URL MUST return the [[ref: KERI event stream]] for the AID in the `did:webs` identifier.
 The [[ref: KERI event stream]] MUST be CESR-formatted (media type of application/cesr) and the KERI events must be verifiable using the KERI rules.
 
-The following are some `did:webs` DIDs and their corresponding DID document and [[ref: KERI event stream]]
+The following are some example `did:webs` DIDs and their corresponding DID document and [[ref: KERI event stream]]
 URLs, based on the examples from the [DID Web Specification](https://github.com/w3c-ccg/did-method-web/), but with the (faked) AID
 `12124313423525` added:
 
@@ -119,7 +119,7 @@ specification. This specification assumes a working knowledge of the concepts
 there. The inclusion of KERI in `did:webs` enables a number of capabilities for
 securing a `did:webs` identifier, including multi-signature support and the
 creation of [[ref: pre-rotated]] keys to prevent loss of control of the identifier if the
-current private key is compromised.
+current private key were to be compromised.
 
 A target system cannot forge or tamper with data protected by KERI, and if it
 deliberately serves an outdated copy, the duplicity is often detectable. Thus,
@@ -166,14 +166,14 @@ as KERI witnesses and watchers.
 ### Handling Web Redirection
 
 A `did:webs` is intended to be a "stable" (long-lasting) identifier that can be
-put into documents, such as verifiable credentials, that are intended to be
+put into documents such as verifiable credentials, and that are intended to be
 useful for a very long time -- generations. However, the web is not a very
 stable place, and documents are moved around and copied frequently. When two or
 more companies merge, often the web presence of some of the merged entities
 "disappears". It may not be possible to retain a permanent `did:webs` web
 location.
 
-When a `did:webs` moves, its AID does not change. The same [[ref: KERI event stream]] is used to verify
+When a `did:webs` is updated for another location, its AID does not change. The same [[ref: KERI event stream]] is used to verify
 the DID document. Were the AID to change, it would be an altogether new DID,
 unconnected to the first DID. So if a resolver can find a newly named DID that
 uses the same AID, and the [[ref: KERI event stream]] verifies the DID, then they have resolved the
