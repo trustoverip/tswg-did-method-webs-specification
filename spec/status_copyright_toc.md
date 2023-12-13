@@ -8,12 +8,13 @@ and how to provide feedback on it, may be obtained at
 
 ## Copyright Notice
 
-This specifications is subject to the **Community Specification License 1.0**
+This specification is subject to the **OWF Contributor License Agreement 1.0 - Copyright**
 available at
-[https://github.com/CommunitySpecification/1.0](https://github.com/CommunitySpecification/1.0).
+[https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owf-contributor-license-agreement-1-0-copyright](https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owf-contributor-license-agreement-1-0-copyright).
 
 If source code is included in the specification, that code is subject to the
 Apache 2.0 license unless otherwise marked. In the case of any conflict or
-confusion within this specification between the Community Specification License
-and the designated source code license, the terms of the Community Specification
-License shall apply.
+confusion within this specification between the OWF Contributor License 
+and the designated source code license, the terms of the OWF Contributor License shall apply.
+
+These terms are inherited from the Technical Stack Working Group at the Trust over IP Foundation. [Add Link to Updated JDF charter](http://example.com)
