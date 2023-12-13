@@ -1,7 +1,7 @@
-DID Method `did:webs` Specification
+ToIP `did:webs` Method Specification V1.0
 ==================
 
-**Specification Status**: v1.0 Draft
+**Specification Status**: Public Review Draft 01
 
 **Latest Draft:**
 
