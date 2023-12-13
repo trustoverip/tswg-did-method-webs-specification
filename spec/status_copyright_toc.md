@@ -17,4 +17,4 @@ Apache 2.0 license unless otherwise marked. In the case of any conflict or
 confusion within this specification between the OWF Contributor License 
 and the designated source code license, the terms of the OWF Contributor License shall apply.
 
-These terms are inherited from the Technical Stack Working Group at the Trust over IP Foundation. [Add Link to Updated JDF charter](http://example.com)
+These terms are inherited from the Technical Stack Working Group at the Trust over IP Foundation. [Working Group Charter](https://trustoverip.org/wp-content/uploads/TSWG-2-Charter-Revision.pdf)
