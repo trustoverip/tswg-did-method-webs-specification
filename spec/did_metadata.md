@@ -92,7 +92,7 @@ In the case of `did:webs`, this metadata property SHOULD contain a list of the c
 in the domain name and/or port portion of the [[ref: method-specific identifier]]
 but share the same AID. Also see section [[ref:AID controlled identifiers]].
 
-Note that [[ref:AID controlled identifiers]] like `did:web` and `did:keri` identifiers with the same AID are not listed in `equivalentId` because they do not have the same DID method. A `did:web` identifier with the same domain and AID does not have the same security characteristics as the `did:webs` identifier. Conversly, a `did:keri` identifier with the same AID has the same security characterisitcs but not the same dependence on the web. For these reasons, they are not listed in `equivalentId`.
+Note that [[ref:AID controlled identifiers]] like `did:web` and `did:keri` identifiers with the same AID are not listed in `equivalentId` because they do not have the same DID method. A `did:web` identifier with the same domain and AID does not have the same security characteristics as the `did:webs` identifier. Conversely, a `did:keri` identifier with the same AID has the same security characterisitcs but not the same dependence on the web. For these reasons, they are not listed in `equivalentId`.
 
 `equivalentId` depends on the controller AIDs array of [[ref: designated aliases]]. A `did:webs` identifier is not valid unless it is found in the `equivalentId` metadata that corresponds to the [[ref: designated aliases]]. 
 

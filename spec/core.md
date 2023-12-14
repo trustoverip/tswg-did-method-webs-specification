@@ -184,7 +184,7 @@ resolution uncertainty.
 The purpose of the history of "official" (according to the controller) locations
 for the DID documents is so that if the DID has been put in long-lasting documents,
 and its URL instantiation is redirected or disappears, the controller can
-explicitly indicate that the new DID is an `equivalentId`` to the old one.
+explicitly indicate that the new DID is an `equivalentId` to the old one.
 
 If the previously published location of a `did:webs` is not redirected, an
 entity trying to resolve the DID MAY be able to find the data for the DID

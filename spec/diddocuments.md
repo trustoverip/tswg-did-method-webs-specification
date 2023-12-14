@@ -89,13 +89,13 @@ The value of the `controller` property MUST be a single string that is the same 
 ```
 
 #### Also Known As
-The `alsoKnownAs` property in the root of the DID document MAY contain any non-`did:webs` DID that has the same AID, see [[ref: AID controlled identifier]].
+The `alsoKnownAs` property in the root of the DID document MAY contain any DID that has the same AID, see [[ref: AID controlled identifier]].
 See the [[ref: designated aliases]] section for information on how an AID anchors the `alsoKnownAs` identifiers to their [[ref: KERI event stream]].
 
 It is anticipated that implementations of this DID method will serve the `did:webs` and corresponding `did:web`
 as an `alsoKnownAs` identifier.  Likewise, any implementation of `did:webs` will provide the corresponding `did:keri` as an `alsoKnownAs` identifier.
 Finally, the same `did:webs` may be served under
-multiple domains at the same time but will only be verifiable if they are listed in the `equivalentId` DID document metadata property.
+multiple domains at the same time but will only be verifiable if they are listed in the [[ref: designated aliases]] attestation.
 
 For each [[ref: AID controlled identifier]] DID defined above an entry in the `alsoKnownAs` array
 in the DID document should be created.  For the DID
@@ -106,6 +106,7 @@ entries could be created:
 {
   "alsoKnownAs": [
     "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
     "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
   ]
 }
@@ -525,6 +526,7 @@ For example, given the following `did:webs` DID document:
   "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
   "alsoKnownAs": [
     "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
     "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
   ],
   ...
@@ -579,6 +581,7 @@ The result of the transformation algorithm is the following `did:webs` DID docum
   "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
   "alsoKnownAs": [
     "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
     "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
   ],
   ...
@@ -704,76 +707,73 @@ The following blocks contain full annotated examples of a KERI AID with two even
 
 Resulting DID document:
 ```json
-{
-  "id": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "didDocumentMetadata": {
-      "equivalentId": ["did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"]
-  },
-  "alsoKnownAs": [
-    "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
-  ],
-  "verificationMethod": [
-    {
-      "id": "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "type": "ConditionalProof2022",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "threshold": 2,
-      "conditionThreshold": [
-        "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
-        "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
-        "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"
-      ]
-    },
-    {
-      "id": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
-      "type": "JsonWebKey",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "publicKeyJwk": {
-        "kid": "1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
-        "kty": "EC",
-        "crv": "secp256k1",
-        "x": "NtngWpJUr-rlNNbs0u-Aa8e16OwSJu6UiFf0Rdo1oJ4",
-        "y": "qN1jKupJlFsPFc1UkWinqljv4YE0mq_Ickwnjgasvmo"
+  "didDocument": {
+    "id": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+    "alsoKnownAs": [
+      "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+    ],
+    "verificationMethod": [
+      {
+        "id": "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "type": "ConditionalProof2022",
+        "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "threshold": 2,
+        "conditionThreshold": [
+          "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+          "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+          "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"
+        ]
+      },
+      {
+        "id": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+        "type": "JsonWebKey",
+        "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "publicKeyJwk": {
+          "kid": "1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+          "kty": "EC",
+          "crv": "secp256k1",
+          "x": "NtngWpJUr-rlNNbs0u-Aa8e16OwSJu6UiFf0Rdo1oJ4",
+          "y": "qN1jKupJlFsPFc1UkWinqljv4YE0mq_Ickwnjgasvmo"
+        }
+      },
+      {
+        "id": "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+        "type": "JsonWebKey",
+        "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "publicKeyJwk": {
+          "kid": "DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "x": "A-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE"
+        }
+      },
+      {
+        "id": "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
+        "type": "JsonWebKey",
+        "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "publicKeyJwk": {
+          "kid": "DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "x": "LWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNws"
+        }
       }
-    },
-    {
-      "id": "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
-      "type": "JsonWebKey",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "publicKeyJwk": {
-        "kid": "DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
-        "kty": "OKP",
-        "crv": "Ed25519",
-        "x": "A-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE"
+    ],
+    "authentication": [
+      "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+    ],
+    "assertionMethod": [
+      "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+    ],
+    "service": [
+      {
+        "id": "#EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1",
+        "type": "KeriAgent",
+        "serviceEndpoint": "http://foo.example.com:3901/"
       }
-    },
-    {
-      "id": "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
-      "type": "JsonWebKey",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "publicKeyJwk": {
-        "kid": "DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
-        "kty": "OKP",
-        "crv": "Ed25519",
-        "x": "LWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNws"
-      }
-    }
-  ],
-  "authentication": [
-    "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
-  ],
-  "assertionMethod": [
-    "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
-  ],
-  "service": [
-    {
-      "id": "#EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1",
-      "type": "KeriAgent",
-      "serviceEndpoint": "http://foo.example.com:3901/"
-    }
-  ]
-}
+    ]
+  }...
 ```
 
 ### Basic KERI event details
@@ -799,7 +799,7 @@ TODO:  Define and detail the service endpoint events
 An AID can specify the [[ref: designated aliases]] that will be listed in the `equivalentId` and `alsoKnownAs` properties by issuing a [[ref: designated aliases]] verifiable attestation.
 This attestation contains a set of [[ref: AID controlled identifiers]] that the AID controller authorizes.
 If the identifier is a `did:webs` identifier then it is truly equivalent and will be listed in the `equivalentId` property.
-If the identifier is a non-`did:webs` DID then it will be listed in the `alsoKnownAs` property.
+If the identifier is a DID then it will be listed in the `alsoKnownAs` property.
 
 #### Designated Aliases event details
 
@@ -839,19 +839,25 @@ This is an example [[ref: designated aliases]] ACDC attestation showing two desi
 
 The resulting DID document based on the [[ref: designated aliases]] attestation above, contains:
 * An `equivalentId` metadata for the did:webs:foo.com identifier
-* Two `alsoKnownAs` identifiers:
+* Three `alsoKnownAs` identifiers:
+  * the did:webs:foo.com identifier is a [[ref: designated alias]] which is also in the equivalentId did document metadata.
   * the did:web:example.com is a [[ref: designated alias]]
   * the did:keri identifier is automatically generated based on the AID
 ```json
 {
-  "id": "did:webs:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-  "didDocumentMetadata": {
-      "equivalentId": ["did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"]
-  },
-  "alsoKnownAs": [
-    "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-    "did:keri:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
-  ],
-  "verificationMethod": [...
+  didDocument {
+    "id": "did:webs:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "alsoKnownAs": [
+      "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+      "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+      "did:keri:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+    ],
+    "verificationMethod": [...
+  }
+  didDocumentMetadata {
+    "equivalentId": [
+      "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    ]
+  }
 }
 ```
