@@ -34,8 +34,7 @@ about localhost vs. 127.0.0.1 vs. ::1?
 :::
 
 The formal rules describing valid domain name syntax are described in
-[RFC1035], [RFC1123], and [RFC2181]. The fully qualified domain MUST NOT
-include IP addresses. A port MAY be included and the colon MUST be percent
+[RFC1035], [RFC1123], and [RFC2181]. A port MAY be included and the colon MUST be percent
 encoded to prevent a conflict with paths. Directories and subdirectories MAY
 optionally be included, delimited by colons rather than slashes.
 
