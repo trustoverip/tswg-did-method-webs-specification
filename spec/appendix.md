@@ -1,4 +1,6 @@
-## Terminology
+## Appendix
+
+### Terminology
 
 [[def: authentic chained data container (ACDC), ACDC, ACDCs]]
 ~ a variant of [the Verifiable Credential (VC) specification](https://www.w3.org/TR/vc-data-model/) that inherits the security model derived from [[ref: KERI]], as defined by the [draft ACDC specification](https://trustoverip.github.io/tswg-acdc-specification/draft-ssmith-acdc.html). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/authentic-chained-data-container) for more detail.
@@ -51,7 +53,7 @@
 [[def: key state, key states]]
 ~ The set of currently authoritative key pairs (current keys) for an [[ref: AID]] and any other information necessary to secure or establish control authority over the AID. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/key-state) for more detail.
 
-[[def: method-specific identifier (MSI), MSI]]
+[[def: method-specific identifier, MSI]]
 ~ The `method-specific-id` part of DID Syntax, as defined in [DID Core](https://www.w3.org/TR/did-core/#did-syntax). See section [Method-Specific Identifier](#method-specific-identifier).
 
 [[def: out-of-band introduction (OOBI), OOBI, OOBIs, OOBI specification]]
