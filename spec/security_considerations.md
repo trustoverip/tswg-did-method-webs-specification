@@ -53,7 +53,7 @@ be valid. This has two meanings, both of which are required:
     its chain of trust.
 
 If a URL of a DID document or [[ref: KERI event streams]] results in a redirect, each URL MUST satisfy the same security
-requirements. A URL MAY come from a URL shortener.
+requirements.
 
 ### Concepts for securing `did:webs` information
 
