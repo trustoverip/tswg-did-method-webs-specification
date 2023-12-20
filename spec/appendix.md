@@ -31,7 +31,6 @@ See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 [[def: verification]]
 ~ An action an agent (of a principal) performs to determine the authenticity of a claim or other digital object using a cryptographic key.
 
-
 #### Glossary WORK TO BE DONE
 
 TODO: 
@@ -45,8 +44,6 @@ TODO:
 * MOVE some terms to ToIP Glossary
 * REMOVE terms that are not used in this spec
 * See about decomposing pointers to various external docs if they aren't normative. 
-
-
 
 ### Terminology
 
