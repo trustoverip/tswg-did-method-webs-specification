@@ -55,6 +55,14 @@ be valid. This has two meanings, both of which are required:
 If a URL of a DID document or [[ref: KERI event streams]] results in a redirect, each URL MUST satisfy the same security
 requirements.
 
+### International Domain Names
+
+Like `did:web`, due to [[spec:DID-CORE]] identifier syntax not allowing Unicode in method name or method specific identifiers, implementers should be cautious when implementing support for DID URLs that rely on domain names or path components that contain Unicode characters.
+
+See also:
+* [UTS-46](https://unicode.org/reports/tr46/)
+* [[spec:rfc5895]]
+
 ### Concepts for securing `did:webs` information
 
 The following security concepts are used to secure the data, files, signatures and other information in `did:webs`. We characterize each concept with high, medium and low security to orient readers to the situational relevance.
