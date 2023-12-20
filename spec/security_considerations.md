@@ -26,7 +26,7 @@ and makes it easier to troubleshoot. How a URL is hosted should let clients
 fetch a DID document and a [[ref: KERI event stream]] with roughly the same confidence that's associated
 with properly implemented online banking.
 
-The fully qualified domain name of the [[ref: method-specific identifier]] is
+A [[ref: host]] that uses a fully qualified domain name of the [[ref: method-specific identifier]] is
 secured by a TLS/SSL certificate. The fully qualified domain name MUST match the common name used
 in the SSL/TLS certificate.
 

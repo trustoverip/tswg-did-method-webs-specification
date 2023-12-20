@@ -89,7 +89,7 @@ to the DID that has been resolved. It is similar to the `alsoKnownAs` DID docume
 guaranteed by the DID method itself.
 
 In the case of `did:webs`, this metadata property SHOULD contain a list of other known `did:webs` DIDs that differ
-in the domain name and/or port portion of the [[ref: method-specific identifier]]
+in the [[ref: host]] and/or port portion of the [[ref: method-specific identifier]]
 but share the same AID. Also see section [Equivalent Identifiers](#equivalent-identifiers).
 
 Example:

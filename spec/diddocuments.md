@@ -13,7 +13,7 @@ is an approach similar to multibase, making them self-describing and terse.
 
 ### DID Document from KERI Events
 The [[ref: KERI event stream]] represents a cryptographic chain
-of custody from the [[ref: AID]] itself down to the current set of keys and the cryptographic commitment to the next rotation key(s). The [[ref: KERI event stream]] also contains events that do not alter the [[ref: AID]] key state, but are useful for the DID document, such as the supported domains, current set of service endpoints, etc. A did:webs resolver produces the DID document by processing the [[ref: KERI event stream]] to determine the current key state. We detail the different events in (KERI event details)[#KERI-event-details] below and show how they change the DID Document. The mapping from [[ref: KERI event stream]] to the properties of the DID Document is the core of the did:webs resolver logic.  Understanding the optimal way to update and maintain the [[ref: KERI event stream]] (publish static keri.cesr files, dyanamically generate the keri.cesr resource, etc) is beyond the scope of the spec, but a reference implementation of the resolver that details these techniques is being developed alongside this spec. The important concepts are that the entire [[ref: KERI event stream]] is used to produce and verify the DID document.
+of custody from the [[ref: AID]] itself down to the current set of keys and the cryptographic commitment to the next rotation key(s). The [[ref: KERI event stream]] also contains events that do not alter the [[ref: AID]] key state, but are useful for the DID document, such as the supported [[ref: hosts]], current set of service endpoints, etc. A did:webs resolver produces the DID document by processing the [[ref: KERI event stream]] to determine the current key state. We detail the different events in (KERI event details)[#KERI-event-details] below and show how they change the DID Document. The mapping from [[ref: KERI event stream]] to the properties of the DID Document is the core of the did:webs resolver logic.  Understanding the optimal way to update and maintain the [[ref: KERI event stream]] (publish static keri.cesr files, dyanamically generate the keri.cesr resource, etc) is beyond the scope of the spec, but a reference implementation of the resolver that details these techniques is being developed alongside this spec. The important concepts are that the entire [[ref: KERI event stream]] is used to produce and verify the DID document.
 
 In KERI the calculated values that result from processing the [[ref: KERI event stream]] are referred to as the "current key state" and expressed
 in the Key State Notice (KSN) record.  An example of a KERI KSN record can be seen here:
@@ -97,7 +97,7 @@ as multiple DIDs, all of which are synonymous for each other.  Any implementatio
 to provide the URL endpoint required to serve any AID it is serving as a `did:webs` DID as for
 `did:web` resolution.  Likewise, any implementation should be able to serve any AID it is serving
 as a `did:webs` DID and as a `did:keri` DID as well.  Finally, the same AID may be served under
-multiple domains at the same time and they should be considered the same DID since the AID portion
+multiple [[ref: hosts]] at the same time and they should be considered the same DID since the AID portion
 of the DIDs are the same.
 
 For each synonymous DID defined above (TODO: we need a way in KERI to declare other domains it is being
@@ -413,7 +413,7 @@ References to verification methods in the DID document MUST use the relative for
 
 ##### Key Agreement
 There are multiple ways to establish key agreement in KERI. We detail common considerations and techniques:
-* *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we specify endpoints, domain migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
+* *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we specify endpoints, [[ref: host]] migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
 * *Key agreement from `k` field keys:* It is important to note that KERI is cryptographically agile and can support a variety of keys and signatures. If the 'k' field references a Ed25519 key, then key agreement could be established using the corresponding x25519 key for Diffie-Helman key exchange. Alternatively if the key is an ECDSA or other NIST algorithms key then it will be the same key for signatures and encryption and can be used for key agreement.
 * *Key agreement anchored in KEL:* It is always possible to anchor arbitrary data, like a key agreement key, to the KEL. Likely the best mechanism is to anchor an ACDC to a [[ref: TEL]] which is anchored to the KEL.
 

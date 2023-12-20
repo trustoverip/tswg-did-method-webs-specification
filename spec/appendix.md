@@ -23,6 +23,9 @@
 [[def: direct mode]]
 ~ an operational mode of the [[ref: KERI]] protocol where a controller and a verifier of an [[ref: AID]] exchange the [[ref: KEL]] of the AID directly, as defined by the [KERI whitepaper](https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/direct-mode) for more detail.
 
+[[def: host, hosts, host name, host names]]
+~ The part of a URL that can be either a domain name or an IP address. This component specifies the server that the client needs to communicate with in order to access the desired resource on the web.
+
 [[def: inception event, inception events]]
 ~ A key event that provides the incepting information needed to derive an [[ref: AID]] and establish its initial [[ref: key state]], as defined by the [draft KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#section-2). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/inception-event) for more detail.
 
