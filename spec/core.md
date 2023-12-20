@@ -78,7 +78,7 @@ HTTPS URL as follows:
 
 - Replace `did:webs` with `https://`
 - Replace the "`:`"s in the method-specific identifier with path separators, "'/'"s
-- Convert the optional port percent encoding ("`%3A`"`) to a colon.
+- Convert the optional port percent encoding ("`%3A`"`) to a colon if present.
 - Append "`/did.json`" to the resulting string.
 
 A GET on that URL MUST return the DID document.
@@ -90,7 +90,7 @@ The location of the [[ref: KERI event stream]] is determined by transforming the
 A GET on that URL MUST return the [[ref: KERI event stream]] for the AID in the `did:webs` identifier.
 The [[ref: KERI event stream]] MUST be CESR-formatted (media type of application/cesr) and the KERI events must be verifiable using the KERI rules.
 
-The following are some example `did:webs` DIDs and their corresponding DID document and [[ref: KERI event stream]]
+The following are some example `did:webs` DIDs and their corresponding DID documents and [[ref: KERI event stream]]
 URLs, based on the examples from the [DID Web Specification](https://github.com/w3c-ccg/did-method-web/), but with the (faked) AID
 `12124313423525` added:
 
@@ -271,7 +271,7 @@ the deactivation events have been applied, derive the DID document from the [[re
 republish both documents to the web server, overwriting the existing files.
 
 A controller may choose to simply remove the DID folder and files from the web
-server on which it has been published. This is considered to a bad approach, as
+server on which it has been published. This is considered to be a bad approach, as
 those resolving the DID will not be able to determine if the web service is
 offline or the DID has been deactivated. It is a much better practice to rotate
 the keys to null and continuing to publish the DID document and [[ref: KERI event stream]].
