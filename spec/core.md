@@ -24,8 +24,8 @@ component of the path.
 The [[ref: ABNF]] definition of a `did:webs` DID is as follows:
 
 ```
-webs-did = "did:webs:" [[ref: host]] ":" aid
-webs-did = "did:webs:" [[ref: host]] * (":" path) ":" aid
+webs-did = "did:webs:" host ":" aid
+webs-did = "did:webs:" host * (":" path) ":" aid
 ```
 
 The formal rules describing valid [[ref: host]] syntax are described in
