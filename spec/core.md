@@ -52,8 +52,7 @@ an AID.
 ### Target System(s)
 
 As with `did:web`, this method reads data from whatever web server is referenced
-when the [[ref: host name]] portion of one of its DIDs is resolved through the Domain
-Name System (DNS). In fact, a `did:webs` can be resolved to a [[ref: DID document]]
+when the [[ref: host]] portion of one of its DIDs is resolved. In fact, a `did:webs` can be resolved to a [[ref: DID document]]
 using a simple text transformation to an HTTPS URL in the same way as a
 `did:web`. By design, a `did:web` and `did:webs` with the same [[ref: method-specific identifier]] will return the same
 DID document, except for minor differences in the `id`, `controller`, and `alsoKnownAs` top-level properties that pertain to the identifiers themselves.
