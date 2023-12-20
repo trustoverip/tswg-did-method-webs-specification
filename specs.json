@@ -11,9 +11,7 @@
         "status_copyright_toc.md",
         "introduction.md",
         "requirements_notations_conventions.md",
-        "terminology.md",
         "core.md",
-        "security_characteristics.md",
         "diddocuments.md",
         "didparameters.md",
         "did_metadata.md",
@@ -25,7 +23,8 @@
         "privacy_considerations.md",
         "normative_references.md",
         "informative_references.md",
-        "acknowledgements_authors.md"
+        "acknowledgements_authors.md",
+        "appendix.md"
       ],
       "logo": "https://raw.githubusercontent.com/trustoverip/logo-assets/master/logos/ToIP-Logo-Color-SolidDimensional-Horizontal-LightOnDark.svg",
       "logo_link": "https://github.com/trustoverip/tswg-did-method-webs-specification",
