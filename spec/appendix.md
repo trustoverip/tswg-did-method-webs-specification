@@ -6,76 +6,55 @@ NOTE:
 * The following set of identifiers are from the current [ToIP Glossary](https://docs.google.com/document/d/1fZByfuSOwszDRkE7ARQLeElSYmVznoOyJK4sxRvJpyM/edit?usp=sharing) (Google Doc). These definitions need to be moved over to the (under development) ToIP Terms tool (aka TEv2).
 * not all ToIP definitions are fully linked here. This whole section is more of an exemplar as of the time of writing.
 
-[[def: autonomous identifier (AID), AID, AIDs]]
-~ a subclass of verifiable identifier ([[ref: VID]]) that is [[def: cryptographically verifiable]] without the need to rely on any [[ref: third party]] for [[ref: verification]] because the [[ref: identifier]] is cryptographically bound to the [[ref: cryptographic keys]] from which it was generated. Also known as: [[ref: self-certifying identifier]].
+[[def: autonomous identifier]] 
+~ Another term for [[ref: self-certifying identifier (SCID)]]. 
 
 [[def: cryptographic keys]]
-~ a key in cryptography is a piece of information, usually a string of numbers or letters that are stored in a file, which, when processed through a cryptographic algorithm, can encode or decode cryptographic data. Symmetric cryptography refers to the practice of the same key being used for both encryption and decryption. Asymmetric cryptography has separate keys for encrypting and decrypting. These keys are known as the public keys and private keys, respectively. Source: Wikipedia.
-
+~ A key in cryptography is a piece of information, usually a string of numbers or letters that are stored in a file, which, when processed through a cryptographic algorithm, can encode or decode cryptographic data. Symmetric cryptography refers to the practice of the same key being used for both encryption and decryption. Asymmetric cryptography has separate keys for encrypting and decrypting. These keys are known as the public keys and private keys, respectively. Source: Wikipedia.
 
 [[def: cryptographically verifiable]]
-~ a property of a data structure that has been digitally signed using a private key such that the digital signature can be verified using the public key. Verifiable data, verifiable messages, verifiable credentials, and verifiable data registries are all cryptographically verifiable. Cryptographic verifiability is a primary goal of the ToIP Technology Stack.
-
-[[def: KERI autonomic identifier (KAID), KAID]]
-~ an autonomous identifier ([[ref: AID]]) that follows the [draft KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-autonomic-identifier-aid). ~~A KAID is either non-transferable or transferable. A non-transferable AID does not support key rotation while a transferable AID supports key rotation using a key [[ref: pre-rotation]] mechanism that enables the AID to persist in spite of the evolution of its key state. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/autonomic-identifier) for more detail.~~
-
+~ A property of a data structure that has been digitally signed using a private key such that the digital signature can be verified using the public key. Verifiable data, verifiable messages, verifiable credentials, and verifiable data registries are all cryptographically verifiable. Cryptographic verifiability is a primary goal of the ToIP Technology Stack.
 
 [[def: identifier]]
-~ a single attribute—typically a character string—that uniquely identifies an entity within a specific context (which may be a global context). Examples include the name of a party, the URL of an organization, or a serial number for a man-made thing. Supporting definitions: eSSIF-Lab: a character string that is being used for the identification of some entity (yet may refer to 0, 1, or more entities, depending on the context within which it is being used).
+~ A single attribute—typically a character string—that uniquely identifies an entity within a specific context (which may be a global context). Examples include the name of a party, the URL of an organization, or a serial number for a man-made thing. Supporting definitions: eSSIF-Lab: a character string that is being used for the identification of some entity (yet may refer to 0, 1, or more entities, depending on the context within which it is being used).
 
-[[def: self-certifying identifier]] 
-~ another term for [[ref: autonomous identifier]]. 
+[[def: self-certifying identifier (SCID), SCID, SCIDs]]
+~ A subclass of verifiable identifier ([[ref: VID]]) that is [[def: cryptographically verifiable]] without the need to rely on any [[ref: third party]] for [[ref: verification]] because the [[ref: identifier]] is cryptographically bound to the [[ref: cryptographic keys]] from which it was generated. Also known as: [[ref: autonomous identifier]].
 
 [[def: third party]]
-~ a party that is not directly involved in the trust relationship between a first party and a second party, but provides supporting services to either or both of them.
+~ A party that is not directly involved in the trust relationship between a first party and a second party, but provides supporting services to either or both of them.
 
 [[def: verifiable identifier (VID), VID, VIDs]]
-~ an identifier over which the controller can provide cryptographic proof of control.
-See also: decentralized identifier, autonomous identifier.
+~ An identifier over which the controller can provide cryptographic proof of control.
+See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 
 [[def: verification]]
-~ an action an agent (of a principal) performs to determine the authenticity of a claim or other digital object using a cryptographic key.
+~ An action an agent (of a principal) performs to determine the authenticity of a claim or other digital object using a cryptographic key.
 
-#### Questions for Drumm
-
-* Do definitions need to be normative? i.e. what is the impact of "as defined by the draft KERI specification." for definitions (and other things)?
- - one is called the KERI specification, and this dependency needs to be fixed.
-
-- yes, normative
-- common vocabulary (common to ToIP)
 
 #### Glossary WORK TO BE DONE
 
 TODO: 
 
+* DECISION to duplicate ToIP Glossary terms here (for completeness of this spec) or include them only by reference.
 * Replace terms with ToIP Glossary Terms where applicable
 * Ensure that AID (in particulary) ends up with a NORMATIVE definition. Currently it says "as defined by the draft KERI specification." (in reference to KEL). This needs to be normalized.
 * Link to current ToIP glossary for these and other terms. Need to ensure that the definitions don't break this (did:webs) spec.
 * the work above in the ToIP Controlled Terms needs to be completed. Many terms in the definitions need links. See the Glossary document (linked above) for the underlying detail. 
 * DISCUSS: Is "key event log" sufficiently normative to be tied to an AID/SCID as opposed to KAID?
-
-
-[[def: REMOVED autonomic identifier (AID)]]
-~ A [[ref: DID]] that is self-certifying and cryptographically bound to a [[ref: key event log]] ([[ref: KEL]]), as defined by the [draft KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-autonomic-identifier-aid). An AID is either non-transferable or transferable. A non-transferable AID does not support key rotation while a transferable AID supports key rotation using a key [[ref: pre-rotation]] mechanism that enables the AID to persist in spite of the evolution of its key state. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/autonomic-identifier) for more detail.
-
-
-### Terminology (Normalizing)
-
-NOTE: Only one example is included here: 
+* MOVE some terms to ToIP Glossary
+* REMOVE terms that are not used in this spec
+* See about decomposing pointers to various external docs if they aren't normative. 
 
 
 
 ### Terminology
 
-
-
-
 [[def: authentic chained data container (ACDC), ACDC, ACDCs]]
 ~ a variant of [the Verifiable Credential (VC) specification](https://www.w3.org/TR/vc-data-model/) that inherits the security model derived from [[ref: KERI]], as defined by the [draft ACDC specification](https://trustoverip.github.io/tswg-acdc-specification/draft-ssmith-acdc.html). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/authentic-chained-data-container) for more detail.
 
-
-
-
+[[def: autonomic identifier (AID), AID, AIDs]]
+~ A [[ref: self-certifying identifier (SCID)]] that is cryptographically bound to a [[ref: key event log]] ([[ref: KEL]]), as defined by the [draft KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-autonomic-identifier-aid). An AID is either non-transferable or transferable. A non-transferable AID does not support key rotation while a transferable AID supports key rotation using a key [[ref: pre-rotation]] mechanism that enables the AID to persist in spite of the evolution of its key state. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/autonomic-identifier) for more detail.
 
 [[def: compact event streaming representation (CESR), CESR]]
 ~ An encoding format that enables round-trip text-binary conversion of concatenated cryptographic primitives and general data types, as defined by the [draft CESR specification](https://trustoverip.github.io/tswg-cesr-specification/draft-ssmith-cesr.html) and [draft CESR Proof Signature specification](https://trustoverip.github.io/tswg-cesr-proof-specification/draft-pfeairheller-cesr-proof.html).  See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/composable-event-streaming-representation) for more detail.
@@ -90,7 +69,7 @@ NOTE: Only one example is included here:
 ~ A set of data describing the subject of a [[ref: DID]], as defined by [DID Core](https://www.w3.org/TR/did-core/#dfn-did-documents). See also section [DID Documents](#did-documents).
 
 [[def: direct mode]]
-~ an operational mode of the [[ref: KERI]] protocol where a controller and a verifier of an [[ref: AID]] exchange the [[ref: KEL]] of the AID directly, as defined by the [KERI whitepaper](https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/direct-mode) for more detail.
+~ An operational mode of the [[ref: KERI]] protocol where a controller and a verifier of an [[ref: AID]] exchange the [[ref: KEL]] of the AID directly, as defined by the [KERI whitepaper](https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/direct-mode) for more detail. 
 
 [[def: inception event, inception events]]
 ~ A key event that provides the incepting information needed to derive an [[ref: AID]] and establish its initial [[ref: key state]], as defined by the [draft KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#section-2). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/inception-event) for more detail.
