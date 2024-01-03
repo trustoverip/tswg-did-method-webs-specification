@@ -10,7 +10,7 @@ NOTE:
 ~ Another term for [[ref: self-certifying identifier (SCID)]]. 
 
 [[def: cryptographic keys]]
-~ A key in cryptography is a piece of information, usually a string of numbers or letters that are stored in a file, which, when processed through a cryptographic algorithm, can encode or decode cryptographic data. Symmetric cryptography refers to the practice of the same key being used for both encryption and decryption. Asymmetric cryptography has separate keys for encrypting and decrypting. These keys are known as the public keys and private keys, respectively. Source: Wikipedia.
+~ TODO: Replace with ToIP Glossary link
 
 [[def: cryptographically verifiable]]
 ~ A property of a data structure that has been digitally signed using a private key such that the digital signature can be verified using the public key. Verifiable data, verifiable messages, verifiable credentials, and verifiable data registries are all cryptographically verifiable. Cryptographic verifiability is a primary goal of the ToIP Technology Stack.
