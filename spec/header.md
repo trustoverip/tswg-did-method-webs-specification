@@ -21,6 +21,7 @@ ToIP `did:webs` Method Specification V1.0
 - [Kevin Griffin](https://github.com/m00sey), [GLEIF](https://gleif.org)
 - [Lance Byrd](https://github.com/2byrds), [GLEIF](https://gleif.org) and [RootsID](https://rootsid.com/)
 - [Nuttawut Kongsuwan](https://github.com/nkongsuwan), [Finema](https://finema.co/) 
+- [Darrell O'Donnell](https://github.com/darrellodonnell), [Continuum Loop Inc.](https://www.continuumloop.com)
 
 <!-- -->
 
