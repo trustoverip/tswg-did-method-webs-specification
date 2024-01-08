@@ -33,19 +33,6 @@ See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 
 #### Glossary WORK TO BE DONE
 
-TODO: 
-
-* DECISION to duplicate ToIP Glossary terms here (for completeness of this spec) or include them only by reference.
-* Replace terms with ToIP Glossary Terms where applicable
-* Ensure that AID (in particulary) ends up with a NORMATIVE definition. Currently it says "as defined by the draft KERI specification." (in reference to KEL). This needs to be normalized.
-* Link to current ToIP glossary for these and other terms. Need to ensure that the definitions don't break this (did:webs) spec.
-* the work above in the ToIP Controlled Terms needs to be completed. Many terms in the definitions need links. See the Glossary document (linked above) for the underlying detail. 
-* DISCUSS: Is "key event log" sufficiently normative to be tied to an AID/SCID as opposed to KAID?
-* MOVE some terms to ToIP Glossary
-* REMOVE terms that are not used in this spec
-* See about decomposing pointers to various external docs if they aren't normative. 
-
-
 ### Terminology
 
 [[def: authentic chained data container (ACDC), ACDC, ACDCs]]
