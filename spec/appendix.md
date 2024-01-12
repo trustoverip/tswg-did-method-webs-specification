@@ -12,7 +12,7 @@
 ~ A single attribute—typically a character string—that uniquely identifies an entity within a specific context (which may be a global context). Examples include the name of a party, the URL of an organization, or a serial number for a man-made thing. Supporting definitions: eSSIF-Lab: a character string that is being used for the identification of some entity (yet may refer to 0, 1, or more entities, depending on the context within which it is being used).
 
 [[def: self-certifying identifier (SCID), SCID, SCIDs]]
-~ A subclass of verifiable identifier ([[ref: VID]]) that is [[def: cryptographically verifiable]] without the need to rely on any [[ref: third party]] for [[ref: verification]] because the [[ref: identifier]] is cryptographically bound to the [[ref: cryptographic keys]] from which it was generated. Also known as: [[ref: autonomous identifier]].
+~ A subclass of verifiable identifier ([[ref: VID]]) that is [[ref: cryptographically verifiable]] without the need to rely on any third party for verification because the [[ref: identifier]] is cryptographically bound to the cryptographic keys from which it was generated. Also known as: [[ref: autonomous identifier]].
 
 [[def: verifiable identifier (VID), VID, VIDs]]
 ~ An identifier over which the controller can provide cryptographic proof of control.
