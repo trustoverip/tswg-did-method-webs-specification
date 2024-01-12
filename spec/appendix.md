@@ -2,15 +2,8 @@
 
 ### Trust Over IP Glossary - Controlled Terms 
 
-NOTE: 
-* The following set of identifiers are from the current [ToIP Glossary](https://docs.google.com/document/d/1fZByfuSOwszDRkE7ARQLeElSYmVznoOyJK4sxRvJpyM/edit?usp=sharing) (Google Doc). These definitions need to be moved over to the (under development) ToIP Terms tool (aka TEv2).
-* TODO: not all ToIP definitions are fully linked here. This whole section is more of an exemplar as of the time of writing.
-
 [[def: autonomous identifier]] 
 ~ Another term for [[ref: self-certifying identifier (SCID)]]. 
-
-[[def: cryptographic keys]]
-~ TODO: Replace with ToIP Glossary link
 
 [[def: cryptographically verifiable]]
 ~ A property of a data structure that has been digitally signed using a private key such that the digital signature can be verified using the public key. Verifiable data, verifiable messages, verifiable credentials, and verifiable data registries are all cryptographically verifiable. Cryptographic verifiability is a primary goal of the ToIP Technology Stack.
@@ -21,15 +14,9 @@ NOTE:
 [[def: self-certifying identifier (SCID), SCID, SCIDs]]
 ~ A subclass of verifiable identifier ([[ref: VID]]) that is [[def: cryptographically verifiable]] without the need to rely on any [[ref: third party]] for [[ref: verification]] because the [[ref: identifier]] is cryptographically bound to the [[ref: cryptographic keys]] from which it was generated. Also known as: [[ref: autonomous identifier]].
 
-[[def: third party]]
-~ A party that is not directly involved in the trust relationship between a first party and a second party, but provides supporting services to either or both of them.
-
 [[def: verifiable identifier (VID), VID, VIDs]]
 ~ An identifier over which the controller can provide cryptographic proof of control.
 See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
-
-[[def: verification]]
-~ An action an agent (of a principal) performs to determine the authenticity of a claim or other digital object using a cryptographic key.
 
 
 ### Terminology
