@@ -57,7 +57,7 @@ requirements.
 
 ### International Domain Names
 
-Like `did:web`, due to [[spec:DID-CORE]] identifier syntax not allowing Unicode in method name or method specific identifiers, implementers should be cautious when implementing support for DID URLs that rely on domain names or path components that contain Unicode characters.
+As with `did:web`, implementers of this method should consider how non-ASCII characters manifest in URLs and DIDs. The [[spec:DID-CORE]] identifier syntax does not allow the direct representation of such characters in method name or method specific identifiers. This prevents a `did:webs` value from embodying a homograph attack. However, `did:webs` can hold data encoded with punycode or percent encoding. This means that IRIs constructed from DID values could contain non-ASCII characters that were not obvious in the DID, surprising a casual human reader. Caution is therefore recommended when treating a `did:webs` as the equivalent of an IRI. Treating it as the equivalent of a URL, instead, preserves the punycode and percent encoding and is therefore safe.
 
 See also:
 * [UTS-46](https://unicode.org/reports/tr46/)
