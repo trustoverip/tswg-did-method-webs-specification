@@ -21,6 +21,9 @@ See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 
 ### Terminology
 
+[[def: AID controlled identifiers, AID controlled identifier]]
+~ Any identifier, including `did:webs` DIDs, that have the same AID are by definition referencing the same identity. As defined by [KERI]() TODO: Add link to KERI documentation here.
+
 [[def: authentic chained data container (ACDC), ACDC, ACDCs]]
 ~ a variant of [the Verifiable Credential (VC) specification](https://www.w3.org/TR/vc-data-model/) that inherits the security model derived from [[ref: KERI]], as defined by the [draft ACDC specification](https://trustoverip.github.io/tswg-acdc-specification/draft-ssmith-acdc.html). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/authentic-chained-data-container) for more detail.
 
@@ -35,6 +38,9 @@ See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 
 [[def: decentralized identifier (DID), DID, DIDs]]
 ~ A globally unique persistent identifier, as defined by [DID Core](https://www.w3.org/TR/did-core/#dfn-decentralized-identifiers).
+
+[[def:  designated aliases, designated alias]]
+~ An array of [[ref:AID controlled identifiers]] that have been designated by the AID controller to be used as aliases for `equivalentId` and `alsoKnownAs` DID document metadata and to foster verification of redirection from old to current did:webs identifiers. See [WebOfTrust glossary](https://github.com/WebOfTrust/WOT-terms/wiki/designated-aliases) for more detail.
 
 [[def: DID document, DID documents]]
 ~ A set of data describing the subject of a [[ref: DID]], as defined by [DID Core](https://www.w3.org/TR/did-core/#dfn-did-documents). See also section [DID Documents](#did-documents).
