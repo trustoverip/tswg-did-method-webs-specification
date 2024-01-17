@@ -47,14 +47,14 @@ DID, the company can resolve the DID. It can also resolve the DID's
   placement on the [US News Rankings of Colleges and Universities].
 
 Such checks can all be done with a handful of HTTPS requests and the processing
-of the DIDs and verifiable presentations. The result is an efficient, verifiable
+of the DIDs and verifiable presentations. The result is an efficient, verifiable,
 credential-based, decentralized, multi-domain trust registry.
 
 [US News Rankings of Colleges and Universities]: https://www.usnews.com/education/best-global-universities
 
 ### `whois` DID URL Conventions
 
-The `whois` object, if it exists, MUST be directly beside the `did:json`
+The `whois` object, if it exists, MUST be directly beside the `did.json`
 file, the DID Document for the DID. The [DID URL path] to the folder MUST be
 `<did:webs DID>/whois`.
 

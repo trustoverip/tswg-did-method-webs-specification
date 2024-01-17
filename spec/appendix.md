@@ -1,4 +1,25 @@
-## Terminology
+## Appendix
+
+### Trust Over IP Glossary - Controlled Terms 
+
+[[def: autonomous identifier]] 
+~ Another term for [[ref: self-certifying identifier (SCID)]]. 
+
+[[def: cryptographically verifiable]]
+~ A property of a data structure that has been digitally signed using a private key such that the digital signature can be verified using the public key. Verifiable data, verifiable messages, verifiable credentials, and verifiable data registries are all cryptographically verifiable. Cryptographic verifiability is a primary goal of the ToIP Technology Stack.
+
+[[def: identifier]]
+~ A single attribute—typically a character string—that uniquely identifies an entity within a specific context (which may be a global context). Examples include the name of a party, the URL of an organization, or a serial number for a man-made thing. Supporting definitions: eSSIF-Lab: a character string that is being used for the identification of some entity (yet may refer to 0, 1, or more entities, depending on the context within which it is being used).
+
+[[def: self-certifying identifier (SCID), SCID, SCIDs]]
+~ A subclass of verifiable identifier ([[ref: VID]]) that is [[ref: cryptographically verifiable]] without the need to rely on any third party for verification because the [[ref: identifier]] is cryptographically bound to the cryptographic keys from which it was generated. Also known as: [[ref: autonomous identifier]].
+
+[[def: verifiable identifier (VID), VID, VIDs]]
+~ An identifier over which the controller can provide cryptographic proof of control.
+See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
+
+
+### Terminology
 
 [[def: AID controlled identifiers, AID controlled identifier]]
 ~ Any identifier, including `did:webs` DIDs, that have the same AID are by definition referencing the same identity. As defined by [KERI]() TODO: Add link to KERI documentation here.
@@ -7,7 +28,7 @@
 ~ a variant of [the Verifiable Credential (VC) specification](https://www.w3.org/TR/vc-data-model/) that inherits the security model derived from [[ref: KERI]], as defined by the [draft ACDC specification](https://trustoverip.github.io/tswg-acdc-specification/draft-ssmith-acdc.html). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/authentic-chained-data-container) for more detail.
 
 [[def: autonomic identifier (AID), AID, AIDs]]
-~ A [[ref: DID]] that is self-certifying and cryptographically bound to a [[ref: key event log]] ([[ref: KEL]]), as defined by the [draft KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-autonomic-identifier-aid). An AID is either non-transferable or transferable. A non-transferable AID does not support key rotation while a transferable AID supports key rotation using a key [[ref: pre-rotation]] mechanism that enables the AID to persist in spite of the evolution of its key state. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/autonomic-identifier) for more detail.
+~ A [[ref: self-certifying identifier (SCID)]] that is cryptographically bound cryptographically bound to a [[ref: key event log]] ([[ref: KEL]]), as defined by the [draft KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-autonomic-identifier-aid). An AID is either non-transferable or transferable. A non-transferable AID does not support key rotation while a transferable AID supports key rotation using a key [[ref: pre-rotation]] mechanism that enables the AID to persist in spite of the evolution of its key state. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/autonomic-identifier) for more detail.
 
 [[def: compact event streaming representation (CESR), CESR]]
 ~ An encoding format that enables round-trip text-binary conversion of concatenated cryptographic primitives and general data types, as defined by the [draft CESR specification](https://trustoverip.github.io/tswg-cesr-specification/draft-ssmith-cesr.html) and [draft CESR Proof Signature specification](https://trustoverip.github.io/tswg-cesr-proof-specification/draft-pfeairheller-cesr-proof.html).  See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/composable-event-streaming-representation) for more detail.
@@ -26,6 +47,9 @@
 
 [[def: direct mode]]
 ~ an operational mode of the [[ref: KERI]] protocol where a controller and a verifier of an [[ref: AID]] exchange the [[ref: KEL]] of the AID directly, as defined by the [KERI whitepaper](https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/direct-mode) for more detail.
+
+[[def: host, hosts, host name, host names]]
+~ The part of a URL that can be either a domain name or an IP address. This component specifies the server that the client needs to communicate with in order to access the desired resource on the web.
 
 [[def: inception event, inception events]]
 ~ A key event that provides the incepting information needed to derive an [[ref: AID]] and establish its initial [[ref: key state]], as defined by the [draft KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#section-2). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/inception-event) for more detail.
@@ -57,7 +81,7 @@
 [[def: key state, key states]]
 ~ The set of currently authoritative key pairs (current keys) for an [[ref: AID]] and any other information necessary to secure or establish control authority over the AID. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/key-state) for more detail.
 
-[[def: method-specific identifier (MSI), MSI]]
+[[def: method-specific identifier, MSI]]
 ~ The `method-specific-id` part of DID Syntax, as defined in [DID Core](https://www.w3.org/TR/did-core/#did-syntax). See section [Method-Specific Identifier](#method-specific-identifier).
 
 [[def: out-of-band introduction (OOBI), OOBI, OOBIs, OOBI specification]]
