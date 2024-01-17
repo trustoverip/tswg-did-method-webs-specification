@@ -1,19 +1,11 @@
 ## DID Documents
 
-### Introduction
-DID documents in this method are generated or derived from the key state of the
-corresponding AID. By processing the [[ref: KERI event stream]] of the AID, the generation algorithm will be reading the AID [[ref: KEL]] (and possibly [[ref: TEL]])
-to produce the DID document. 
+1. `did:webs` DID documents MUST be generated or derived from the [[ref:Keri event stream]] of the corresponding AID.
+    1. Processing the [[ref: KERI event stream]] of the AID, the generation algorithm will be reading the AID [[ref: KEL]] and any anchored [[ref: TELs]] to produce the DID document. 
+1. `did:webs` DID documents MUST be pure JSON. They MAY be processed as JSON-LD by prepending an `@context` if consumers of the documents wish.
+1. All hashes, cryptographic keys, and signatures MUST be represented as CESR strings. This is an approach similar to multibase, making them self-describing and terse.
 
-DID documents for this method are pure JSON. They may be processed as JSON-LD by
-prepending an `@context` if consumers of the documents wish.
-
-Hashes, cryptographic keys, and signatures are represented as CESR strings. This
-is an approach similar to multibase, making them self-describing and terse.
-
-### DID Document from KERI Events
-The [[ref: KERI event stream]] represents a cryptographic chain
-of custody from the [[ref: AID]] itself down to the current set of keys and the cryptographic commitment to the next rotation key(s). The [[ref: KERI event stream]] also contains events that do not alter the [[ref: AID]] key state, but are useful for the DID document, such as the supported [[ref: hosts]], current set of service endpoints, etc. A did:webs resolver produces the DID document by processing the [[ref: KERI event stream]] to determine the current key state. We detail the different events in (KERI event details)[#KERI-event-details] below and show how they change the DID Document. The mapping from [[ref: KERI event stream]] to the properties of the DID Document is the core of the did:webs resolver logic.  Understanding the optimal way to update and maintain the [[ref: KERI event stream]] (publish static keri.cesr files, dyanamically generate the keri.cesr resource, etc) is beyond the scope of the spec, but a reference implementation of the resolver that details these techniques is being developed alongside this spec. The important concepts are that the entire [[ref: KERI event stream]] is used to produce and verify the DID document.
+> The [[ref: KERI event stream]] represents a cryptographic chain of custody from the [[ref: AID]] itself down to the current set of keys and the cryptographic commitment to the next rotation key(s). The [[ref: KERI event stream]] also contains events that do not alter the [[ref: AID]] key state, but are useful for the DID document, such as the supported [[ref: hosts]], current set of service endpoints, etc. A did:webs resolver produces the DID document by processing the [[ref: KERI event stream]] to determine the current key state. We detail the different events in (KERI event details)[#KERI-event-details] below and show how they change the DID Document. The mapping from [[ref: KERI event stream]] to the properties of the DID Document is the core of the did:webs resolver logic.  Understanding the optimal way to update and maintain the [[ref: KERI event stream]] (publish static keri.cesr files, dyanamically generate the keri.cesr resource, etc) is beyond the scope of the spec, but a reference implementation of the resolver that details these techniques is being developed alongside this spec. The important concepts are that the entire [[ref: KERI event stream]] is used to produce and verify the DID document.
 
 In KERI the calculated values that result from processing the [[ref: KERI event stream]] are referred to as the "current key state" and expressed
 in the Key State Notice (KSN) record.  An example of a KERI KSN record can be seen here:
@@ -66,12 +58,9 @@ in the DID document.  The following table lists the values from the example KSN 
 In several cases above, the value from the key state is not enough by itself to populate the DID document.  The following
 sections detail the algorithm to follow for each case.
 
-#### DID Subject
-The value of the `id` property in the DID document MUST be the `did:webs` DID that is being created or resolved.
-It reflects the current combined web location and AID of the identifier.
-The value from the `i` field MUST be the value after the last `:` in the
-[[ref: method-specific identifier]] ([[ref: MSI]]) of the `did:webs` DID, according to the syntax rules in section
-[Method-Specific Identifier](#method-specific-identifier).
+### DID Subject
+1. The value of the `id` property in the DID document MUST be the `did:webs` DID that is being created or resolved.
+1. The value from the `i` field MUST be the value after the last `:` in the [[ref: method-specific identifier]] ([[ref: MSI]]) of the `did:webs` DID, according to the syntax rules in section [Method-Specific Identifier](#method-specific-identifier).
 
 ```json
 {
@@ -79,7 +68,7 @@ The value from the `i` field MUST be the value after the last `:` in the
 }
 ```
 
-#### DID Controller
+### DID Controller
 The value of the `controller` property MUST be a single string that is the same as the `id` (the DID Subject).
 
 ```json
@@ -88,19 +77,17 @@ The value of the `controller` property MUST be a single string that is the same 
 }
 ```
 
-#### Also Known As
-The `alsoKnownAs` property in the root of the DID document MAY contain any DID that has the same AID, see [[ref: AID controlled identifier]].
-See the [[ref: designated aliases]] section for information on how an AID anchors the `alsoKnownAs` identifiers to their [[ref: KERI event stream]].
+### Also Known As
 
-It is anticipated that implementations of this DID method will serve the `did:webs` and corresponding `did:web`
-as an `alsoKnownAs` identifier.  Likewise, any implementation of `did:webs` will provide the corresponding `did:keri` as an `alsoKnownAs` identifier.
-Finally, the same `did:webs` may be served under
-multiple domains at the same time but will only be verifiable if they are listed in the [[ref: designated aliases]] attestation.
+1. The `alsoKnownAs` property in the root of the DID document MAY contain any DID that has the same AID. See the [[ref: designated aliases]] section for information on how an AID anchors the `alsoKnownAs` identifiers to their [[ref: KERI event stream]].
+1. `did:webs` DIDs SHOULD serve the `did:webs` and corresponding `did:web`as an `alsoKnownAs` identifier.
+1. `did:webs` DIDs SHOULD will provide the corresponding `did:keri` as an `alsoKnownAs` identifier.
+1. The same AID MAY be associated with multiple `did:webs` DIDs, each with a different [[ref:host]] and/or path, but with the same AID.
+1. `did:webs` are only verifiable if they are listed in the [[ref: designated aliases]] attestation of the AID.
+1. For each [[ref: AID controlled identifier]] DID defined above an entry in the `alsoKnownAs` array
+in the DID document SHOULD be created.
 
-For each [[ref: AID controlled identifier]] DID defined above an entry in the `alsoKnownAs` array
-in the DID document should be created.  For the DID
-`did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M` the following `alsoKnownAs`
-entries could be created:
+For the example DID `did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M` the following `alsoKnownAs` entries could be created:
 
 ```json
 {
@@ -112,18 +99,16 @@ entries could be created:
 }
 ```
 
-#### Verification Methods
+### Verification Methods
 KERI identifiers express public signing keys as Composable Event Streaming Representation (CESR) encoded strings in the
 `k` field of establishment events and the key state notice.  CESR encoding encapsulates all the information needed to
-determine the cryptographic algorithm used to generate the key pair.  For each key listed in the array value of the `k` field
-a corresponding verification method will be generated in the DID document.  The 'type' property  in the verification method for each
-public key will be determined by the algorithm used to generate the public key.  At the time of this writing, KERI currently
-supports public key generation for Ed25519, Secp256k1 and Secp256r1 keys, and the protocol allows for others to be added at any time.
-We must define the subset of public key algorithms for KERI AIDs that this specification will accept, so we can define mappings to existing verification method types as registered in the DID Specification Registries.  As KERI evolves with more algorithms, new verification method types must be registered in the DID Specification Registries and added to this specification.
-
-The `id` property of the verification method must be a relative DID URL and use the KERI key CESR value as the value of the fragment component, e.g., `"id": "#<identifier>"`.
-
-The `controller` property of the verification method must be the value of the `id` property of DID document. (TODO: Does the method spec need to specify this?)
+determine the cryptographic algorithm used to generate the key pair.
+1. For each key listed in the array value of the `k` field of the KSN, a corresponding verification method SHALL be generated in the DID document.
+1. The 'type' property  in the verification method for each public key SHALL be determined by the algorithm used to generate the public key.
+    * At the time of this writing, KERI currently supports public key generation for Ed25519, Secp256k1 and Secp256r1 keys, and the protocol allows for others to be added at any time.
+1. Verification method types MUST be registered in the [DID Specification Registries](https://w3c.github.io/did-spec-registries/#verification-method-types) and added to this specification.
+1. The `id` property of the verification method MUST be a relative DID URL and use the KERI key CESR value as the value of the fragment component, e.g., `"id": "#<identifier>"`.
+1. The `controller` property of the verification method MUST be the value of the `id` property of the DID document.
 
 For example, the key `DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK` in the DID document for the AID `EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2` becomes:
 
@@ -137,8 +122,8 @@ For example, the key `DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK` in the DID d
   ]
 ```
 
-##### Ed25519
-Ed25519 public keys must be converted to a verification method with a type of `JsonWebKey` and `publicKeyJwk` property whose value is generated by decoding the CESR representation of the public key out of the KEL and into its binary form (minus the leading 'B' or 'D' CESR codes) and generating the corresponding representation of the key in JSON Web Key form.
+#### Ed25519
+1. Ed25519 public keys MUST be converted to a verification method with a type of `JsonWebKey` and `publicKeyJwk` property whose value is generated by decoding the CESR representation of the public key out of the KEL and into its binary form (minus the leading 'B' or 'D' CESR codes) and generating the corresponding representation of the key in JSON Web Key form.
 
 For example, a KERI AID with only the following inception event in its KEL:
 
@@ -175,8 +160,8 @@ For example, a KERI AID with only the following inception event in its KEL:
   ]
 ```
 
-##### Secp256k1
-Secp256k1 public keys must be converted to a verification method with a type of `JsonWebKey` and `publicKeyJwk` property whose value is generated by decoding the CESR representation of the public key out of the KEL and into its binary form (minus the leading '1AAA' or '1AAB' CESR codes) and generating the corresponding representation of the key in JSON Web Key form.
+#### Secp256k1
+1. Secp256k1 public keys MUST be converted to a verification method with a type of `JsonWebKey` and `publicKeyJwk` property whose value is generated by decoding the CESR representation of the public key out of the KEL and into its binary form (minus the leading '1AAA' or '1AAB' CESR codes) and generating the corresponding representation of the key in JSON Web Key form.
 
 For example, a KERI AID with only the following inception event in its KEL:
 
@@ -214,25 +199,18 @@ For example, a KERI AID with only the following inception event in its KEL:
   ]
 ```
 
-##### Thresholds
-If the current signing keys threshold (the value of the `kt` field) is a string containing a number that is greater than 1,
+#### Thresholds
+1. If the current signing keys threshold (the value of the `kt` field) is a string containing a number that is greater than 1,
 or if it is an array containing fractionally weighted thresholds, then in addition to the verification
 methods generated according to the rules in the previous sections, another verification method
-with a type of `ConditionalProof2022` will be generated in the DID document. This verification method type is defined here:
-https://w3c-ccg.github.io/verifiable-conditions/ (TODO: add proper references).
-
-It is constructed according to the following rules:
-
-* The `id` property of the verification method MUST be a relative DID URL and use the AID as the value of the fragment component, e.g., `"id": "#<aid>"`.
-
-* The `controller` property of the verification method MUST be the value of the `id` property of the DID document. (Does the method spec need to specify this?)
-
-* If the value of the `kt` field is a string containing a number that is greater than 1:
-
-    * The `threshold` property of the verification method MUST be the integer value of the `kt` field in the current key state.
-    * The `conditionThreshold` property of the verification method MUST contain an array. For each key listed in the array value of the `k` field in the
-      key state:
-      * The relative DID URL corresponding to the key MUST be added to the array value of the `conditionThreshold` property.
+with a type of `ConditionalProof2022` MUST be generated in the DID document. This verification method type is defined [here](https://w3c-ccg.github.io/verifiable-conditions/).
+1. It is constructed according to the following rules:
+    1. The `id` property of the verification method MUST be a relative DID URL and use the AID as the value of the fragment component, e.g., `"id": "#<aid>"`.
+    1. The `controller` property of the verification method MUST be the value of the `id` property of the DID document. (Does the method spec need to specify this?)
+    1. If the value of the `kt` field is a string containing a number that is greater than 1:
+        1. The `threshold` property of the verification method MUST be the integer value of the `kt` field in the current key state.
+        1. The `conditionThreshold` property of the verification method MUST contain an array. For each key listed in the array value of the `k` field in the key state:
+            1. The relative DID URL corresponding to the key MUST be added to the array value of the `conditionThreshold` property.
 
 For example, a KERI AID with only the following inception event in its KEL:
 
@@ -387,7 +365,7 @@ For example, a KERI AID with only the following inception event in its KEL:
 }
 ```
 
-#### Verification Relationships
+### Verification Relationships
 Private keys of a KERI AID can be used to sign a variety of data.  This includes but is not limited to logging into a website,
 challenge-response exchanges and credential issuances.  It follows that:
 
@@ -407,17 +385,17 @@ If the value of `kt` > 1 or if the value of `kt` is an array containing fraction
 
 References to verification methods in the DID document MUST use the relative form of the identifier, e.g., `"authentication": ["#<identifier>"]`.
 
-##### Key Agreement
+#### Key Agreement
 There are multiple ways to establish key agreement in KERI. We detail common considerations and techniques:
 * *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we specify endpoints, [[ref: host]] migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
 * *Key agreement from `k` field keys:* It is important to note that KERI is cryptographically agile and can support a variety of keys and signatures. If the 'k' field references a Ed25519 key, then key agreement could be established using the corresponding x25519 key for Diffie-Helman key exchange. Alternatively if the key is an ECDSA or other NIST algorithms key then it will be the same key for signatures and encryption and can be used for key agreement.
 * *Key agreement anchored in KEL:* It is always possible to anchor arbitrary data, like a key agreement key, to the KEL. Likely the best mechanism is to anchor an ACDC to a [[ref: TEL]] which is anchored to the KEL.
 
-#### Service Endpoints
+### Service Endpoints
 `did:webs` supports service endpoints, including types declared in the DID Specification Registries, such as [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging).  For additional details about the mapping between KERI events and the Service Endpoints in the DID Document, see [Service Endpoint KERI events](#service-endpoint-event-details).  It is important to note that DID document service endpoints are different than the KERI service endpoints detailed in [KERI Service Endpoints as DID Document Metadata](#keri-service-endpoints-as-did-document-metadata).
 
 
-##### KERI Service Endpoints as DID Document Metadata
+#### KERI Service Endpoints as DID Document Metadata
 In KERI, service endpoints are defined by 2 sets of signed data using Best Available Data - Read, Update, Nullify ([[ref: BADA-RUN]]) rules for data processing.  The protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
 
 The two data sets used to define service endpoints are called Location Schemes and Endpoint Role Authorizations and are expressed in KERI `rpy` events.  Location Schemes define URLs for any URL scheme that an AID has exposed.  For example, the following `rpy` method declares that the AID `EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1` exposes the URL `http://localhost:3902` for scheme `http`:
@@ -473,7 +451,7 @@ The current set of endpoint roles in KERI is contained in the following table:
 |`mailbox` | A component authorized to serve as a store and forward mailbox for the source identifier.  This component usually provides a persistent internet connection for AID controllers that are usually off line.|
 |`agent` | A component authorized to serve as an agent running with persistent internet connection.  Provides more funcitonality than a `mailbox`|
 
-###### Defining new service types
+##### Defining new service types
 KERI service endpoints roles beyond `witness` can be defined using Location Scheme and Endpoint Authorization records in KERI.  This section will map the current roles in KERI to service `type` values in resulting DID documents and propose a new role in KERI to map to the existing [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging) service type declared in DID Specification Registries.
 
 ```json
@@ -499,7 +477,7 @@ KERI service endpoints roles beyond `witness` can be defined using Location Sche
 TODO:  Detail the transformation
 
 
-#### Other Key Commitments
+### Other Key Commitments
 Data structures similar to Location Scheme and Endpoint Authorizations and managed in KERI using [[ref: BADA-RUN]] could be created that would be used for declaring other types of keys, for example encryption keys, etc
 
 TODO:  Propose new data structures in KERI and Detail the transformation
