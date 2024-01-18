@@ -204,241 +204,231 @@ For example, a KERI AID with only the following inception event in its KEL:
 or if it is an array containing fractionally weighted thresholds, then in addition to the verification
 methods generated according to the rules in the previous sections, another verification method
 with a type of `ConditionalProof2022` MUST be generated in the DID document. This verification method type is defined [here](https://w3c-ccg.github.io/verifiable-conditions/).
-1. It is constructed according to the following rules:
-    1. The `id` property of the verification method MUST be a relative DID URL and use the AID as the value of the fragment component, e.g., `"id": "#<aid>"`.
-    1. The `controller` property of the verification method MUST be the value of the `id` property of the DID document. (Does the method spec need to specify this?)
-    1. If the value of the `kt` field is a string containing a number that is greater than 1:
-        1. The `threshold` property of the verification method MUST be the integer value of the `kt` field in the current key state.
-        1. The `conditionThreshold` property of the verification method MUST contain an array. For each key listed in the array value of the `k` field in the key state:
-            1. The relative DID URL corresponding to the key MUST be added to the array value of the `conditionThreshold` property.
+    1. It is constructed according to the following rules:
+        1. The `id` property of the verification method MUST be a relative DID URL and use the AID as the value of the fragment component, e.g., `"id": "#<aid>"`.
+        1. The `controller` property of the verification method MUST be the value of the `id` property of the DID document. (Does the method spec need to specify this?)
+        1. If the value of the `kt` field is a string containing a number that is greater than 1:
+            1. The `threshold` property of the verification method MUST be the integer value of the `kt` field in the current key state.
+            1. The `conditionThreshold` property of the verification method MUST contain an array. For each key listed in the array value of the `k` field in the key state:
+                1. The relative DID URL corresponding to the key MUST be added to the array value of the `conditionThreshold` property.
+        1. If the value of the `kt` field is an array containing fractionally weighted thresholds:
+            1. The `threshold` property of the verification method MUST be half of the lowest common denominator (LCD) of all the fractions in the `kt` array.
+            1. The `conditionWeightedThreshold` property of the verification method MUST contain an array. For each key listed in the array value of the `k` field in the key state, and for each corresponding fraction listed in the array value of the `kt` field:
+                1. A JSON object MUST be added to the array value of the `conditionWeightedThreshold` property.
+                1. The JSON object MUST contain a property `condition` whose value is the relative DID URL corresponding to the key.
+                1. The JSON object MUST contain a property `weight` whose value is the numerator of the fraction after it has been expanded over the lowest common denominator (LCD) of all the fractions.
 
-For example, a KERI AID with only the following inception event in its KEL:
-
-```json
-{
-  "v": "KERI10JSON0001b7_",
-  "t": "icp",
-  "d": "Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "i": "Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "s": "0",
-  "kt": "2",  // Signing Threshold
-  "k": [
-    "1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",  // Secp256k1 Key
-    "DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",      // Ed25519 Key
-    "DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"       // Ed25519 Key
-  ],
-}
-```
-
-... would result in a DID document with the following verification methods array:
-
-```json
-{
-  "verificationMethod": [
-    {
-      "id": "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "type": "ConditionalProof2022",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "threshold": 2,
-      "conditionThreshold": [
-        "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
-        "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
-        "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"
-      ]
-    },
-    {
-      "id": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
-      "type": "JsonWebKey",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "publicKeyJwk": {
-        "kid": "1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
-        "kty": "EC",
-        "crv": "secp256k1",
-        "x": "NtngWpJUr-rlNNbs0u-Aa8e16OwSJu6UiFf0Rdo1oJ4",
-        "y": "qN1jKupJlFsPFc1UkWinqljv4YE0mq_Ickwnjgasvmo"
-      }
-    },
-    {
-      "id": "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
-      "type": "JsonWebKey",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "publicKeyJwk": {
-        "kid": "DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
-        "kty": "OKP",
-        "crv": "Ed25519",
-        "x": "A-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE"
-      }
-    },
-    {
-      "id": "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
-      "type": "JsonWebKey",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "publicKeyJwk": {
-        "kid": "DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
-        "kty": "OKP",
-        "crv": "Ed25519",
-        "x": "LWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNws"
-      }
-    }
-  ]
-}
-```
-
-* If the value of the `kt` field is an array containing fractionally weighted thresholds:
-
-    * The `threshold` property of the verification method MUST be half of the lowest common denominator (LCD) of all the fractions
-      in the `kt` array.
-    * The `conditionWeightedThreshold` property of the verification method MUST contain an array. For each key listed in the array value of the `k` field in the
-      key state, and for each corresponding fraction listed in the array value of the `kt` field:
-      * A JSON object MUST be added to the array value of the `conditionWeightedThreshold` property.
-      * The JSON object MUST contain a property `condition` whose value is the relative DID URL corresponding to the key.
-      * The JSON object MUST contain a property `weight` whose value is the numerator of the fraction after it has been expanded over the lowest common denominator (LCD) of all the fractions.
-
-For example, a KERI AID with only the following inception event in its KEL:
-
-```json
-{
-  "v": "KERI10JSON0001b7_",
-  "t": "icp",
-  "d": "Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "i": "Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "s": "0",
-  "kt": ["1/2", "1/3", "1/4"],  // Signing Threshold
-  "k": [
-    "1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",  // Secp256k1 Key
-    "DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",      // Ed25519 Key
-    "DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"       // Ed25519 Key
-  ],
-}
-```
-
-... would result in a DID document with the following verification methods array:
-
-```json
-{
-  "verificationMethod": [
-    {
-      "id": "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "type": "ConditionalProof2022",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "threshold": 12,
-      "conditionWeightedThreshold": [
+        * For example, a KERI AID with only the following inception event in its KEL, and with a `kt` value greater than 1:
+        
+        ```json
         {
-          "condition": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
-          "weight": 6
-        },
-        {
-          "condition": "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
-          "weight": 4
-        },
-        {
-          "condition": "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
-          "weight": 3
+          "v": "KERI10JSON0001b7_",
+          "t": "icp",
+          "d": "Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+          "i": "Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+          "s": "0",
+          "kt": "2",  // Signing Threshold
+          "k": [
+            "1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",  // Secp256k1 Key
+            "DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",      // Ed25519 Key
+            "DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"       // Ed25519 Key
+          ],
         }
-      ]
-    },
-    {
-      "id": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
-      "type": "EcdsaSecp256k1VerificationKey2019",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "publicKeyJwk": {
-        "crv": "secp256k1",
-        "x": "NtngWpJUr-rlNNbs0u-Aa8e16OwSJu6UiFf0Rdo1oJ4",
-        "y": "qN1jKupJlFsPFc1UkWinqljv4YE0mq_Ickwnjgasvmo",
-        "kty": "EC",
-        "kid": "WjKgJV7VRw3hmgU6--4v15c0Aewbcvat1BsRFTIqa5Q"
-      }
-    },
-    {
-      "id": "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
-      "type": "Ed25519VerificationKey2020",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "publicKeyMultibase": "zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
-    },
-    {
-      "id": "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
-      "type": "Ed25519VerificationKey2020",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "publicKeyMultibase": "zDqYpw38nznAUJeeFdhKBQutRKpyDXeXxxi1HjYUQXLas"
-    }
-  ]
-}
-```
+        ```
+
+        * Results in a DID document with the following verification methods array:
+
+        ```json
+        {
+          "verificationMethod": [
+            {
+              "id": "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+              "type": "ConditionalProof2022",
+              "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+              "threshold": 2,
+              "conditionThreshold": [
+                "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+                "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+                "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"
+              ]
+            },
+            {
+              "id": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+              "type": "JsonWebKey",
+              "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+              "publicKeyJwk": {
+                "kid": "1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+                "kty": "EC",
+                "crv": "secp256k1",
+                "x": "NtngWpJUr-rlNNbs0u-Aa8e16OwSJu6UiFf0Rdo1oJ4",
+                "y": "qN1jKupJlFsPFc1UkWinqljv4YE0mq_Ickwnjgasvmo"
+              }
+            },
+            {
+              "id": "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+              "type": "JsonWebKey",
+              "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+              "publicKeyJwk": {
+                "kid": "DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+                "kty": "OKP",
+                "crv": "Ed25519",
+                "x": "A-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE"
+              }
+            },
+            {
+              "id": "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
+              "type": "JsonWebKey",
+              "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+              "publicKeyJwk": {
+                "kid": "DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
+                "kty": "OKP",
+                "crv": "Ed25519",
+                "x": "LWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNws"
+              }
+            }
+          ]
+        }
+        ```
+
+        * For example, a KERI AID with only the following inception event in its KEL, and a `kt` containing fractionally weighted thresholds:
+
+        ```json
+        {
+          "v": "KERI10JSON0001b7_",
+          "t": "icp",
+          "d": "Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+          "i": "Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+          "s": "0",
+          "kt": ["1/2", "1/3", "1/4"],  // Signing Threshold
+          "k": [
+            "1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",  // Secp256k1 Key
+            "DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",      // Ed25519 Key
+            "DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu"       // Ed25519 Key
+          ],
+        }
+        ```
+
+        * would result in a DID document with the following verification methods array:
+
+        ```json
+        {
+          "verificationMethod": [
+            {
+              "id": "#Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+              "type": "ConditionalProof2022",
+              "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+              "threshold": 12,
+              "conditionWeightedThreshold": [
+                {
+                  "condition": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+                  "weight": 6
+                },
+                {
+                  "condition": "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+                  "weight": 4
+                },
+                {
+                  "condition": "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
+                  "weight": 3
+                }
+              ]
+            },
+            {
+              "id": "#1AAAAg299p5IMvuw71HW_TlbzGq5cVOQ7bRbeDuhheF-DPYk",
+              "type": "EcdsaSecp256k1VerificationKey2019",
+              "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+              "publicKeyJwk": {
+                "crv": "secp256k1",
+                "x": "NtngWpJUr-rlNNbs0u-Aa8e16OwSJu6UiFf0Rdo1oJ4",
+                "y": "qN1jKupJlFsPFc1UkWinqljv4YE0mq_Ickwnjgasvmo",
+                "kty": "EC",
+                "kid": "WjKgJV7VRw3hmgU6--4v15c0Aewbcvat1BsRFTIqa5Q"
+              }
+            },
+            {
+              "id": "#DA-vW9ynSkvOWv5e7idtikLANdS6pGO2IHJy7v0rypvE",
+              "type": "Ed25519VerificationKey2020",
+              "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+              "publicKeyMultibase": "zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
+            },
+            {
+              "id": "#DLWJrsKIHrrn1Q1jy2oEi8Bmv6aEcwuyIqgngVf2nNwu",
+              "type": "Ed25519VerificationKey2020",
+              "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+              "publicKeyMultibase": "zDqYpw38nznAUJeeFdhKBQutRKpyDXeXxxi1HjYUQXLas"
+            }
+          ]
+        }
+        ```
 
 ### Verification Relationships
-Private keys of a KERI AID can be used to sign a variety of data.  This includes but is not limited to logging into a website,
-challenge-response exchanges and credential issuances.  It follows that:
+> Private keys of a KERI AID can be used to sign a variety of data.  This includes but is not limited to logging into a website, challenge-response exchanges, credential issuances, etc.
 
-If the value of `kt` == 1:
-- For each public key in `k` and its corresponding verification method, two verification relationships MUST be generated
-  in the DID document.  One verification relationship of type `authentication` and one
-  verification relationship of type `assertionMethod`.  The `authentication` verification relationship defines that the
-  DID controller can authenticate using each key, and the `assertionMethod` verification relationship defines that the DID
-  controller can express claims using each key.
-
-If the value of `kt` > 1 or if the value of `kt` is an array containing fractionally weighted thresholds:
-- For the verification method of type `ConditionalProof2022` (see section [Thresholds](#thresholds)), two verification relationships MUST be generated
-  in the DID document.  One verification relationship of type `authentication` and one
-  verification relationship of type `assertionMethod`.  The `authentication` verification relationship defines that the
-  DID controller can authenticate using a combination of multiple keys above the threshold, and the `assertionMethod` verification relationship defines that the DID
-  controller can express claims using a combination of multiple keys above the threshold.
-
-References to verification methods in the DID document MUST use the relative form of the identifier, e.g., `"authentication": ["#<identifier>"]`.
+1. If the value of `kt` == 1:
+    1. For each public key in `k` and its corresponding verification method, two verification relationships MUST be generated in the DID document.  One verification relationship of type `authentication` and one verification relationship of type `assertionMethod`.  The `authentication` verification relationship defines that the DID controller can authenticate using each key, and the `assertionMethod` verification relationship defines that the DID controller can express claims using each key.
+1. If the value of `kt` > 1 or if the value of `kt` is an array containing fractionally weighted thresholds:
+    1. For the verification method of type `ConditionalProof2022` (see section [Thresholds](#thresholds)), two verification relationships MUST be generated in the DID document.  One verification relationship of type `authentication` and one verification relationship of type `assertionMethod`.  The `authentication` verification relationship defines that the DID controller can authenticate using a combination of multiple keys above the threshold, and the `assertionMethod` verification relationship defines that the DID controller can express claims using a combination of multiple keys above the threshold.
+1. References to verification methods in the DID document MUST use the relative form of the identifier, e.g., `"authentication": ["#<identifier>"]`.
 
 #### Key Agreement
 There are multiple ways to establish key agreement in KERI. We detail common considerations and techniques:
-* *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we specify endpoints, [[ref: host]] migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
-* *Key agreement from `k` field keys:* It is important to note that KERI is cryptographically agile and can support a variety of keys and signatures. If the 'k' field references a Ed25519 key, then key agreement could be established using the corresponding x25519 key for Diffie-Helman key exchange. Alternatively if the key is an ECDSA or other NIST algorithms key then it will be the same key for signatures and encryption and can be used for key agreement.
-* *Key agreement anchored in KEL:* It is always possible to anchor arbitrary data, like a key agreement key, to the KEL. Likely the best mechanism is to anchor an ACDC to a [[ref: TEL]] which is anchored to the KEL.
+1. If the 'k' field references a Ed25519 key, then key agreement MAY be established using the corresponding x25519 key for Diffie-Helman key exchange.
+1. If the key is an ECDSA or other NIST algorithms key then it will be the same key for signatures and encryption and can be used for key agreement.
+
+> * *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we specify endpoints, [[ref: host]] migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
+> * *Key agreement from `k` field keys:* It is important to note that KERI is cryptographically agile and can support a variety of keys and signatures.
+> * *Key agreement anchored in KEL:* It is always possible to anchor arbitrary data, like a key agreement key, to the KEL.
+>     * Likely the best mechanism is to anchor an ACDC to a [[ref: TEL]] which is anchored to the KEL.
+
+#### Other Key Commitments
+1. Data structures similar to Location Scheme and Endpoint Authorizations and managed in KERI using [[ref: BADA-RUN]] MAY be created and used for declaring other types of keys, for example encryption keys, etc
+    1. To support new data structures, propose them in KERI and detail the transformation in the spec.
 
 ### Service Endpoints
-`did:webs` supports service endpoints, including types declared in the DID Specification Registries, such as [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging).  For additional details about the mapping between KERI events and the Service Endpoints in the DID Document, see [Service Endpoint KERI events](#service-endpoint-event-details).  It is important to note that DID document service endpoints are different than the KERI service endpoints detailed in [KERI Service Endpoints as DID Document Metadata](#keri-service-endpoints-as-did-document-metadata).
+1. `did:webs` supports service endpoints, including types declared in the DID Specification Registries, such as [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging).  For additional details about the mapping between KERI events and the Service Endpoints in the DID Document, see [Service Endpoint KERI events](#service-endpoint-event-details).
+
+> It is important to note that DID document service endpoints are different than the KERI service endpoints detailed in [KERI Service Endpoints as DID Document Metadata](#keri-service-endpoints-as-did-document-metadata).
 
 
 #### KERI Service Endpoints as DID Document Metadata
-In KERI, service endpoints are defined by 2 sets of signed data using Best Available Data - Read, Update, Nullify ([[ref: BADA-RUN]]) rules for data processing.  The protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
+> In KERI, service endpoints are defined by 2 sets of signed data using Best Available Data - Read, Update, Nullify ([[ref: BADA-RUN]]) rules for data processing.  The protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
 
-The two data sets used to define service endpoints are called Location Schemes and Endpoint Role Authorizations and are expressed in KERI `rpy` events.  Location Schemes define URLs for any URL scheme that an AID has exposed.  For example, the following `rpy` method declares that the AID `EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1` exposes the URL `http://localhost:3902` for scheme `http`:
-
-```json
-{
-    "v": "KERI10JSON0000fa_",
-    "t": "rpy",
-    "d": "EOGL1KGpOnRaZDIB11uZDCkhHs52_MtMXHd7EqUqwtA3",
-    "dt": "2022-01-20T12:57:59.823350+00:00",
-    "r": "/loc/scheme",
-    "a": {
-      "eid": "EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1",
-      "scheme": "http",
-      "url": "http://127.0.0.1:3901/"
+1. The two data sets used to define service endpoints are called Location Schemes and Endpoint Role Authorizations and are expressed in KERI `rpy` events.
+    1. Location Schemes define URLs for any URL scheme that an AID has exposed.
+      * For example, the following `rpy` method declares that the AID `EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1` exposes the URL `http://localhost:3902` for scheme `http`:
+      ```json
+      {
+          "v": "KERI10JSON0000fa_",
+          "t": "rpy",
+          "d": "EOGL1KGpOnRaZDIB11uZDCkhHs52_MtMXHd7EqUqwtA3",
+          "dt": "2022-01-20T12:57:59.823350+00:00",
+          "r": "/loc/scheme",
+          "a": {
+            "eid": "EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1",
+            "scheme": "http",
+            "url": "http://127.0.0.1:3901/"
+          }
+        }
+      ```
+1. Endpoint Role Authorizations associate a role for one AID in relation to another AID.  Endpoint role authorizations are expressed in KERI `rpy` events.
+    * For example, the AID listed in `cid` is the source of the authorization, the `role` is the role and the AID listed in the `eid` field is the target of the authorization.  So in this example `EOGL1KGpOnRaZDIB11uZDCkhHs52_MtMXHd7EqUqwtA3` is being authorized as an Agent for `EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1`.
+    ```json
+    {
+        "v": "KERI10JSON000116_",
+        "t": "rpy",
+        "d": "EBiVyW6jPOeHX5briFYMQ4CefzqIZHgl-rrcXqj_t9ex",
+        "dt": "2022-01-20T12:57:59.823350+00:00",
+        "r": "/end/role/add",
+        "a": {
+          "cid": "EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1",
+          "role": "agent",
+          "eid": "EOGL1KGpOnRaZDIB11uZDCkhHs52_MtMXHd7EqUqwtA3"
+        }
     }
-  }
-```
+    ```
 
-Endpoint Role Authorizations associate a role for one AID in relation to another AID.  Endpoint role authorizations are expressed in KERI `rpy` events with the following structure:
-
-
-```json
-{
-    "v": "KERI10JSON000116_",
-    "t": "rpy",
-    "d": "EBiVyW6jPOeHX5briFYMQ4CefzqIZHgl-rrcXqj_t9ex",
-    "dt": "2022-01-20T12:57:59.823350+00:00",
-    "r": "/end/role/add",
-    "a": {
-      "cid": "EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1",
-      "role": "agent",
-      "eid": "EOGL1KGpOnRaZDIB11uZDCkhHs52_MtMXHd7EqUqwtA3"
-    }
-}
-```
-
-The AID listed in `cid` is the source of the authorization, the `role` is the role and the AID listed in the `eid` field is the target of the authorization.  So in this example, `EOGL1KGpOnRaZDIB11uZDCkhHs52_MtMXHd7EqUqwtA3` is being authorized as an Agent for `EIDJUg2eR8YGZssffpuqQyiXcRVz2_Gw_fcAVWpUMie1`.
-
-
-
-The current set of endpoint roles in KERI is contained in the following table:
-
+1. KERI service endpoints roles beyond `witness` SHOULD be defined using Location Scheme and Endpoint Authorization records in KERI.
+1. The following table contains the current set of endpoint roles in KERI and maps the current roles in KERI to service `type` values in the resulting DID documentsis:
 | Role | Description |
 |:-----|:------------|
 |`controller` | The association of the key controller of an AID.  These are always self-referential. |
@@ -451,36 +441,27 @@ The current set of endpoint roles in KERI is contained in the following table:
 |`mailbox` | A component authorized to serve as a store and forward mailbox for the source identifier.  This component usually provides a persistent internet connection for AID controllers that are usually off line.|
 |`agent` | A component authorized to serve as an agent running with persistent internet connection.  Provides more funcitonality than a `mailbox`|
 
-##### Defining new service types
-KERI service endpoints roles beyond `witness` can be defined using Location Scheme and Endpoint Authorization records in KERI.  This section will map the current roles in KERI to service `type` values in resulting DID documents and propose a new role in KERI to map to the existing [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging) service type declared in DID Specification Registries.
-
-```json
-{
-  "service": [
-      {
-        "id":"#Bgoq68HCmYNUDgOz4Skvlu306o_NY-NrYuKAVhk3Zh9c",
-        "type": "DIDCommMessaging", 
-        "serviceEndpoint": "https://bar.example.com"
-      }
-      {
-        "id":"#BuyRFMideczFZoapylLIyCjSdhtqVb31wZkRKvPfNqkw",
-        "type": "KERIAgent", 
-        "serviceEndpoint": {
-          "tcp": "tcp://bar.example.com:5542",
-          "https": "https://bar.example.com" 
+  * TODO: Detail the transformation with an example, for example:
+  ```json
+  {
+    "service": [
+        {
+          "id":"#Bgoq68HCmYNUDgOz4Skvlu306o_NY-NrYuKAVhk3Zh9c",
+          "type": "DIDCommMessaging", 
+          "serviceEndpoint": "https://bar.example.com"
         }
-      }
-  ]
-}
-```
-
-TODO:  Detail the transformation
-
-
-### Other Key Commitments
-Data structures similar to Location Scheme and Endpoint Authorizations and managed in KERI using [[ref: BADA-RUN]] could be created that would be used for declaring other types of keys, for example encryption keys, etc
-
-TODO:  Propose new data structures in KERI and Detail the transformation
+        {
+          "id":"#BuyRFMideczFZoapylLIyCjSdhtqVb31wZkRKvPfNqkw",
+          "type": "KERIAgent", 
+          "serviceEndpoint": {
+            "tcp": "tcp://bar.example.com:5542",
+            "https": "https://bar.example.com" 
+          }
+        }
+    ]
+  }
+  ```
+  * TODO:  Propose a new role in KERI to map to the existing [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging) service type declared in DID Specification Registries.
 
 ### Transformation to `did:web` DID Document
 
