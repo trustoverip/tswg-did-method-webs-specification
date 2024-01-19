@@ -465,89 +465,78 @@ There are multiple ways to establish key agreement in KERI. We detail common con
 
 ### Transformation to `did:web` DID Document
 
-The DID document that exists as a resource on a webserver is compatible with the `did:web` DID method and therefore
-necessarily different from a `did:webs` DID document with regard to the `id`, `controller`, and `alsoKnownAs` properties. This section
-defines a simple transformation algorithm from a `did:webs` DID document to a `did:web` DID document.
+The DID document that exists as a resource on a webserver is compatible with the `did:web` DID method and therefore necessarily different from a `did:webs` DID document with regard to the `id`, `controller`, and `alsoKnownAs` properties.
+1. To transform the `did:web` form of the DID Document to a `did:webs` the transformation MUST do the following:
+    1. In the values of the top-level `id` and `controller` properties of the DID document, replace the `did:webs` prefix string with `did:web`.
+    1. In the value of the top-level `alsoKnownAs` property, replace the entry that is now the new value of the `id` property (using `did:web`) with the old value of the `id` property (using `did:webs`).
+    1. All other content of the DID document MUST not be modified.
 
-Given a `did:webs` DID document, construct a new `did:web` DID document with the following differences:
-
-- In the values of the top-level `id` and `controller` properties of the DID document, replace the `did:webs` prefix string with `did:web`.
-- In the value of the top-level `alsoKnownAs` property, replace the entry that is now the new value of the `id` property (using `did:web`)
-  with the old value of the `id` property (using `did:webs`).
-- All other content of the DID document is simply copied without modifications.
-
-This transformation is used during the [Create](#create) DID method operation.
-
-For example, given the following `did:webs` DID document:
-```json
-{
-  "id": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "alsoKnownAs": [
-    "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
-  ],
-  ...
-}
-```
-
-The result of the transformation algorithm is the following `did:web` DID document:
-```json
-{
-  "id": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "controller": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "alsoKnownAs": [
-    "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
-  ],
-  ...
-}
-```
+    * This transformation is used during the [Create](#create) DID method operation. For example, given the following `did:webs` DID document:
+    ```json
+    {
+      "id": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "alsoKnownAs": [
+        "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+      ],
+      ...
+    }
+    ```
+    The result of the transformation algorithm is the following `did:web` DID document:
+    ```json
+    {
+      "id": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "controller": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "alsoKnownAs": [
+        "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+      ],
+      ...
+    }
+    ```
 
 ### Transformation to `did:webs` DID Document
 
 This section defines an inverse transformation algorithm from a `did:web` DID document to a `did:webs` DID document.
+1. Given a `did:web` DID document, a transformation to a `did:webs` DID document MUST have the following differences:
+    1. In the values of the top-level `id` and `controller` properties of the DID document, replace the `did:web` prefix string with `did:webs`.
+    1. In the value of the top-level `alsoKnownAs` property, replace the entry that is now the new value of the `id` property (using `did:webs`) with the old value of the `id` property (using `did:web`).
+    1. All other content of the DID document MUST not be modificatied.
+1. A `did:webs` resolver MUST use this transformation during the [Read (Resolve)](#read-resolve) DID method operation.
 
-Given a `did:web` DID document, construct a new `did:webs` DID document with the following differences:
-
-- In the values of the top-level `id` and `controller` properties of the DID document, replace the `did:web` prefix string with `did:webs`.
-- In the value of the top-level `alsoKnownAs` property, replace the entry that is now the new value of the `id` property (using `did:webs`)
-  with the old value of the `id` property (using `did:web`).
-- All other content of the DID document is simply copied without modifications.
-
-This transformation is used during the [Read (Resolve)](#read-resolve) DID method operation.
-
-For example, given the following `did:web` DID document:
-```json
-{
-  "id": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "controller": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "alsoKnownAs": [
-    "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
-  ],
-  ...
-}
-```
-
-The result of the transformation algorithm is the following `did:webs` DID document:
-```json
-{
-  "id": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-  "alsoKnownAs": [
-    "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
-  ],
-  ...
-}
-```
+    * For example, given the following `did:web` DID document:
+    ```json
+    {
+      "id": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "controller": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "alsoKnownAs": [
+        "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+      ],
+      ...
+    }
+    ```
+    The result of the transformation algorithm is the following `did:webs` DID document:
+    ```json
+    {
+      "id": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+      "alsoKnownAs": [
+        "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
+        "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+      ],
+      ...
+    }
+    ```
 
 ### Full Example
+> This section is non-normative
+
 The following blocks contain full annotated examples of a KERI AID with two events, an inception event and an interaction event, some witnesses, multiple public signing and rotation keys and an Agent with the resulting DID document that an implementation would generate assuming the implementation was running on the `example.com` domain with no unique port and no additional path defined:
 
 ```json
@@ -739,10 +728,24 @@ Resulting DID document:
 [DID Document from KERI Events](#did-document-from-keri-events) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the basic types of KERI events and how they relate to the DID document.
 
 #### Key state events
-When processing the [[ref: KERI event stream]] there are two broad types of key state events (KERI parlance is 'establishment events') that can alter the key state of the AID. Any change in key state of the AID will be reflected in the DID document.
-If a key state event does not commit to a future set of rotation key hashes, then the AID can't be rotated to new keys in the future (KERI parlance is that the key state of the AID becomes 'non-transferrable'). If a key state event does commit to a future set of rotation key hashes, then any future key state rotation must be to those commitment keys. This foundation of [[ref: pre-rotation]] is post-quantum safe and allows the controller to recover from key compromise.
-* [[ref: Inception event]]: The inception event is the first event in the [[ref: KEL]] that establishes the AID. This defines the initial key set and if the controller(s) desire future key rotation (transfer) then the inception event must commit to a set of future rotation key hashes. When processing the [[ref: KERI event stream]], if there are no rotation events after the inception event, then this is the current key state of the AID and will be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). You can learn more about the inception event in the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-basic-terminology) and you can see an [example inception event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-inception-event). To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [KERI specification section on pre-rotation](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-key-pre-rotation-concept)
-* [[ref: Rotation event]]: Rotation events come after inception events and can only change the key state to the previously committed to rotation keys and if the controller(s) desires future key rotation (transfer) then the rotation event must commit to a set of future rotation key hashes. When processing the [[ref: KERI event stream]], if there are rotation events after the inception event, then the last rotation event is the current key state of the AID and will be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). You can learn more about rotation events in the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-basic-terminology) and you can see an [example rotation event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-rotation-event-message-body). To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [KERI specification section on pre-rotation](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-key-pre-rotation-concept)
+1. When processing the [[ref: KERI event stream]] `did:webs` MUST account for two broad types of key state events (KERI parlance is 'establishment events') that can alter the key state of the AID.
+1. Any change in key state of the AID MUST be reflected in the DID document.
+1. If a key state event does not commit to a future set of rotation key hashes, then the AID can't be rotated to new keys in the future (KERI parlance is that the key state of the AID becomes 'non-transferrable').
+1. If a key state event does commit to a future set of rotation key hashes, then any future key state rotation MUST be to those commitment keys. This foundation of [[ref: pre-rotation]] is post-quantum safe and allows the `did:webs` controller to recover from key compromise.
+1. The [[ref: Inception event]] MUST be the first event in the [[ref: KEL]] that establishes the AID.  
+    1. This defines the initial key set
+    1. If the controller(s) desire future key rotation (transfer) then the inception event MUST commit to a set of future rotation key hashes.
+    1. When processing the [[ref: KERI event stream]], if there are no rotation events after the inception event, then this is the current key state of the AID and will be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). 
+1. [[ref: Rotation events]] MUST come after inception events.
+1. If the controller(s) desires future key rotation (transfer) then the rotation event must commit to a set of future rotation key hashes.
+1. [[ref: Rotation events]] MUST only change the key state to the previously committed to rotation keys.
+1. The last rotation event is the current key state of the AID and MUST be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships).
+
+> You can learn more about the inception event in the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-basic-terminology) and you can see an [example inception event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-inception-event).
+> To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [KERI specification section on pre-rotation](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-key-pre-rotation-concept)
+
+> You can learn more about rotation events in the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-basic-terminology) and you can see an [example rotation event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-rotation-event-message-body).
+> To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [KERI specification section on pre-rotation](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-key-pre-rotation-concept)
 
 ### Delegation KERI event details
 This section focuses on delegation relationships between KERI AIDs. [DID Document from KERI Events](#did-document-from-keri-events) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the basic types of KERI events and how they relate to the DID document. [Basic KERI event details](#basic-keri-event-details) provides additional details on the basic types of KERI events and how they relate to the DID document.
