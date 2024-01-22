@@ -21,5 +21,8 @@
 [[def: W3C - Decentralized Identifiers (DIDs), did specification]]
 ~ The [DIDs specification](https://w3c.github.io/did-core/) details the core Decentralized Identifiers (DIDs) specification.
 
+[[def: W3C - DID spec registries, DID spec registries, DID registry]]
+~ The [DID Spec Registries](https://w3c.github.io/did-spec-registries/) detail the specs for each registred DID method.
+
 [[def: W3C - Verifiable Credentials Data Model (VCDM), vcdm specification]]
 ~ The [W3C - Verifiable Credentials Data Model (VCDM)](https://www.w3.org/TR/vc-data-model/) details the the core Verifiable Credentials Data Model (VCDM) specification.
