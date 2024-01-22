@@ -4,25 +4,16 @@
 ### Normative References
 
 [[def: Trust over IP - Authentic Chained Data Containers (ACDC) specification, ACDC specification, ACDC protocol]]
-~ The [ACDC specification](https://trustoverip.github.io/tswg-acdc-specification/) details the core ACDC specification.
+~ The [ACDC specification](https://trustoverip.github.io/tswg-acdc-specification/) details the core ACDC specification including the Issuance and Presentation Exchange (IPEX) Protocol and Public Transaction Event Log (PTEL) specification.
 
 [[def: Trust over IP - Composable Event Streaming Representation (CESR), CESR specification, CESR protocol]]
-~ The [CESR specification](https://trustoverip.github.io/tswg-cesr-specification/) details the core CESR protocol.
+~ The [CESR specification](https://trustoverip.github.io/tswg-cesr-specification/) details the core CESR protocol including the Self-Addressing IDentifier (SAID) specification.
 
 [[def: Trust over IP - CESR Proof Signatures, CESR proof specification, CESR proof signatures, CESR proof protocol]]
 ~ The [CESR Proof Signatures specification](https://trustoverip.github.io/tswg-cesr-proof-specification/draft-pfeairheller-cesr-proof.html) details the core CESR Proof Signatures.
 
-[[def: Trust over IP - Issuance and Presentation Exchange (IPEX) Protocol, ipex specification, ipex protocol]]
-~ The [IPEX specification](https://trustoverip.github.io/tswg-ipex-specification/) details the core Issuance and Presentation Exchange (IPEX) protocol.
-
 [[def: Trust over IP - Key Event Receipt Infrastructure (KERI), KERI specification, KERI specification, KERI protocol]]
-~ The [KERI specification](https://trustoverip.github.io/tswg-keri-specification/) details the core Key Event Receipt Infrastructure (KERI) protocol.
-
-[[def: Trust over IP - Out-of-Band-Introduction (OOBI) Protocol, oobi specification, oobi protocol]]
-~ The [OOBI specification](https://trustoverip.github.io/tswg-oobi-specification/) details the core Out-of-Band-Introduction (OOBI) protocol.
-
-[[def: Trust over IP - Self-Addressing IDentifier (SAID) specification, SAID specification, SAID protocol]]
-~ The [SAID specification](https://trustoverip.github.io/tswg-said-specification/) details the core Self-Addressing IDentifier (SAID) protocol.
+~ The [KERI specification](https://trustoverip.github.io/tswg-keri-specification/) details the core Key Event Receipt Infrastructure (KERI) protocol. This includes the Out-of-Band-Introduction (OOBI) specification.
 
 [[def: W3C - did:web Method Specification, did:web specification, did:web method]]
 ~ The [did:web specification](https://w3c-ccg.github.io/did-method-web/) details the did:web method specification.
