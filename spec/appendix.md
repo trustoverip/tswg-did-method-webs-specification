@@ -40,7 +40,7 @@ See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 ~ A globally unique persistent identifier, as defined by [DID Core](https://www.w3.org/TR/did-core/#dfn-decentralized-identifiers).
 
 [[def:  designated aliases, designated alias]]
-~ An array of [[ref:AID controlled identifiers]] that have been designated by the AID controller to be used as aliases for `equivalentId` and `alsoKnownAs` DID document metadata and to foster verification of redirection from old to current did:webs identifiers. See [WebOfTrust glossary](https://github.com/WebOfTrust/WOT-terms/wiki/designated-aliases) for more detail.
+~ An array of [[ref:AID controlled identifiers]] that have been designated by the AID controller to be used as aliases for `equivalentId` and `alsoKnownAs` DID document metadata and to foster verification of redirection to different did:webs identifiers. See [WebOfTrust glossary](https://github.com/WebOfTrust/WOT-terms/wiki/designated-aliases) for more detail.
 
 [[def: DID document, DID documents]]
 ~ A set of data describing the subject of a [[ref: DID]], as defined by [DID Core](https://www.w3.org/TR/did-core/#dfn-did-documents). See also section [DID Documents](#did-documents).
