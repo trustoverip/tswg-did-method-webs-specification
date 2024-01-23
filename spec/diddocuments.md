@@ -845,7 +845,7 @@ The resulting DID document based on the [[ref: designated aliases]] attestation 
   * the did:keri identifier is automatically generated based on the AID
 ```json
 {
-  didDocument {
+  "didDocument": {
     "id": "did:webs:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
     "alsoKnownAs": [
       "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
@@ -854,7 +854,7 @@ The resulting DID document based on the [[ref: designated aliases]] attestation 
     ],
     "verificationMethod": [...
   }
-  didDocumentMetadata {
+  "didDocumentMetadata": {
     "equivalentId": [
       "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
     ]

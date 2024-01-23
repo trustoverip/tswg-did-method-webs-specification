@@ -124,8 +124,7 @@ the "s" of "security" in `did:webs`.
 
 ### AID controlled identifiers
 
-Since an AID is a unique cryptographic identifier that is inseparably bound to the [[ref: KERI event stream]] from
-which it is associated, any AIDs and any `did:webs` DIDs that have the same AID component
+Since an AID is a unique cryptographic identifier that is inseparably bound to the [[ref: KERI event stream]] it is associated with, any AIDs and any `did:webs` DIDs that have the same AID component
 have the same controller(s). [[ref: AID controlled identifiers]] may vary in how quickly they reflect the current identity information, DID document and [[ref: KERI event stream]].
 Notably, as defined in section [Identifiers in a `did:webs` DID document](#identifiers-in-a-didwebs-did-document), the
 `id` property in the DID document will differ based on the web location of the DID document. As
@@ -197,7 +196,7 @@ While the combination of DID document and [[ref: KERI event stream]] make the DI
 as when published in their "intended" location, the absence of the `did:webs` in the [[ref: designated aliases]] for those locations
 in the DID document `equivalentId` means that the controller of the DID is
 not self-asserting any sort of tie between the DID and the location to which the
-DID-related documents have been copied. In contrast, if the controller confirms the link between the source and the copy with an `equivalentId`, the related copies will have to be looked after.
+DID-related documents have been copied. In contrast, if the controller confirms the link between the source and the copy with an `equivalentId`, the related copies will have to be kept in sync.
 
 ### DID Method Operations
 
