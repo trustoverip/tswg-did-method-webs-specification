@@ -141,21 +141,10 @@ KERI mechanisms, _together_, that constitutes this method's verifiable data
 registry. In short, verifying the DID document by processing the [[ref: KERI event stream]] using KERI puts
 the "s" of "security" in `did:webs`.
 
-### Equivalent Identifiers
+### AID controlled identifiers
 
-::: todo
-
-TODO: Consider merging this and section [Handling Web Redirections](#handling-web-redirection)
-and propose that an entity
-SHOULD only publish one "current" `did:webs`, with defined support for redirects.
-Copies of a the `did:webs` data should be just that -- copies.
-
-:::
-Since an AID is a unique identifier that is inseparably bound to the [[ref: KERI event stream]] from
-which it is associated, any AIDs and any `did:webs` DIDs that have the same AID component
-MUST be considered equivalent identifiers. Any `did:webs` DIDs that have the same AID
-are by definition synonyms of one another, and MUST
-return an equivalent, although not necessarily identical, DID document and [[ref: KERI event stream]].
+Since an AID is a unique cryptographic identifier that is inseparably bound to the [[ref: KERI event stream]] it is associated with, any AIDs and any `did:webs` DIDs that have the same AID component
+have the same controller(s). [[ref: AID controlled identifiers]] may vary in how quickly they reflect the current identity information, DID document and [[ref: KERI event stream]].
 Notably, as defined in section [Identifiers in a `did:webs` DID document](#identifiers-in-a-didwebs-did-document), the
 `id` property in the DID document will differ based on the web location of the DID document. As
 well, different versions of the DID document and [[ref: KERI event stream]] may reside in different locations
@@ -166,7 +155,7 @@ of the [[ref: KERI event streams]], not yet reflected in the other). If the [[re
 (e.g., one is not a subset of the other), both the [[ref: KERI event streams]] and the DIDs MUST be
 considered invalid.
 
-The web supports a number of ways to redirect users. Please the section on
+The web supports a number of ways to redirect users. See the section on
 [Handling Web Redirections](#handling-web-redirection) later in this specification.
 
 KERI anticipates the possibility of a duplicitous actor with an AID that forks a
@@ -190,24 +179,23 @@ the DID document. Were the AID to change, it would be an altogether new DID,
 unconnected to the first DID. So if a resolver can find a newly named DID that
 uses the same AID, and the [[ref: KERI event stream]] verifies the DID, then they have resolved the
 DID. In fact, a `did:webs` could be moved to use another DID method that uses
-the AID for uniqueness and the [[ref: KERI event stream]] for validity.
+the AID for uniqueness and the [[ref: KERI event stream]] for validity, but that is beyond the scope of this specification.
 
 The following are the capabilities in `did:webs` to help in the face of
 resolution uncertainty.
 
-- The `did:webs` is bound to its location via an event recording in the [[ref: KERI event stream]], and
+- The `did:webs` is bound to other [[ref: designated aliases]] that are anchored to the [[ref: KERI event stream]], and
   as the `id` in the DID document.
-- When a `did:webs` is permanently moved to some other location, an event in the
-  [[ref: KERI event stream]] will reflect the change.
+- When a `did:webs` is permanently moved to some other location the resolver can redirect to any other [[ref: designated aliases]].
   - The `id` in the DID document is set to the new location.
-  - An `alsoKnownAs` entry is added to the DID document for the old location.
+  - An `equivalentId` entry of the old location will be revoked and anchored to the [[ref: KERI event stream]]. See section [Use of `equivalentId`](#use-of-equivalentid) for more details.
   - If possible, the controller of the DID MAY use web redirects to allow
     resolution of the old location of the DID to the new location.
 
 The purpose of the history of "official" (according to the controller) locations
 for the DID documents is so that if the DID has been put in long-lasting documents,
 and its URL instantiation is redirected or disappears, the controller can
-explicitly indicate that the new DID is equivalent to the old one.
+explicitly indicate that the new DID is an `equivalentId` to the old one.
 
 If the previously published location of a `did:webs` is not redirected, an
 entity trying to resolve the DID MAY be able to find the data for the DID
@@ -216,18 +204,18 @@ references the same identifier, regardless of the rest of the string that is the
 full `did:webs`, web searching could yield either the current location of the
 DID document, or a copy of the DID that may be useful. For example, even the [Internet
 Archive: Wayback Machine](https://archive.org/web) could be used to find a copy
-of the DID document and [[ref: KERI event stream]] at some point in the past that may be sufficient for the
+of the DID document and the [[ref: KERI event stream]] at some point in the past that may be sufficient for the
 purposes of the entity trying to resolve the DID. This specification does not
-rely on the Wayback Machine, but it might be a useful DID resolver tool.
+rely on the Wayback Machine, but it might be a useful `did:webs` discovery tool.
 
 The DID document, [[ref: KERI event stream]] and other files related to a DID may be copied to other web
 locations. For example, someone might want to keep a cache of DIDs they use, or
 an entity might want to run a registry of "useful" DIDs for a cooperating group.
 While the combination of DID document and [[ref: KERI event stream]] make the DID and DID document verifiable, just
-as when published in their "intended" location, the absence of DIDs equivalent to those locations
-in the DID document (`id` or `AlsoKnownAs`) means that the controller of the DID is
+as when published in their "intended" location, the absence of the `did:webs` in the [[ref: designated aliases]] for those locations
+in the DID document `equivalentId` means that the controller of the DID is
 not self-asserting any sort of tie between the DID and the location to which the
-DID-related documents have been copied. In contrast, if the controller confirms the link between the source and the copy with an `AlsoKnownAs`, the related copies will have to be looked after.
+DID-related documents have been copied. In contrast, if the controller confirms the link between the source and the copy with an `equivalentId`, the related copies will have to be kept in sync.
 
 ### DID Method Operations
 
