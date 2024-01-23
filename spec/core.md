@@ -73,20 +73,18 @@ DID document, except for minor differences in the `id`, `controller`, and `alsoK
 
 > A target system cannot forge or tamper with data protected by KERI, and if it deliberately serves an outdated copy, the duplicity is often detectable. Thus, any given target system in isolation can be viewed by this method as a dumb, untrusted server of content. It is the combination of target systems and some KERI mechanisms, _together_, that constitutes this method's verifiable data registry. In short, verifying the DID document by processing the [[ref: KERI event stream]] using KERI puts the "s" of "security" in `did:webs`.
 
-```
 The following are some example `did:webs` DIDs and their corresponding DID documents and [[ref: KERI event stream]]
 URLs, based on the examples from the [[ref: did:web Specification]], but with the (faked) AID
 `12124313423525` added:
-- `did:webs:w3c-ccg.github.io:12124313423525`
-  - DID document URL: https://w3c-ccg.github.io/12124313423525/did.json
-  - [[ref: KERI event stream]] URL: https://w3c-ccg.github.io/12124313423525/keri.cesr
-- `did:webs:w3c-ccg.github.io:user:alice:12124313423525`
-  - DID document URL: https://w3c-ccg.github.io/user/alice/12124313423525/did.json
-  - [[ref: KERI event stream]] URL: https://w3c-ccg.github.io/user/alice/12124313423525/keri.cesr
-- `did:webs:example.com%3A3000:user:alice:12124313423525`
-  - DID document URL: https://example.com:3000/user/alice/12124313423525/did.json
-  - [[ref: KERI event stream]] URL: https://example.com:3000/user/alice/12124313423525/keri.cesr
-```
+* `did:webs:w3c-ccg.github.io:12124313423525`
+  * The DID document URL would look like: `https://w3c-ccg.github.io/12124313423525/did.json`
+  * [[ref: KERI event stream]] URL would look like: `https://w3c-ccg.github.io/12124313423525/keri.cesr`
+* `did:webs:w3c-ccg.github.io:user:alice:12124313423525`
+  * DID document URL would look like: `https://w3c-ccg.github.io/user/alice/12124313423525/did.json`
+  * [[ref: KERI event stream]] URL would look like: `https://w3c-ccg.github.io/user/alice/12124313423525/keri.cesr`
+* `did:webs:example.com%3A3000:user:alice:12124313423525`
+  * DID document URL would look like: `https://example.com:3000/user/alice/12124313423525/did.json`
+  * [[ref: KERI event stream]] URL would look like: `https://example.com:3000/user/alice/12124313423525/keri.cesr`
 
 
 ### AID controlled identifiers
