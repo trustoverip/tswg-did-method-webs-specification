@@ -23,9 +23,28 @@ component of the path.
 
 The [[ref: ABNF]] definition of a `did:webs` DID is as follows:
 
-```
-webs-did = "did:webs:" host ":" aid
-webs-did = "did:webs:" host * (":" path) ":" aid
+```abnf
+webs-did = "did:webs:" host [pct-encoded-colon port] *(":" path) ":" aid
+
+; 'host' as defined in RFC 1035 and RFC 1123
+host = *( ALPHA / DIGIT / "-" / "." )  ; Simplified representation, actual RFCs
+                                       ; have more complex rules for domains and IP addresses.
+                                       ; IN ACTUAL IMPLEMENTATIONS REPLACE WITH A MATURE 
+                                       ; HOST PARSING LIBRARY.
+
+; 'pct-encoded-colon' represents a percent-encoded colon
+pct-encoded-colon = "%3A" / "%3a"  ; Percent encoding for ':'
+
+; 'port' number (simplified version)
+port = 1*5(DIGIT)
+
+; 'path' definition
+path = 1*(ALPHA / DIGIT / "-" / "_" / "~" / "." / "/")
+
+; 'aid' as base64 encoded value
+aid = 1*(ALPHA / DIGIT / "+" / "/" / "=") ; Base64 characters
+
+; ALPHA, DIGIT are standard ABNF primitives for alphabetic and numeric characters
 ```
 
 The formal rules describing valid [[ref: host]] syntax are described in
