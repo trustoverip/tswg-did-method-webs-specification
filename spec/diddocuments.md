@@ -752,17 +752,23 @@ Resulting DID document:
 This section focuses on delegation relationships between KERI AIDs. [DID Document from KERI Events](#did-document-from-keri-events) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the basic types of KERI events and how they relate to the DID document. [Basic KERI event details](#basic-keri-event-details) provides additional details on the basic types of KERI events and how they relate to the DID document.
 
 #### Delegation key state events
-* Delegated [[ref: inception event]]: Establishes a delegated identifier for which either the delegator or the delegate can end the delegation commitment. All delegation relationships start with a delegated inception event. The KERI specification provides [an example of a delegated inception event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#name-delegated-inception-event-m).
-* Delegated [[ref: rotation event]]: Updates the delegated identifier commitment. Either the delegator or the delegate can end the delegation commitment. Any change to the [[ref: Delegated inception event]] key state or delegated rotation event key state requires a delegated rotation event. The KERI specification provides [an example of a delegated rotation event](https://trustoverip.github.io/tswg-keri-specification/draft-ssmith-keri.html#section-8.2)
+1. All delegation relationships MUST start with a delegated inception event.
+1. Any change to the [[ref: Delegated inception event]] key state or delegated rotation event key state MUST be the result of a delegated rotation event.
+
+> Delegated [[ref: inception event]]: Establishes a delegated identifier. Either the delegator or the delegate can end the delegation commitment.
+
+> Delegated [[ref: rotation event]]: Updates the delegated identifier commitment. Either the delegator or the delegate can end the delegation commitment.
+
+> See the [[ref: KERI specification]] for an example of a delegated inception and rotation events.
 
 ### Service Endpoint event details
 TODO:  Define and detail the service endpoint events
 
 ### Designated Aliases
-An AID can specify the [[ref: designated aliases]] that will be listed in the `equivalentId` and `alsoKnownAs` properties by issuing a [[ref: designated aliases]] verifiable attestation.
-This attestation contains a set of [[ref: AID controlled identifiers]] that the AID controller authorizes.
-If the identifier is a `did:webs` identifier then it is truly equivalent and will be listed in the `equivalentId` property.
-If the identifier is a DID then it will be listed in the `alsoKnownAs` property.
+1. An AID controller SHALL specify the [[ref: designated aliases]] that will be listed in the `equivalentId` and `alsoKnownAs` properties by issuing a [[ref: designated aliases]] verifiable attestation.
+    1. This attestation MUST contain a set of [[ref: AID controlled identifiers]] that the AID controller authorizes.
+    1. If the identifier is a `did:webs` identifier then it is truly equivalent and MUST be listed in the `equivalentId` property.
+    1. If the identifier is a DID then it MUST be listed in the `alsoKnownAs` property.
 
 #### Designated Aliases event details
 
@@ -799,7 +805,6 @@ This is an example [[ref: designated aliases]] [[ref: ACDC]] attestation showing
     }
 }
 ```
-
 The resulting DID document based on the [[ref: designated aliases]] attestation above, contains:
 * An `equivalentId` metadata for the did:webs:foo.com identifier
 * Three `alsoKnownAs` identifiers:
