@@ -41,13 +41,13 @@ did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M?transformKeys=
 #### `CesrKey` and `publicKeyCesr`
 
 This specification defines the following extensions to the DID document data model in accordance with the
-[DID Spec Registries](https://w3c.github.io/did-spec-registries/):
+[[ref: DID Spec Registries]]:
 
 * Extension verification method type `CesrKey`: This verification method type can be used in a DID document to 
 express a public key encoded in [[ref: CESR]] format.
 
 * Extension verification method property `publicKeyCesr`: This verification method property has a string value
-whose content is the CESR representation of a public key.
+whose content is the [[ref: CESR]] representation of a public key.
 
 The verification method type `CesrKey` can be used as the value of the `transformKeys` DID parameter.
 
