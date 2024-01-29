@@ -4,18 +4,15 @@ This section describes the support of the `did:webs` method for certain DID para
 
 ### Support for `versionId`
 
-The `did:webs` DID method supports the `versionId` DID parameter. This DID parameter is defined
-[here](https://www.w3.org/TR/did-core/#did-parameters). (TODO: Add proper references to external documents).
+The `did:webs` DID method supports the `versionId` DID parameter. This DID parameter is defined [here](https://www.w3.org/TR/did-core/#did-parameters).
 
-This allows clients to instruct a DID Resolver to return a specific version of a DID document, as opposed to the
-latest version. The `did:webs` DID method is ideally suited for this functionality, since a continuous, self-certifying
-stream of events lies at the heart of the DID method's design, see section [KERI Fundamentals](#keri-fundamentals).
+This allows clients to instruct a DID Resolver to return a specific version of a DID document, as opposed to the latest version. The `did:webs` DID method is ideally suited for this functionality, since a continuous, self-certifying stream of events lies at the heart of the DID method's design, see section [KERI Fundamentals](#keri-fundamentals).
 
-Valid values for this DID parameter are sequence numbers of events in the [[ref: KERI event stream]]. When a `did:webs`
-DID is resolved with this DID parameter, then the DID Resolver constructs the DID document based on an AID's
-associated KERI events from the [[ref: KERI event stream]] only up to (and including) the event with the sequence
-number (i.e. the `s` field) that corresponds to the value of the `versionId` DID parameter. See section
-[DID Document from KERI Events](#did-document-from-keri-events) for details.
+1. Valid values for this DID parameter MUST be the sequence numbers of events in the [[ref: KERI event stream]].
+1. When a `did:webs` DID is resolved with this DID parameter, a `did:webs` resolver MUST constructs the DID document based on an AID's associated KERI events from the [[ref: KERI event stream]] only up to (and including) the event with the sequence
+number (i.e. the `s` field) that corresponds to the value of the `versionId` DID parameter.
+
+> See section [DID Document from KERI Events](#did-document-from-keri-events) for details.
 
 Example:
 
@@ -25,12 +22,9 @@ did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M?versionId=1
 
 ### Support for `transformKeys`
 
-The `did:webs` DID method supports the `transformKeys` DID parameter. This DID parameter is defined
-[here](https://github.com/decentralized-identity/did-spec-extensions/blob/main/parameters/transform-keys.md). (TODO:
-Add proper references to external documents).
+The `did:webs` DID method supports the `transformKeys` DID parameter. This DID parameter is defined [here](https://github.com/decentralized-identity/did-spec-extensions/blob/main/parameters/transform-keys.md).
 
-This allows clients to instruct a DID Resolver to return verification methods in a DID document in a desired format,
-such as `JsonWebKey` or `Ed25519VerificationKey2020`. 
+1. This parameter MUST be implemented for a DID Resolver to return verification methods in a DID document in a desired format, such as `JsonWebKey` or `Ed25519VerificationKey2020`.
 
 Example:
 
@@ -40,19 +34,13 @@ did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M?transformKeys=
 
 #### `CesrKey` and `publicKeyCesr`
 
-This specification defines the following extensions to the DID document data model in accordance with the
-[[ref: DID Spec Registries]]:
+This specification defines the following extensions to the DID document data model in accordance with the [[ref: DID Spec Registries]]:
 
-* Extension verification method type `CesrKey`: This verification method type can be used in a DID document to 
-express a public key encoded in [[ref: CESR]] format.
-
-* Extension verification method property `publicKeyCesr`: This verification method property has a string value
-whose content is the [[ref: CESR]] representation of a public key.
-
-The verification method type `CesrKey` can be used as the value of the `transformKeys` DID parameter.
+1. Extension verification method `type` `CesrKey` MAY be available in a `did:webs` DID document to express a public key encoded in [[ref: CESR]] format.
+1. Extension verification method property `publicKeyCesr` MAY be available in a `did:webs` DID document to provide a string value whose content is the [[ref: CESR]] representation of a public key.
+1. The verification method type `CesrKey` MAY be used as the value of the `transformKeys` DID parameter.
 
 For example, a KERI AID with only the following inception event in its KEL:
-
 ```json
 {
   "v": "KERI10JSON0001b7_",
@@ -69,15 +57,11 @@ For example, a KERI AID with only the following inception event in its KEL:
   // ...
 }
 ```
-
-... and given the following the DID URL:
-
+and given the following the DID URL:
 ```
 did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M?transformKeys=CesrKey
 ```
-
-... would result in a DID document with the following verification methods array:
-
+would result in a DID document with the following verification methods array:
 ```json
 {
   "verificationMethod": [
