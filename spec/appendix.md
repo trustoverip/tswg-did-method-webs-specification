@@ -45,6 +45,12 @@ See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 [[def: DID document, DID documents]]
 ~ A set of data describing the subject of a [[ref: DID]], as defined by [DID Core](https://www.w3.org/TR/did-core/#dfn-did-documents). See also section [DID Documents](#did-documents).
 
+[[def: DID resolution metadata]]
+~ DID resolution metadata is metadata about the DID Resolution process that was performed in order to obtain the DID document for a given DID. See also [DID Resolution Metadata](https://www.w3.org/TR/did-core/#did-resolution-metadata) in the DID Core specification.
+
+[[def: DID document metadata]]
+~ DID document metadata is metadata about the DID and the DID document that is the result of the DID Resolution process. See also [DID Document Metadata](https://www.w3.org/TR/did-core/#did-document-metadata) in the DID Core specification.
+
 [[def: direct mode]]
 ~ an operational mode of the [[ref: KERI]] protocol where a controller and a verifier of an [[ref: AID]] exchange the [[ref: KEL]] of the AID directly, as defined by the [KERI whitepaper](https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/direct-mode) for more detail.
 
