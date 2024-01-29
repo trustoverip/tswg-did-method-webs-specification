@@ -3,22 +3,22 @@ Here we detail the decision tree of the security related features that `did:webs
 ```mermaid
 %%{init: {'theme':'neutral'}}%%
 graph
-    CORESEC[Core did:webs security features];
-    COREDISC[Core discovery features];
-    OPSEC([Optional did:webs security features]);
-    OPDISC([Optional discovery features]);
+    CORESEC[Core security features];
+    COREDISC[\Core discovery features\];
+    OPSEC([Optional security features]);
+    OPDISC{{Optional discovery features}};
 
     DTREE{Graph of dependencies for did:webs feature choices} --> AROT;
     DTREE --> CROT;
     AROT{Administrative Root-Of-Trust} --> WID{Web Identifier};
     CROT{Cryptographic Root-Of-Trust} --> SCID{Self-Certifying Identifier};
-    WID --> DIDWEB[did:web];
-    DIDWEB --> X509[X.509, TLS, CA/Browser Forum];
+    WID --> DIDWEB[\did:web\];
+    DIDWEB --> X509[\X.509, TLS, CA/Browser Forum\];
     SCID --> AID[KERI AID];
     SCID --> DIDWS[did:webs];
     DIDWS --> AID;
     AID --> KEL[Key event log];
-    AID --> END([Service Endpoints]);
+    AID --> END{{Service Endpoints}};
     KEL --> KHIST[Key History];
     K -.-> ENCRYPT([Encryption]);
     KHIST --> K[Current Keys];
@@ -38,10 +38,10 @@ graph
     DALIAS --> EQUIVID([Equivalent Identifiers]);
     DALIAS --> AKA([Also Known As]);
     DALIAS --> REDIRECT([Redirects]);
-    END --> DIDCOMM([DIDComm]);
-    END --> ENDOTHER([Other Endpoints]);
-    END --> AGENT([Agent]);
-    END --> MAIL([Mailbox]);
+    END --> DIDCOMM{{DIDComm}};
+    END --> ENDOTHER{{Other Endpoints}};
+    END --> AGENT{{Agent}};
+    END --> MAIL{{Mailbox}};
 
     style AROT fill:#FF6;
     style X509 fill:#FF6;
