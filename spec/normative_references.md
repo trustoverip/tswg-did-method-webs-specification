@@ -3,6 +3,12 @@
 
 ### Normative References
 
+[[def: JSON Serialization]]
+~ See https://datatracker.ietf.org/doc/html/rfc7515#section-3.2
+
+[[def: multiformat multihash]]
+~ See https://github.com/multiformats/multihash
+
 [[def: Trust over IP - Authentic Chained Data Containers (ACDC) specification, ACDC specification, ACDC protocol]]
 ~ The [ACDC specification](https://trustoverip.github.io/tswg-acdc-specification/) details the core ACDC specification including the Issuance and Presentation Exchange (IPEX) Protocol and Public Transaction Event Log (PTEL) specification.
 
@@ -23,6 +29,9 @@
 
 [[def: W3C - DID spec registries, DID spec registries, DID registry]]
 ~ The [DID Spec Registries](https://w3c.github.io/did-spec-registries/) detail the specs for each registred DID method.
+
+[[def: W3C - DID URL path, DID URL path, DID URL path specification]]
+~ See https://www.w3.org/TR/did-core/#path.
 
 [[def: W3C - Verifiable Credentials Data Model (VCDM), vcdm specification]]
 ~ The [W3C - Verifiable Credentials Data Model (VCDM)](https://www.w3.org/TR/vc-data-model/) details the the core Verifiable Credentials Data Model (VCDM) specification.

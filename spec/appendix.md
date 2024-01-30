@@ -34,7 +34,7 @@ See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 ~ An encoding format that enables round-trip text-binary conversion of concatenated cryptographic primitives and general data types, as defined by the [[ref:  CESR specification]] and [[ref:  CESR Proof Signature specification]].  See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/composable-event-streaming-representation) for more detail.
 
 [[def: controller, constrollers]]
-~ A controlling entity that can cryptographically prove the control authority (signing and rotation) over an [[ref: AID]] as well as make changes on the associated [[ref: KEL]]. A controller may consist of multiple controlling entities in a multi-signature scheme. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/controller) for more detail.
+~ A controlling entity that can cryptographically prove the control authority (signing and rotation) over an [[ref: AID]] as well as make changes on the associated [[ref: KEL]]. A controller may consist of multiple controlling entities in a [[ref: multi-signature]] scheme. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/controller) for more detail.
 
 [[def: decentralized identifier (DID), DID, DIDs]]
 ~ A globally unique persistent identifier, as defined by [DID Core](https://www.w3.org/TR/did-core/#dfn-decentralized-identifiers).
@@ -83,6 +83,9 @@ See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 
 [[def: method-specific identifier, MSI]]
 ~ The `method-specific-id` part of DID Syntax, as defined in [DID Core](https://www.w3.org/TR/did-core/#did-syntax). See section [Method-Specific Identifier](#method-specific-identifier).
+
+[[def: multi-signature, multi-signatures, multisig, multi-sig]]
+~ A mechanism that enables multiple parties to sign a message, as defined by the [[ref: KERI specification]]. See [Controller Application in the KERI spec](https://trustoverip.github.io/tswg-keri-specification/#controller-application) for more detail.
 
 [[def: out-of-band introduction (OOBI), OOBI, OOBIs, OOBI specification]]
 ~ A protocol for discovering verifiable information on an [[ref: AID]] or a [[ref: SAID]], as defined by the [[ref:  KERI specification]]. The OOBI by itself is insecure, and the information discovered by the OOBI must be verified. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/out-of-band-introduction) for more detail.
