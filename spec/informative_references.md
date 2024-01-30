@@ -1,10 +1,5 @@
 ### Informative References
 
-<<<<<<< Updated upstream
-::: todo
-Add informative references
-:::
-=======
 [[def: JSON Web Token Verifiable Presentation]]
 ~ See https://www.w3.org/TR/vc-data-model/#example-verifiable-presentation-using-jwt-compact-serialization-non-normative.
 
@@ -19,7 +14,6 @@ Add informative references
 
 [[def: Overlay Capture Architecture, OCA]]
 ~ See [Aries RFC](https://github.com/hyperledger/aries-rfcs/blob/main/features/0755-oca-for-aries/README.md).
->>>>>>> Stashed changes
 
 
 
