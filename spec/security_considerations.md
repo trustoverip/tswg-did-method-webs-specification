@@ -105,8 +105,7 @@ Architecturally, a Read (GET) from the did resolver acts like how KERI reply mes
 
 In addition, a DID doc can be a discovery mechanism for an [[ref: [[ref: ACDC]]]] caching server by including an index (label: said) of the [[ref: [[ref: SAIDs]]]] of the [[ref: [[ref: ACDCs]]]] held in the resolvers cache.
 
-#### Narrowing the attack surface
-This section is non-normative.
+#### Reducing the attack surface
 This section is non-normative.
 
 The above considerations have lead us to focus on [[ref: KEL]] backed DID document blocks and data (whois files, signatures, etc) so that the trusted (local) did:webs resolver is secure. Any future features that could leverage [[ref: BADA-RUN]] and [[ref: KRAM]] should be considered carefully according to the above considerations.
