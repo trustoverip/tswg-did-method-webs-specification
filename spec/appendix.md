@@ -33,9 +33,6 @@ See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 [[def: BADA-RUN]]
 ~ Best available data acceptance - Read/Update/Nullify provides a medium level of security because events are ordered in a consistent way, using a combination of date-time and a key state. The latest event is the one with the latest date-time for the latest key state. See [The KERI spec](https://trustoverip.github.io/tswg-keri-specification/#bada-best-available-data-acceptance-policy) for more detail.
 
-[[def: BADA-RUN]]
-~ Best available data acceptance - Read/Update/Nullify provides a medium level of security because events are ordered in a consistent way, using a combination of date-time and a key state. The latest event is the one with the latest date-time for the latest key state. See [The KERI spec](https://trustoverip.github.io/tswg-keri-specification/#bada-best-available-data-acceptance-policy) for more detail.
-
 [[def: compact event streaming representation (CESR), CESR]]
 ~ An encoding format that enables round-trip text-binary conversion of concatenated cryptographic primitives and general data types, as defined by the [[ref:  CESR specification]] and [[ref:  CESR Proof Signature specification]].  See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/composable-event-streaming-representation) for more detail.
 
