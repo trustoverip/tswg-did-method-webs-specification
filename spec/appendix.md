@@ -30,6 +30,9 @@ See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 [[def: autonomic identifier (AID), AID, AIDs]]
 ~ A [[ref: self-certifying identifier (SCID)]] that is cryptographically bound cryptographically bound to a [[ref: key event log]] ([[ref: KEL]]), as defined by the [[ref: KERI specification]]. An AID is either non-transferable or transferable. A non-transferable AID does not support key rotation while a transferable AID supports key rotation using a key [[ref: pre-rotation]] mechanism that enables the AID to persist in spite of the evolution of its key state. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/autonomic-identifier) for more detail.
 
+[[def: BADA-RUN]]
+~ Best available data acceptance - Read/Update/Nullify provides a medium level of security because events are ordered in a consistent way, using a combination of date-time and a key state. The latest event is the one with the latest date-time for the latest key state. See [The KERI spec](https://trustoverip.github.io/tswg-keri-specification/#bada-best-available-data-acceptance-policy) for more detail.
+
 [[def: compact event streaming representation (CESR), CESR]]
 ~ An encoding format that enables round-trip text-binary conversion of concatenated cryptographic primitives and general data types, as defined by the [[ref:  CESR specification]] and [[ref:  CESR Proof Signature specification]].  See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/composable-event-streaming-representation) for more detail.
 
@@ -66,6 +69,9 @@ See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 [[def: key event log (KEL), KEL, KELs]]
 ~ A verifiable append-only log of [[ref: key events]] for an [[ref: AID]] that is both backward and forward-chained, as defined by the [[ref: KERI specification]]. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/key-event-log) for more detail.
 
+[[def: KEL backed data]]
+~ [[ref: KEL]] backed data in `did:webs` provides the highest level of data security assurance and such data can be found either in the KEL or anchored to an event in the KEL. This means that the signatures on the events in the KEL are strongly bound to the key state at the time the events are entered in the KEL, that is the data. This provides strong guarantees of non-duplicity to any verifiers receiving a presentation as the KELs are protected and can be watched by agents ([[ref: watcher]]) of the verifiers. The information is end-verifiable and any evidence of duplicity in the events is evidence that the data or presentation should not be trusted. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/kel-backed-data) for more detail.
+
 [[def: key event receipt]]
 ~ A message whose body references a [[ref: key event]] of an [[ref: AID]] and includes one or more signatures on that key event, as defined by the [[ref: KERI specification]]. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/key-event-receipt) for more detail.
 
@@ -80,6 +86,9 @@ See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
 
 [[def: key state, key states]]
 ~ The set of currently authoritative key pairs (current keys) for an [[ref: AID]] and any other information necessary to secure or establish control authority over the AID. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/key-state) for more detail.
+
+[[def: KERI Request Authentication Mechanism, KRAM]]
+~ A non-interactive replay attack protection algorithm that uses a sliding window of date-time stamps and key state (similar to the tuple in [[ref: BADA-RUN]]) but the date-time is the replier’s not the querier’s. **KRAM is meant to protect a host**. See the [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/keri-request-authentication-method) for more detail.
 
 [[def: method-specific identifier, MSI]]
 ~ The `method-specific-id` part of DID Syntax, as defined in [DID Core](https://www.w3.org/TR/did-core/#did-syntax). See section [Method-Specific Identifier](#method-specific-identifier).
