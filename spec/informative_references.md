@@ -1,8 +1,5 @@
 ### Informative References
 
-[[def: JSON Web Token Verifiable Presentation]]
-~ See https://www.w3.org/TR/vc-data-model/#example-verifiable-presentation-using-jwt-compact-serialization-non-normative.
-
 [[def: StatusList2021]]
 ~ See https://w3c.github.io/vc-status-list-2021/.
 
@@ -14,6 +11,3 @@
 
 [[def: Overlay Capture Architecture, OCA]]
 ~ See [Aries RFC](https://github.com/hyperledger/aries-rfcs/blob/main/features/0755-oca-for-aries/README.md).
-
-
-

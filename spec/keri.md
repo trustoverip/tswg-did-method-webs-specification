@@ -1,4 +1,5 @@
 ## KERI Fundamentals
+This section is non-normative.
 
 [[ref: Key Event Receipt Infrastructure (KERI)]] is a protocol for managing cryptographic keys, identifiers, and associated verifiable data structures. KERI was first described in an [academic paper](https://arxiv.org/abs/1907.02143), and its [specification](https://github.com/trustoverip/tswg-keri-specification) is currently incubated under [Trust Over IP Foundation](https://trustoverip.org/). The open source community that develops KERI-related technologies can be found at https://github.com/WebOfTrust. This section outlines the fundamentals and components of the KERI protocol that are related to the `did:webs` method.
 
