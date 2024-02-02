@@ -3,10 +3,12 @@ Here we detail the decision tree of the security related features that `did:webs
 ```mermaid
 %%{init: {'theme':'neutral'}}%%
 graph
+    subgraph graph legend
     CORESEC[Core security features];
     COREDISC[\Core discovery features\];
     OPSEC([Optional security features]);
     OPDISC{{Optional discovery features}};
+    end
 
     DTREE{Graph of dependencies for did:webs feature choices} --> AROT;
     DTREE --> CROT;
