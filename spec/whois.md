@@ -3,12 +3,12 @@ This convention enables those that receive the DID to retrieve and verify the ve
 
 ### `whois` DID URL Conventions
 1. The `whois` object, if it exists, MUST be directly beside the `did.json` file, the DID Document for the DID.
-1. The [[ref: DID URL path]] to the folder MUST be `<did:webs DID>/whois`.
-1. The HTTPS path to the `whois` folder MUST be `<HTTPS URL conversion of did:webs identifier>/whois.vp`.
-1. The Web Server that serves the `did:webs` documents MUST respond to a request for the HTTPS `whois` URL the `Verifiable Presentation` published there by the DID Controller.
-1. If the controller of the `did:webs` DID has not published a `whois` verifiable presentation, the Web Server must respond with an HTTP `404` response ("Not Found").
+1. The [[ref: DID URL path]] to `whois` MUST be `<did:webs DID>/whois`.
+1. The HTTPS path to the `whois` MUST be like `<HTTPS URL conversion of did:webs identifier>/whois.vp`.
+1. If the `whois` is present, the web server that serves the `did:webs` documents MUST respond to a request for the HTTPS `whois` URL with the verifiable presentation published there by the DID controller.
+1. If the controller of the `did:webs` DID has not published a `whois` verifiable presentation, the web server MUST respond with an HTTP `404` response ("Not Found").
 1. The resolved `whois` DID URL MUST resolve to a verifiable presentation in which the presentation proof is signed by a key or keys from the current `did:webs` DID Document or a valid previous version of the DID Document.
-1. All of the Verifiable Credentials in the verifiable presentation MUST have the `did:webs` DID as the credential subject.
+1. All of the verifiable credentials in the verifiable presentation MUST have the `did:webs` DID as the credential subject.
 1. The verifiable presentation may be in one of three formats:
     1. A W3C Verifiable Credentials Data Model Standard JSON-LD [[ref: Data Integrity Proof]] Verifiable Presentation.
     1. A W3C Verifiable Credentials Data Model Standard [[ref: JSON Web Token Verifiable Presentation]].
