@@ -15,8 +15,8 @@ This section of the specification defines how various DID document metadata prop
 
 The `versionId` DID document metadata property indicates the current version of the DID document that has been resolved.
 
-1. `did:webs` versionId is defined to be the sequence number (i.e. the `s` field) of the last event in the [[ref: KERI event stream]] that was used to construct the DID document according to the rules in section [DID Document from KERI Events](#did-document-from-keri-events).
-1. If the DID parameter `versionId` (see section [Support for `versionId`](#support-for-versionid)) was used when resolving the `did:webs` DID, and if the DID Resolution process was successful, then this corresponding DID document metadata property is guaranteed to be equal to the value of the DID parameter.
+1. The `did:webs` versionId MUST be the sequence number (i.e. the `s` field) of the last event in the [[ref: KERI event stream]] that was used to construct the DID document according to the rules in section [DID Document from KERI Events](#did-document-from-keri-events).
+1. If the DID parameter `versionId` (see section [Support for `versionId`](#support-for-versionid)) was used when resolving the `did:webs` DID, and if the DID Resolution process was successful, then this corresponding DID document metadata property MUST be guaranteed to be equal to the value of the DID parameter.
 
 Example:
 
@@ -38,8 +38,8 @@ Example:
 
 The `nextVersionId` DID document metadata property indicates the next version of the DID document after the version that has been resolved.
 
-1. `did:webs` `nextVersionId` is defined to be the sequence number (i.e. the `s` field) of the next event in the [[ref: KERI event stream]] after the last one that was used to construct the DID document according to the rules in section [DID Document from KERI Events](#did-document-from-keri-events).
-1. This DID document metadata property is only present if the DID parameter `versionId`
+1. The `did:webs` `nextVersionId` MUST be the sequence number (i.e. the `s` field) of the next event in the [[ref: KERI event stream]] after the last one that was used to construct the DID document according to the rules in section [DID Document from KERI Events](#did-document-from-keri-events).
+1. This DID document metadata property MUST be present if the DID parameter `versionId`
 (see section [Support for `versionId`](#support-for-versionid)) was used when resolving the `did:webs` DID, and if the value of that DID parameter was not the sequence number of the last event in the [[ref: KERI event stream]].
 
 Example:

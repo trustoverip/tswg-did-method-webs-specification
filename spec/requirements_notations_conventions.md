@@ -20,7 +20,7 @@ The following key words in this document are to be interpreted as described in B
 1. Normative sections MUST start with "This section is normative."
 1. Normative statements SHOULD read in a way that can be implemented.
 1. Normative statements MUST be numbered so that they are easily referenced and addressed in discussions, issues, pull requests, etc.
-1. Informative sections will start with "This section is informative."
+1. Informative sections MUST start with "This section is informative."
 1. Informative statements MUST NOT be numbered. Instead they can use prose or bulleted points.
 1. If informative statements accompany normative statements then they MUST be separated like:
     > This is informative text accompanying but separated from the normative statements.

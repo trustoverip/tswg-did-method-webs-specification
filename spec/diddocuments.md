@@ -2,7 +2,7 @@
 This section is normative.
 
 1. `did:webs` DID documents MUST be generated or derived from the [[ref: Keri event stream]] of the corresponding AID.
-    1. Processing the [[ref: KERI event stream]] of the AID, the generation algorithm will be reading the AID [[ref: KEL]] and any anchored [[ref: TELs]] to produce the DID document. 
+    1. Processing the [[ref: KERI event stream]] of the AID, the generation algorithm MUST read the AID [[ref: KEL]] and any anchored [[ref: TELs]] to produce the DID document. 
 1. `did:webs` DID documents MUST be pure JSON. They MAY be processed as JSON-LD by prepending an `@context` if consumers of the documents wish.
 1. All hashes, cryptographic keys, and signatures MUST be represented as [[ref: CESR]] strings. This is an approach similar to multibase, making them self-describing and terse.
 
@@ -196,14 +196,14 @@ would result in a DID document with the following verification methods array:
 
 #### Thresholds
 1. If the current signing keys threshold (the value of the `kt` field) is a string containing a number that is greater than 1, or if it is an array containing fractionally weighted thresholds, then in addition to the verification methods generated according to the rules in the previous sections, another verification method with a type of `ConditionalProof2022` MUST be generated in the DID document. This verification method type is defined [here](https://w3c-ccg.github.io/verifiable-conditions/).
-    1. It is constructed according to the following rules:
+    1. It MUST be constructed according to the following rules:
         1. The `id` property of the verification method MUST be a relative DID URL and use the AID as the value of the fragment component, e.g., `"id": "#<aid>"`.
         1. The `controller` property of the verification method MUST be the value of the `id` property of the DID document. (Does the method spec need to specify this?)
-        1. If the value of the `kt` field is a string containing a number that is greater than 1:
+        1. If the value of the `kt` field is a string containing a number that is greater than 1 then the following rules MUST be applied:
             1. The `threshold` property of the verification method MUST be the integer value of the `kt` field in the current key state.
             1. The `conditionThreshold` property of the verification method MUST contain an array. For each key listed in the array value of the `k` field in the key state:
                 1. The relative DID URL corresponding to the key MUST be added to the array value of the `conditionThreshold` property.
-        1. If the value of the `kt` field is an array containing fractionally weighted thresholds:
+        1. If the value of the `kt` field is an array containing fractionally weighted thresholds then the following rules MUST be applied:
             1. The `threshold` property of the verification method MUST be half of the lowest common denominator (LCD) of all the fractions in the `kt` array.
             1. The `conditionWeightedThreshold` property of the verification method MUST contain an array. For each key listed in the array value of the `k` field in the key state, and for each corresponding fraction listed in the array value of the `kt` field:
                 1. A JSON object MUST be added to the array value of the `conditionWeightedThreshold` property.
@@ -349,14 +349,14 @@ would result in a DID document with the following verification methods array:
         ```
 
 ### Verification Relationships
-1. If the value of `kt` == 1:
+1. If the value of `kt` == 1 then the following rules MUST be applied:
     1. For each public key in `k` and its corresponding verification method, two verification relationships MUST be generated in the DID document. One verification relationship of type `authentication` and one verification relationship of type `assertionMethod`.
-        1. The `authentication` verification relationship defines that the DID controller can authenticate using each key.
-        1. The `assertionMethod` verification relationship defines that the DID controller can express claims using each key.
-1. If the value of `kt` > 1 or if the value of `kt` is an array containing fractionally weighted thresholds:
+        1. The `authentication` verification relationship SHALL define that the DID controller can authenticate using each key.
+        1. The `assertionMethod` verification relationship SHALL define that the DID controller can express claims using each key.
+1. If the value of `kt` > 1 or if the value of `kt` is an array containing fractionally weighted thresholds then the following rules MUST be applied:
     1. For the verification method of type `ConditionalProof2022` (see section [Thresholds](#thresholds)), two verification relationships MUST be generated in the DID document. One verification relationship of type `authentication` and one verification relationship of type `assertionMethod`.
-        1. The `authentication` verification relationship defines that the DID controller can authenticate using a combination of multiple keys above the threshold.
-        1. The `assertionMethod` verification relationship defines that the DID controller can express claims using a combination of multiple keys above the threshold.
+        1. The `authentication` verification relationship SHALL define that the DID controller can authenticate using a combination of multiple keys above the threshold.
+        1. The `assertionMethod` verification relationship SHALL define that the DID controller can express claims using a combination of multiple keys above the threshold.
 1. References to verification methods in the DID document MUST use the relative form of the identifier, e.g., `"authentication": ["#<identifier>"]`.
 
 > Private keys of a KERI AID can be used to sign a variety of data.  This includes but is not limited to logging into a website, challenge-response exchanges, credential issuances, etc.
@@ -389,7 +389,7 @@ To support new data structures, propose them in KERI and detail the transformati
 
 
 #### KERI Service Endpoints as DID Document Metadata
-1. `did:webs` endpoints must be specified using the two data sets KERI uses to define service endpoints; Location Schemes and Endpoint Role Authorizations.
+1. `did:webs` endpoints MUST be specified using the two data sets KERI uses to define service endpoints; Location Schemes and Endpoint Role Authorizations.
     1. Both MUST be expressed in KERI `rpy` events.
     1. For URL scheme endpoints that an AID has exposed, `did:webs` DIDs MUST use Location Schemes URLs.
     1. For endpoints that relate a role of one AID to another, `did:webs` DIDs MUST use KERI Endpoint Role Authorizations.
@@ -468,8 +468,8 @@ TODO:  Propose a new role in KERI to map to the existing [DIDCommMessaging](http
 
 The DID document that exists as a resource on a webserver is compatible with the `did:web` DID method and therefore necessarily different from a `did:webs` DID document with regard to the `id`, `controller`, and `alsoKnownAs` properties.
 1. To transform the `did:web` form of the DID Document to a `did:webs` the transformation MUST do the following:
-    1. In the values of the top-level `id` and `controller` properties of the DID document, replace the `did:webs` prefix string with `did:web`.
-    1. In the value of the top-level `alsoKnownAs` property, replace the entry that is now the new value of the `id` property (using `did:web`) with the old value of the `id` property (using `did:webs`).
+    1. In the values of the top-level `id` and `controller` properties of the DID document, the transformation MUST replace the `did:webs` prefix string with `did:web`.
+    1. In the value of the top-level `alsoKnownAs` property, the transformation MUST replace the entry that is now the new value of the `id` property (using `did:web`) with the old value of the `id` property (using `did:webs`).
     1. All other content of the DID document MUST not be modified.
 
     For example, this transformation is used during the [Create](#create) DID method operation, given the following `did:webs` DID document:
@@ -731,14 +731,14 @@ Resulting DID document:
 #### Key state events
 1. When processing the [[ref: KERI event stream]] `did:webs` MUST account for two broad types of key state events (KERI parlance is 'establishment events') that can alter the key state of the AID.
 1. Any change in key state of the AID MUST be reflected in the DID document.
-1. If a key state event does not commit to a future set of rotation key hashes, then the AID can't be rotated to new keys in the future (KERI parlance is that the key state of the AID becomes 'non-transferrable').
+1. If a key state event does not commit to a future set of rotation key hashes, then the AID SHALL NOT be rotated to new keys in the future (KERI parlance is that the key state of the AID becomes 'non-transferrable').
 1. If a key state event does commit to a future set of rotation key hashes, then any future key state rotation MUST be to those commitment keys. This foundation of [[ref: pre-rotation]] is post-quantum safe and allows the `did:webs` controller to recover from key compromise.
 1. The [[ref: Inception event]] MUST be the first event in the [[ref: KEL]] that establishes the AID.  
-    1. This defines the initial key set
+    1. This MUST define the initial key set
     1. If the controller(s) desire future key rotation (transfer) then the inception event MUST commit to a set of future rotation key hashes.
-    1. When processing the [[ref: KERI event stream]], if there are no rotation events after the inception event, then this is the current key state of the AID and will be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). 
+    1. When processing the [[ref: KERI event stream]], if there are no rotation events after the inception event, then this is the current key state of the AID and MUST be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). 
 1. [[ref: Rotation events]] MUST come after inception events.
-1. If the controller(s) desires future key rotation (transfer) then the rotation event must commit to a set of future rotation key hashes.
+1. If the controller(s) desires future key rotation (transfer) then the rotation event MUST commit to a set of future rotation key hashes.
 1. [[ref: Rotation events]] MUST only change the key state to the previously committed to rotation keys.
 1. The last rotation event is the current key state of the AID and MUST be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships).
 

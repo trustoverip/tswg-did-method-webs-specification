@@ -6,18 +6,15 @@ This section is normative.
 1. The method name that identifies this DID method SHALL be: `webs`.
 1. A DID that uses this method MUST begin with the following prefix: `did:webs:`.
 1. Per the DID specification, this string MUST be lower case.
-1. The remainder of the DID, after the prefix, is the case-sensitive [[ref: method-specific identifier]]
+1. The remainder of the DID, after the prefix, MUST be the case-sensitive [[ref: method-specific identifier]]
 ([[ref: MSI]]) described [below](#method-specific-identifier).
 
 > Note: when pronounced aloud, “webs” should become two syllables: the word “web” and the letter “s” (which stands for “secure”). Separating the final letter this way emphasizes that the method offers a security upgrade surpassing the one HTTPS gives to HTTP.
 
 ### Method-Specific Identifier
 
-1. The `did:webs` [[ref: method-specific identifier]] has two
-parts, a [[ref: host]] with an optional path (identical to
-`did:web`), plus a KERI AID (autonomic identifier) that is always the final
-component of the path.
-1. The [[ref: ABNF]] definition of a `did:webs` DID is as follows:
+1. The `did:webs` [[ref: method-specific identifier]] MUST have two parts, a [[ref: host]] with an optional path (identical to `did:web`), plus a KERI AID (autonomic identifier) that is always the final component of the path.
+1. The [[ref: ABNF]] definition of a `did:webs` DID MUST be as follows:
 
     ```abnf
     webs-did = "did:webs:" host [pct-encoded-colon port] *(":" path) ":" aid
@@ -43,7 +40,7 @@ component of the path.
     ; ALPHA, DIGIT are standard ABNF primitives for alphabetic and numeric characters
     ```
 
-1. The formal rules describing valid [[ref: host]] syntax are described in [RFC1035], [RFC1123], and [RFC2181].
+1. The [[ref: host]] MUST abide by the formal rules describing valid syntax found in [[ref: RFC1035]], [[ref: RFC1123]], and [[ref: RFC2181]].
 1. A port MAY be included and the colon MUST be percent encoded, like `%3a`, to prevent a conflict with paths.
 1. Directories and subdirectories MAY optionally be included, delimited by colons rather than slashes.
 1. The KERI AID is a unique identifier and MUST be derived from the inception event of a KERI identifier.
@@ -55,18 +52,18 @@ component of the path.
 ### Target System(s)
 1. As with `did:web`, `did:webs` MUST read data from whatever web server is referenced when the [[ref: host]] portion of one of its DID is resolved.
 1. A `did:webs` DID MUST resolve to a [[ref: DID document]] using a simple text transformation to an HTTPS URL in the same way as a `did:web` DID.
-1. A `did:web` DID and `did:webs` DID with the same [[ref: method-specific identifier]] will return the same DID document, except for minor differences in the `id`, `controller`, and `alsoKnownAs` top-level properties that pertain to the identifiers themselves.
+1. A `did:web` DID and `did:webs` DID with the same [[ref: method-specific identifier]] SHOULD return the same DID document, except for minor differences in the `id`, `controller`, and `alsoKnownAs` top-level properties that pertain to the identifiers themselves.
 1. As with `did:web`, the location of the [[ref: DID document]] MUST be determined by transforming the DID to an HTTPS URL as follows:
-    1. Replace `did:webs` with `https://`
-    1. Replace the "`:`"s in the method-specific identifier with path separators, "'/'"s
-    1. Convert the optional port percent encoding ("`%3A`"`) to a colon if present.
-    1. Append "`/did.json`" to the resulting string.
+    1. MUST replace `did:webs` with `https://`
+    1. MUST replace the "`:`"s in the method-specific identifier with path separators, "'/'"s
+    1. MUST convert the optional port percent encoding ("`%3A`"`) to a colon if present.
+    1. MUST append "`/did.json`" to the resulting string.
 1. A GET on that URL MUST return the DID document.
-1. The location of the [[ref: KERI event stream]] is determined by transforming the previous URL as follows:
-    1. Replace the trailing "`/did.json`" with "`/keri.cesr`".
+1. The location of the [[ref: KERI event stream]] MUST be determined by transforming the previous URL as follows:
+    1. MUST replace the trailing "`/did.json`" with "`/keri.cesr`".
     1. A GET on that URL MUST return the [[ref: KERI event stream]] for the AID in the `did:webs` identifier.
     1. The [[ref: KERI event stream]] MUST be [[ref: CESR]]-formatted (media type of application/cesr) and the KERI events must be verifiable using the KERI rules.
-1. The `did:web` version of the DIDs are the same (minus the `s`) and point to the same `did.json` file, but have no knowledge of the `keri.cesr` file.
+1. The `did:web` version of the DIDs MUST be the same (minus the `s`) and point to the same `did.json` file, but have no knowledge of the `keri.cesr` file.
 
 > The set of KERI features needed for most `did:webs` use cases is modest, with limited dependencies. These basics are summarized in the [KERI Fundamentals](#keri-fundamentals) section of this specification. This specification assumes a working knowledge of the concepts there. The inclusion of KERI in `did:webs` enables a number of capabilities for securing a `did:webs` identifier, including multi-signature support and the creation of [[ref: pre-rotated]] keys to prevent loss of control of the identifier if the current private key were to be compromised.
 
@@ -103,7 +100,7 @@ URLs, based on the examples from the [[ref: did:web Specification]], but with th
 ### Handling Web Redirection
 
 1. A `did:webs` MAY be a "stable" (long-lasting) identifier that can be put into documents such as verifiable credentials, to be useful for a very long time -- generations.
-1. When a `did:webs` is updated for another location:
+1. When a `did:webs` is updated for another location the following rules MUST apply:
     1. Its AID MUST not change.
     1. The same [[ref: KERI event stream]] MUST be used to verify the DID document, with the only change being the designated aliases list reflecting the new location identifier.
     1. If a resolver can find a newly named DID that uses the same AID, and the [[ref: KERI event stream]] verifies the DID, then the resolver MAY consider the resolution to be successful and should note it in the resolution metadata. 
@@ -132,13 +129,13 @@ URLs, based on the examples from the [[ref: did:web Specification]], but with th
 
 #### Create
 
-Creating a `did:webs` DID involves the following steps:
-1. Choose the web URL where the DID document for the DID will be published, excluding the last element that will be the AID, once defined.
-1. Create a KERI AID and add it as the last element of the web URL for the DID.
-1. Add the appropriate KERI events to the AID's KERI logs that will correspond to properties of the DID document, such as verification methods and service endpoints.
-1. Derive the `did:webs` [[ref: DID document]] by processing the [[ref: KERI event stream]] according to section [DID Document from KERI Events](#did-document-from-keri-events).
-1. For compatibility reasons, transform the derived `did:webs` DID document to the corresponding `did:web` DID document according to section [Transformation to did:web DID Document](#transformation-to-didweb-did-document).
-1. Create the AID folder on the web server at the selected location, and place the `did:web` DID document resource (`did.json`) and the [[ref: KERI event stream]] resource (`keri.cesr`) into that folder. See section [Target System(s)](#target-systems) for further details about the locations of these resources.
+1. Creating a `did:webs` DID MUST follow these rules:
+    1. MUST choose the web URL where the DID document for the DID will be published, excluding the last element that will be the AID, once defined.
+    1. MUST create a KERI AID and add it as the last element of the web URL for the DID.
+    1. MUST add the appropriate KERI events to the AID's KERI logs that will correspond to properties of the DID document, such as verification methods and service endpoints.
+    1. MUST derive the `did:webs` [[ref: DID document]] by processing the [[ref: KERI event stream]] according to section [DID Document from KERI Events](#did-document-from-keri-events).
+    1. For compatibility reasons, transformation of the derived `did:webs` DID document to the corresponding `did:web` DID document MUST be according to section [Transformation to did:web DID Document](#transformation-to-didweb-did-document).
+    1. MUST create the AID folder on the web server at the selected location, and place the `did:web` DID document resource (`did.json`) and the [[ref: KERI event stream]] resource (`keri.cesr`) into that folder. See section [Target System(s)](#target-systems) for further details about the locations of these resources.
 
 > Of course, the web server that serves the resources when asked might be a simple file server (as implied above) or an active component that generates them dynamically. Further, the publisher of the resources placed on the web can use capabilities like [CDNs] to distribute the resources. How the resources are posted at the required location is not defined by this spec; complying implementations need not support any HTTP methods other than GET.
 
@@ -146,13 +143,13 @@ Creating a `did:webs` DID involves the following steps:
 
 #### Read (Resolve)
 
-Resolving a `did:webs` DID must follow these steps:
-1. Convert the `did:webs` DID back to HTTPS URLs as described in section [Target System(s)](#target-systems).
-1. Execute HTTP GET requests on both the URL for the DID document (ending in `/did.json`) and the URL for the [[ref: KERI event stream]] (ending in `/keri.cesr`).
-1. Process the [[ref: KERI event stream]] using [KERI Rules] to verify it, then derive the `did:webs` [[ref: DID document]] by processing the [[ref: KERI event stream]] according to section [DID Document from KERI Events](#did-document-from-keri-events).
-1. Transform the retrieved `did:web` DID document to the corresponding `did:webs` DID document according to section [Transformation to did:webs DID Document](#transformation-to-didwebs-did-document).
-1. Verify that the derived `did:webs` DID document equals the transformed DID document.
-1. KERI-aware applications MAY use the [[ref: KERI event stream]] to make use of additional capabilities enabled by the use of KERI.
+1. Resolving a `did:webs` DID MUST follow these steps:
+    1. MUST convert the `did:webs` DID back to HTTPS URLs as described in section [Target System(s)](#target-systems).
+    1. MUST execute HTTP GET requests on both the URL for the DID document (ending in `/did.json`) and the URL for the [[ref: KERI event stream]] (ending in `/keri.cesr`).
+    1. MUST process the [[ref: KERI event stream]] using [KERI Rules] to verify it, then derive the `did:webs` [[ref: DID document]] by processing the [[ref: KERI event stream]] according to section [DID Document from KERI Events](#did-document-from-keri-events).
+    1. MUST transform the retrieved `did:web` DID document to the corresponding `did:webs` DID document according to section [Transformation to did:webs DID Document](#transformation-to-didwebs-did-document).
+    1. MUST verify that the derived `did:webs` DID document equals the transformed DID document.
+    1. KERI-aware applications MAY use the [[ref: KERI event stream]] to make use of additional capabilities enabled by the use of KERI.
 
 > Capabilities beyond the verification of the DID document and [[ref: KERI event stream]] are outside the scope of this specification.
 
@@ -166,5 +163,5 @@ the [[ref: KERI event stream]].
 #### Deactivate
 
 1. To deactivate a `did:webs` DID, A controller SHOULD execute a KERI event that has the effect of rotating the key(s) to null and continue to publish the DID document and [[ref: KERI event stream]].
-    1. Once the deactivation events have been applied, the controller should regenerate the DID document from the [[ref: KERI event stream]] and republish both documents (did.json and keri.cesr) to the web server, overwriting the existing files.
+    1. Once the deactivation events have been applied, the controller SHOULD regenerate the DID document from the [[ref: KERI event stream]] and republish both documents (did.json and keri.cesr) to the web server, overwriting the existing files.
     1. A controller SHOULD NOT remove the DID folder and files from the web server on which it has been published. This is considered to be a bad approach, as those resolving the DID will not be able to determine if the web service is offline or the DID has been deactivated. 

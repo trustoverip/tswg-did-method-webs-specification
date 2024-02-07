@@ -13,8 +13,8 @@ The binding between an [[ref: AID]] and its cryptographic keys is proved by a da
 
 A KEL is a hash-chain append-only log and can be considered a variant of blockchain. However, a KEL differs from the traditional blockchain technology in at least two important ways:
 
-1. It records the [[ref: key event]] history of a single AID with a single [[ref: controller]], instead of an arbitrarily large collection updated by other participants in the network. This makes a KEL memory-efficient, fast, cheap, and trivially scalable.
-1. It is fully [[ref: self-certifying]], meaning its correctness can be proved by direct inspection, without a distributed consensus algorithm or assumptions about trust in an external data source or its governance.
+* It records the [[ref: key event]] history of a single AID with a single [[ref: controller]], instead of an arbitrarily large collection updated by other participants in the network. This makes a KEL memory-efficient, fast, cheap, and trivially scalable.
+* It is fully [[ref: self-certifying]], meaning its correctness can be proved by direct inspection, without a distributed consensus algorithm or assumptions about trust in an external data source or its governance.
 
 These properties allows a KEL to be published anywhere, without special guarantees from its storage mechanism. For example, a KEL of an AID could be published and migrated between different KERI-compatible blockchain networks that use different DID methods. A KEL also records changes to key types and cryptographic algorithms, providing the AID portability and adaptability to multiple ecosystems throughout its lifecycle.
 
