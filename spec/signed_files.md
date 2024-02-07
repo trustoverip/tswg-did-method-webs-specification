@@ -12,16 +12,12 @@
     1. The HTTPS path to the associated JWS file MUST be `<HTTPS URL conversion of did:webs identifier>/<path to file>.jws`.
     1. The JWS web signature MUST:
         1. Use the [[ref: JSON Serialization]] form of the JWS. This is necessary to support multi-signatures in the JWS.
-        1. Have a payload that is the [multiformat multihash] hash of the content of the associated signed file.
+        1. Have a payload that is the [[ref: multiformat multihash]] hash of the content of the associated signed file.
         1. Be signed with a verification key(s) that is (are) either currently in the DIDDoc of the DID, or found in the [[ref: KEL]] associated with the DID. A verification key found in a valid [[ref: KEL]] represents a key that had been in use previously, but has been rotated away.
         1. Be verified such that:
             1. A calculated hash of the file matches the hash in the JWS.
             1. The signature(s) in the JWS is (are) valid.
             1. If the DID has (or had at the time of signing) [[ref: multisig]] requirements, those requirements are met.
-
-See:
-* [[ref: JSON Serialization]]
-* [[ref: multiformat multihash]]
 
 The following is non-normative:
 Examples:
@@ -34,12 +30,6 @@ Examples:
 
 The core use case for this feature is providing an easy way for a DID controller to publish files such that those receiving the file can be confident that the file was explicitly published by the DID controller (they signed it), and has not been tampered with since it was published. A few examples of where this might be useful in verifiable credential-related use cases include:
 * Revocation registries such as [[ref: StatusList2021]] published by the issuer (and revoker) of a set of revocable credentials.
-* [Hyperledger AnonCreds] objects such as those published by an Issuer when [setting up to publish AnonCreds verifiable credential]
+* [[ref: Hyperledger AnonCreds]] objects such as those published by an Issuer when [setting up to publish AnonCreds verifiable credential]
 * JSON-LD context files.
-* Verifiable Credential rendering data files and images published by verifiable credential issuers, such as those proposed in the [W3C VC Rendering Methods specification] and used in the [Overlay Capture Architecture (OCA) for Aries] specification.
-
-See:
-* [[ref: StatusList2021]]
-* [[ref: Hyperledger AnonCreds]]
-* [[ref: W3C VC Rendering Methods specification]]
-* [[ref: Overlay Capture Architecture]] (OCA) for Aries
+* Verifiable Credential rendering data files and images published by verifiable credential issuers, such as those proposed in the [[ref: W3C VC Rendering Methods specification]] and used in the [[ref: Overlay Capture Architecture]] (OCA) for Aries specification.

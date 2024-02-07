@@ -4,7 +4,7 @@ This section describes the support of the `did:webs` method for metadata, includ
 
 ### DID Resolution Metadata
 
-At the moment, this specification does not define the use of any specific [[ref:DID resolution metadata]] properties in the `did:webs` method, but may in the future include various metadata, such as which KERI Watchers were used during the resolution process.
+At the moment, this specification does not define the use of any specific [[ref: DID resolution metadata]] properties in the `did:webs` method, but may in the future include various metadata, such as which KERI Watchers were used during the resolution process.
 
 ### DID Document Metadata
 

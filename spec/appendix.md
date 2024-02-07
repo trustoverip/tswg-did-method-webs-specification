@@ -16,7 +16,7 @@
 
 [[def: verifiable identifier (VID), VID, VIDs]]
 ~ An identifier over which the controller can provide cryptographic proof of control.
-See also: decentralized identifier, [ref: self-certifying identifier (SCID)].
+See also: decentralized identifier, [[ref: self-certifying identifier (SCID)]].
 
 
 ### Terminology
