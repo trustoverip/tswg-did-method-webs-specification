@@ -30,4 +30,4 @@ The following is a use case for this capability. Consider an example of the `did
 
 Such checks can all be done with a handful of HTTPS requests and the processing of the DIDs and verifiable presentations. The result is an efficient, verifiable, credential-based, decentralized, multi-domain trust registry.
 
-[US News Rankings of Colleges and Universities](https://www.usnews.com/education/best-global-universities)
+[US News Rankings of Colleges and Universities]: https://www.usnews.com/education/best-global-universities
