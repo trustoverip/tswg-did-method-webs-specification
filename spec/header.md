@@ -11,7 +11,6 @@ ToIP `did:webs` Method Specification V1.0
 
 - [Phil Feairheller](https://github.com/pfeairheller), [GLEIF](https://gleif.org)
 - [Daniel Hardman](https://www.linkedin.com/in/danielhardman/), [Provenant, Inc](https://provenant.net)
-- [Stephen Curran](https://github.com/swcurran), [Cloud Compass](https://cloudcompass.ca/)
 - [Sam Smith](https://github.com/SmithSamuelM), [Prosapien](https://prosapien.com/)
 
 **Contributors:**
