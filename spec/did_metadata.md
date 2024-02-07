@@ -1,10 +1,11 @@
 ## DID Metadata
+This section is normative.
 
 This section describes the support of the `did:webs` method for metadata, including [[ref: DID resolution metadata]] and [[ref: DID document metadata]]. This metadata is returned by a DID Resolver in addition to the DID document. Also see the [DID Resolution](https://w3c-ccg.github.io/did-resolution/) specification for further details.
 
 ### DID Resolution Metadata
 
-At the moment, this specification does not define the use of any specific [[ref:DID resolution metadata]] properties in the `did:webs` method, but may in the future include various metadata, such as which KERI Watchers were used during the resolution process.
+At the moment, this specification does not define the use of any specific [[ref: DID resolution metadata]] properties in the `did:webs` method, but may in the future include various metadata, such as which KERI Watchers were used during the resolution process.
 
 ### DID Document Metadata
 
@@ -63,11 +64,11 @@ Example:
 The `equivalentId` DID document metadata property indicates other DIDs that refer to the same subject and are logically equivalent to the DID that has been resolved. It is similar to the `alsoKnownAs` DID document property (see section [Also Known As](#also-known-as)), but it has even stronger semantics, insofar as the logical equivalence is guaranteed by the DID method itself.
 
 1. The `did:webs` `equivalentId` metadata property SHOULD contain a list of the controller AID [[ref: designated aliases]] `did:webs` DIDs that differ
-in the [[ref:host]] and/or port portion of the [[ref: method-specific identifier]]
-but share the same AID. Also see section [[ref:AID controlled identifiers]].
+in the [[ref: host]] and/or port portion of the [[ref: method-specific identifier]]
+but share the same AID. Also see section [[ref: AID controlled identifiers]].
 1. `equivalentId` depends on the controller AIDs array of [[ref: designated aliases]]. A `did:webs` identifier MUST not verify unless it is found in the `equivalentId` metadata that corresponds to the [[ref: designated aliases]].
 
-> Note that [[ref:AID controlled identifiers]] like `did:web` and `did:keri` identifiers with the same AID are not listed in `equivalentId` because they do not have the same DID method. A `did:web` identifier with the same domain and AID does not have the same security characteristics as the `did:webs` identifier. Conversely, a `did:keri` identifier with the same AID has the same security characterisitcs but not the same dependence on the web. For these reasons, they are not listed in `equivalentId`. 
+> Note that [[ref: AID controlled identifiers]] like `did:web` and `did:keri` identifiers with the same AID are not listed in `equivalentId` because they do not have the same DID method. A `did:web` identifier with the same domain and AID does not have the same security characteristics as the `did:webs` identifier. Conversely, a `did:keri` identifier with the same AID has the same security characterisitcs but not the same dependence on the web. For these reasons, they are not listed in `equivalentId`. 
 
 Example:
 

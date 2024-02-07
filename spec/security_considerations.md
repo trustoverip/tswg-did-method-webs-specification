@@ -1,4 +1,6 @@
 ## Security Considerations
+This section is normative.
+
 There are many security considerations related to web requests, storing information securely, etc. It is useful to address these considerations along with the common security threats found on the web. 
 
 ### Common security threats
@@ -43,14 +45,10 @@ reasons.
 ### International Domain Names
 
 1. As with `did:web`, implementers of this method SHOULD consider how non-ASCII characters manifest in URLs and DIDs.
-    1. The [[spec:DID-CORE]] identifier syntax does not allow the direct representation of such characters in method name or method specific identifiers.This prevents a `did:webs` value from embodying a homograph attack.
+    1. The [[ref: DID-CORE]] identifier syntax does not allow the direct representation of such characters in method name or method specific identifiers.This prevents a `did:webs` value from embodying a homograph attack.
     1. However, `did:webs` MAY hold data encoded with punycode or percent encoding. This means that IRIs constructed from DID values could contain non-ASCII characters that were not obvious in the DID, surprising a casual human reader.
     1. Caution is RECOMMENDED when treating a `did:webs` as the equivalent of an IRI.
     1. Treating it as the equivalent of a URL, instead, is RECOMMENDED as it preserves the punycode and percent encoding and is therefore safe.
-
-See also:
-* [UTS-46](https://unicode.org/reports/tr46/)
-* [[spec:rfc5895]]
 
 ### Concepts for securing `did:webs` information
 
@@ -69,7 +67,7 @@ The following security concepts are used to secure the data, files, signatures a
         1. For a `did:webs` resolver to be trusted it SHOULD use KRAM to access the service endpoints providing KERI event streams for verification of the DID document.
 
 ### On-Disk Storage
-This section is non-normative.
+This section is informative.
 
 Both KEL backed data and [[ref: BADA-RUN]] security approaches are suitable for storing information on disk because both provide a link between the keystate and date-time on some data when a signature by the source of the data was created. [[ref: BADA-RUN]] is too weak for important information because an attacker who has access to the database on disk can overwrite data on disk without being detected by a verifier hosting the on-disk data either through a replay of stale data (data regression attack) or if in addition to disk access the attacker has compromised a given key state, then the attacker can forge new data with a new date-time stamp for a given compromised key and do a regression attack so that the last seen key state is the compromised key state.
 
@@ -84,7 +82,7 @@ The use of DH key exchange as a weak form of authentication is no more secure th
 Often, DID methods have focused on features that erode security characteristics. The paper [Five DID Attacks](https://github.com/WebOfTrustInfo/rwot11-the-hague/blob/master/final-documents/taking-out-the-crud-five-fabulous-did-attacks.pdf) highlights some attacks to which `did:webs` should NOT be vulnerable. So when a pull request exposes `did:webs` to a known attack, it should not be accepted.
 
 ### Alignment of Information to Security Posture
-This section is non-normative.
+This section is informative.
 
 As a general security principle each block of information should have the same security posture for all the sub-blocks. One should not attempt to secure a block of information that mixes security postures across is constituent sub-blocks. The reason is that the security of the block can be no stronger than the weakest security posture of any sub-block in the block. Mixing security postures forces all to have the lowest common denominator security. The only exception to this rule is if the block of information is purely informational for discovery purposes and where it is expected that each constituent sub-block is meant to be verified independently.
 
@@ -93,19 +91,19 @@ This means that any recipient of such a block information with mixed security po
 Unfortunately, what happens in practice is that users are led into a false sense of security because they assume that they don’t have to explode and re-verify, but merely may accept the lowest common denominator verification on the whole block of information. This creates a pernicious problem for downstream use of the data. A downstream use of a constituent sub-block doesn’t know that it was not independently verified to its higher level of security. This widens the attack surface to any point of down-stream usage. This is a root cause of the most prevalent type of attack called a BOLA.
 
 #### Applying the concepts
-This section is non-normative.
+This section is informative.
 
 Lets explore the implications of applying these concepts to various `did:webs` elements.
 
-Using [[ref: KEL]] backed elements in a DID doc simplifies the security concerns. However, future discovery features related to endpoints might consider BADA-RUN. For instance, 'whois' data could be used with [[ref: BADA-RUN]] whereas did:web aliases should not because it could lead to an impersonation attack. We could have a DID document that uses [[ref: BADA-RUN]] if we modify the DID CRUD semantics to be RUN semantics without necessarily changing the verbs but by changing the semantics of the verbs. Then any data that fits the security policy of BADA (i.e. where BADA is secure enough) can be stored in a DID document as a database in the sky. For sure this includes service endpoints for discovery. One can sign with [[ref:CESR]] or JWS signatures. The payloads are essentially KERI reply messages in terms of the fields (with modifications as needed to be more palatable), but are semantically the same. The DID doc just relays those replies. Anyone reading from the DID document is essentially getting a KERI reply message, and they then should apply the BADA rules to their local copy of the reply message.
+Using [[ref: KEL]] backed elements in a DID doc simplifies the security concerns. However, future discovery features related to endpoints might consider BADA-RUN. For instance, 'whois' data could be used with [[ref: BADA-RUN]] whereas did:web aliases should not because it could lead to an impersonation attack. We could have a DID document that uses [[ref: BADA-RUN]] if we modify the DID CRUD semantics to be RUN semantics without necessarily changing the verbs but by changing the semantics of the verbs. Then any data that fits the security policy of BADA (i.e. where BADA is secure enough) can be stored in a DID document as a database in the sky. For sure this includes service endpoints for discovery. One can sign with [[ref: CESR]] or JWS signatures. The payloads are essentially KERI reply messages in terms of the fields (with modifications as needed to be more palatable), but are semantically the same. The DID doc just relays those replies. Anyone reading from the DID document is essentially getting a KERI reply message, and they then should apply the BADA rules to their local copy of the reply message.
 
-To elaborate, these security concepts point us to modify the DID CRUD semantics to replicate RUN semantics. _Create_ becomes synonymous with _Update_ where Update uses the RUN update. _Delete_ is modified to use the Nullify semantics. _Read_ data is modified so that any recipient of the Read response can apply BADA to its data (Read is a GET). So we map the CRUD of DID docs to RUN for the `did:webs` method. Now you have reasonable security for things like signed data. If its [[ref: KEL]] backed data you could even use an [[ref:ACDC]] as a data attestation for that data and the did resolver would become a caching store for [[ref:ACDCs]] issued by the AID controller.
+To elaborate, these security concepts point us to modify the DID CRUD semantics to replicate RUN semantics. _Create_ becomes synonymous with _Update_ where Update uses the RUN update. _Delete_ is modified to use the Nullify semantics. _Read_ data is modified so that any recipient of the Read response can apply BADA to its data (Read is a GET). So we map the CRUD of DID docs to RUN for the `did:webs` method. Now you have reasonable security for things like signed data. If its [[ref: KEL]] backed data you could even use an [[ref: ACDC]] as a data attestation for that data and the did resolver would become a caching store for [[ref: ACDCs]] issued by the AID controller.
 
 Architecturally, a Read (GET) from the did resolver acts like how KERI reply messages are handled for resolving service endpoint discovery from an [[ref: OOBI]]. The query is the read in RUN and so uses KRAM. The reply is the response to the READ request. The controller of the AID updates the DID resolvers cache with updates(unsolicited reply messages). A trustworthy DID resolver applies the BADA rules to any updates it receives. Optionally the DID resolver may apply [[ref: KRAM]] rules to any READ requests to protect it from replay attacks.
 
-In addition, a DID doc can be a discovery mechanism for an [[ref:ACDC]] caching server by including an index (label: said) of the [[ref:SAIDs]] of the [[ref:ACDCs]] held in the resolvers cache.
+In addition, a DID doc can be a discovery mechanism for an [[ref: ACDC]] caching server by including an index (label: said) of the [[ref: SAIDs]] of the [[ref: ACDCs]] held in the resolvers cache.
 
 #### Reducing the attack surface
-This section is non-normative.
+This section is informative.
 
 The above considerations have lead us to focus on [[ref: KEL]] backed DID document blocks and data (whois files, signatures, etc) so that the trusted (local) did:webs resolver is secure. Any future features that could leverage [[ref: BADA-RUN]] and [[ref: KRAM]] should be considered carefully according to the above considerations.

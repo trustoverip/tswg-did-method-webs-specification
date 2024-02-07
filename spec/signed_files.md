@@ -1,4 +1,5 @@
 ## Signed Files
+This section is normative.
 
 `did:webs` signed files combine the semantics of folders of files on web servers, and the [[ref: DID Specification]]'s [[ref: DID URL path]] semantics to enable the controller of the DID to publish documents cryptographically signed using the verification key(s) of the DID. This kind of signed file capability has been implemented in a variety of ways in the past, such as with [hashlinks](https://datatracker.ietf.org/doc/html/draft-sporny-hashlink). The value of including this as part of the `did:webs` DID method is that it ensures consistency in its application, including how the signed files can be verified when using a [[ref: multisig]]-enabled DID, and in the face of rotations of the DID's key(s).
 
@@ -23,7 +24,7 @@ See:
 * [[ref: JSON Serialization]]
 * [[ref: multiformat multihash]]
 
-The following is non-normative:
+The following is informative.
 Examples:
 * DID URL: `did:webs:w3c-ccg.github.io:12124313423525/members-list.txt`
   * HTTPS URL: `https://w3c-ccg.github.io/12124313423525/members-list.txt`

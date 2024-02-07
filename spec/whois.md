@@ -18,7 +18,7 @@ This convention enables those that receive the DID to retrieve and verify the ve
 > It is up to the DID Controller to decide to publish a verifiable presentation and if so, which Verifiable Credentials to put into the verifiable presentation.
 
 ### `whois` Use Case
-This section is non-normative.
+This section is informative.
 
 The following is a use case for this capability. Consider an example of the `did:webs` controller being an educational institution that issues "degree" verifiable credentials to its graduate students. A graduate from the school submits as part of their job application to a company a [[ref: Verifiable Presentation]] derived from the verifiable credential they received from the school. The company receiving the presentation can verify the cryptography of the presentation, but can they trust the school that issued the verifiable credential? If the school issued the verifiable credential using its `did:webs` DID, the company can resolve the DID. It can also resolve the DID's `whois` DID URL where it might find VCs from issuers it trusts with the `did:webs` DID as the subject. For example:
 

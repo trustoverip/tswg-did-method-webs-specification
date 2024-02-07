@@ -1,3 +1,4 @@
 ## IANA Considerations
+This section is normative.
 
-This document has no IANA actions.
+1. This document has no IANA actions.

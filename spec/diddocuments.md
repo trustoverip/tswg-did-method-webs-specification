@@ -1,6 +1,7 @@
 ## DID Documents
+This section is normative.
 
-1. `did:webs` DID documents MUST be generated or derived from the [[ref:Keri event stream]] of the corresponding AID.
+1. `did:webs` DID documents MUST be generated or derived from the [[ref: Keri event stream]] of the corresponding AID.
     1. Processing the [[ref: KERI event stream]] of the AID, the generation algorithm will be reading the AID [[ref: KEL]] and any anchored [[ref: TELs]] to produce the DID document. 
 1. `did:webs` DID documents MUST be pure JSON. They MAY be processed as JSON-LD by prepending an `@context` if consumers of the documents wish.
 1. All hashes, cryptographic keys, and signatures MUST be represented as [[ref: CESR]] strings. This is an approach similar to multibase, making them self-describing and terse.
@@ -70,7 +71,7 @@ sections detail the algorithm to follow for each case.
 ```
 
 ### DID Controller
-The value of the `controller` property MUST be a single string that is the same as the `id` (the DID Subject).
+1. The value of the `controller` property MUST be a single string that is the same as the `id` (the DID Subject).
 
 ```json
 {
@@ -83,7 +84,7 @@ The value of the `controller` property MUST be a single string that is the same 
 1. The `alsoKnownAs` property in the root of the DID document MAY contain any DID that has the same AID. See the [[ref: designated aliases]] section for information on how an AID anchors the `alsoKnownAs` identifiers to their [[ref: KERI event stream]].
 1. `did:webs` DIDs MUST serve the `did:webs` and corresponding `did:web`as an `alsoKnownAs` identifier.
 1. `did:webs` DIDs MUST provide the corresponding `did:keri` as an `alsoKnownAs` identifier.
-1. The same AID MAY be associated with multiple `did:webs` DIDs, each with a different [[ref:host]] and/or path, but with the same AID.
+1. The same AID MAY be associated with multiple `did:webs` DIDs, each with a different [[ref: host]] and/or path, but with the same AID.
 1. `did:webs` DIDs MUST be listed in the [[ref: designated aliases]] attestation of the AID.
 1. For each [[ref: AID controlled identifier]] DID defined above, an entry in the `alsoKnownAs` array in the DID document MUST be created.
 
@@ -361,10 +362,10 @@ would result in a DID document with the following verification methods array:
 > Private keys of a KERI AID can be used to sign a variety of data.  This includes but is not limited to logging into a website, challenge-response exchanges, credential issuances, etc.
 
 #### Key Agreement
-This section is non-normative:
+This section is informative:
 
 There are multiple ways to establish key agreement in KERI. We detail common considerations and techniques:
-* If the 'k' field references a Ed25519 key, then key agreement MAY be established using the corresponding x25519 key for Diffie-Helman key exchange.
+* If the 'k' field references a Ed25519 key, then key agreement may be established using the corresponding x25519 key for Diffie-Helman key exchange.
 * If the key is an ECDSA or other NIST algorithms key then it will be the same key for signatures and encryption and can be used for key agreement.
 
 * *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we specify endpoints, [[ref: host]] migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
@@ -373,9 +374,9 @@ There are multiple ways to establish key agreement in KERI. We detail common con
   * Likely the best mechanism is to anchor an [[ref: ACDC]] to a [[ref: TEL]] which is anchored to the KEL.
 
 #### Other Key Commitments
-This section is non-normative:
+This section is informative.
 
-Data structures similar to Location Scheme and Endpoint Authorizations and managed in KERI using [[ref: BADA-RUN]] MAY be created and used for declaring other types of keys, for example encryption keys, etc
+Data structures similar to Location Scheme and Endpoint Authorizations and managed in KERI using [[ref: BADA-RUN]] may be created and used for declaring other types of keys, for example encryption keys, etc
 
 To support new data structures, propose them in KERI and detail the transformation in the spec.
 
@@ -535,7 +536,7 @@ This section defines an inverse transformation algorithm from a `did:web` DID do
     ```
 
 ### Full Example
-> This section is non-normative
+This section is informative.
 
 The following blocks contain full annotated examples of a KERI AID with two events, an inception event and an interaction event, some witnesses, multiple public signing and rotation keys and an Agent with the resulting DID document that an implementation would generate assuming the implementation was running on the `example.com` domain with no unique port and no additional path defined:
 
@@ -744,7 +745,7 @@ Resulting DID document:
 > You can learn more about the inception event in the [[ref: KERI specification]] and you can see an example inception event.
 > To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [[ref: KERI specification]].
 
-> You can learn more about rotation events in the [[ref:KERI specification]] and you can see an example rotation event.
+> You can learn more about rotation events in the [[ref: KERI specification]] and you can see an example rotation event.
 > To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [[ref: KERI specification]].
 
 ### Delegation KERI event details
