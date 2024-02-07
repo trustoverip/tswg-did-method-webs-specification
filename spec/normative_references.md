@@ -3,6 +3,9 @@
 
 ### Normative References
 
+[[def: Data Integrity Proof]]
+~ The data integrity proof defined in the [[ref: Verifiable Credential Data Model]] spec. See https://www.w3.org/TR/vc-data-model/#data-integrity-proofs.
+
 [[def: JSON Serialization]]
 ~ See https://datatracker.ietf.org/doc/html/rfc7515#section-3.2
 
@@ -33,5 +36,11 @@
 [[def: W3C - DID URL path, DID URL path, DID URL path specification]]
 ~ See https://www.w3.org/TR/did-core/#path.
 
-[[def: W3C - Verifiable Credentials Data Model (VCDM), vcdm specification]]
+[[def: W3C - Verifiable Credentials Data Model (VCDM), vcdm specification, verifiable credential data model]]
 ~ The [W3C - Verifiable Credentials Data Model (VCDM)](https://www.w3.org/TR/vc-data-model/) details the the core Verifiable Credentials Data Model (VCDM) specification.
+
+[[def: W3C - verifiable presentation, verifiable presentation, verifiable presentations]]
+~ See (https://www.w3.org/TR/vc-data-model/#presentations-0).
+
+[[def: ACDC IPEX, IPEX]]
+~ ACDC Verifiable Credential Issuance and Presentation Excchange as defined in the KERI ACDC spec https://trustoverip.github.io/tswg-acdc-specification/#ipex-validation.
