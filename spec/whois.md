@@ -9,16 +9,16 @@ This convention enables those that receive the DID to retrieve and verify the ve
 1. If the controller of the `did:webs` DID has not published a `whois` verifiable presentation, the web server MUST respond with an HTTP `404` response ("Not Found").
 1. The resolved `whois` DID URL MUST resolve to a verifiable presentation in which the presentation proof is signed by a key or keys from the current `did:webs` DID Document or a valid previous version of the DID Document.
 1. All of the verifiable credentials in the verifiable presentation MUST have the `did:webs` DID as the credential subject.
-1. The verifiable presentation may be in one of three formats:
-    1. A W3C Verifiable Credentials Data Model Standard JSON-LD [[ref: Data Integrity Proof]] Verifiable Presentation.
-    1. A W3C Verifiable Credentials Data Model Standard [[ref: JSON Web Token Verifiable Presentation]].
-    1. An [[ref: ACDC]] or [[ref: ACDC IPEX]] disclosure.
+1. The verifiable presentation MUST be in one of three formats:
+    1. A W3C [[ref: Verifiable Credentials Data Model]] Standard JSON-LD [[ref: Data Integrity Proof]] Verifiable Presentation MAY be used.
+    1. A W3C [[ref: Verifiable Credentials Data Model]] Standard [[ref: JSON Web Token Verifiable Presentation]] MAY be used.
+    1. An [[ref: ACDC]] or [[ref: ACDC IPEX]] disclosure MAY be used.
 1. When the verifiable presentation is requested, the resolved object MUST contain the appropriate MIME type of the verifiable presentation format.
 
 > It is up to the DID Controller to decide to publish a verifiable presentation and if so, which Verifiable Credentials to put into the verifiable presentation.
 
 ### `whois` Use Case
-This section is non-normative.
+This section is informative.
 
 The following is a use case for this capability. Consider an example of the `did:webs` controller being an educational institution that issues "degree" verifiable credentials to its graduate students. A graduate from the school submits as part of their job application to a company a [[ref: Verifiable Presentation]] derived from the verifiable credential they received from the school. The company receiving the presentation can verify the cryptography of the presentation, but can they trust the school that issued the verifiable credential? If the school issued the verifiable credential using its `did:webs` DID, the company can resolve the DID. It can also resolve the DID's `whois` DID URL where it might find VCs from issuers it trusts with the `did:webs` DID as the subject. For example:
 
