@@ -1,7 +1,9 @@
-ToIP `did:webs` Method Specification V1.0
+ToIP `did:webs` Method Specification v0.9.15
 ==================
 
-**Specification Status**: Public Review Draft 01
+**Specification Status**: Implementors Draft
+
+In order to further validate and improve the specification and to demonstrate interoperability between multiple implementations of did:webs, we encourage additional did:webs implementations to the [hyperledger-labs python reference implementation](https://github.com/hyperledger-labs/did-webs-resolver) of did:webs.
 
 **Latest Draft:**
 
@@ -12,13 +14,14 @@ ToIP `did:webs` Method Specification V1.0
 - [Phil Feairheller](https://github.com/pfeairheller), [GLEIF](https://gleif.org)
 - [Daniel Hardman](https://www.linkedin.com/in/danielhardman/), [Provenant, Inc](https://provenant.net)
 - [Sam Smith](https://github.com/SmithSamuelM), [Prosapien](https://prosapien.com/)
+- [Lance Byrd](https://github.com/2byrds), [GLEIF](https://gleif.org) and [RootsID](https://rootsid.com/)
 
 **Contributors:**
 
 - [Markus Sabadello](https://www.linkedin.com/in/markus-sabadello-353a0821/), [Danube Tech](https://danubetech.com/) and [DIF](https://identity.foundation)
 - [John Jordan](https://www.linkedin.com/in/johnjordandigitaltrust/), [Government of British Columbia](https://www2.gov.bc.ca/gov/content/home) and [Trust Over IP Foundation](https://trustoverip.org)
 - [Kevin Griffin](https://github.com/m00sey), [GLEIF](https://gleif.org)
-- [Lance Byrd](https://github.com/2byrds), [GLEIF](https://gleif.org) and [RootsID](https://rootsid.com/)
+- [Charles Lanahan](https://github.com/daidoji), [Stealth Mode Startup Company](https://www.linkedin.com/in/charles-lanahan-a8a68b16/)
 - [Nuttawut Kongsuwan](https://github.com/nkongsuwan), [Finema](https://finema.co/) 
 - [Darrell O'Donnell](https://github.com/darrellodonnell), [Continuum Loop Inc.](https://www.continuumloop.com)
 
