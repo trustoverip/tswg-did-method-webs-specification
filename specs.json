@@ -24,7 +24,8 @@
         "normative_references.md",
         "informative_references.md",
         "acknowledgements_authors.md",
-        "appendix.md"
+        "appendix.md",
+        "impl_guide.md"
       ],
       "logo": "https://raw.githubusercontent.com/trustoverip/logo-assets/master/logos/ToIP-Logo-Color-SolidDimensional-Horizontal-LightOnDark.svg",
       "logo_link": "https://github.com/trustoverip/tswg-did-method-webs-specification",
