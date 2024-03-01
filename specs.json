@@ -21,6 +21,7 @@
         "iana_considerations.md",
         "security_considerations.md",
         "privacy_considerations.md",
+        "interop_profiles.md",
         "normative_references.md",
         "informative_references.md",
         "acknowledgements_authors.md",
