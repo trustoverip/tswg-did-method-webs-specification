@@ -1,4 +1,5 @@
 ## Introduction
+This section is informative.
 
 DID methods answer many questions. Two noteworthy ones are:
 

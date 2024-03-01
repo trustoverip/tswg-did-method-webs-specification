@@ -1,5 +1,5 @@
 ## Privacy Considerations
-This section is non-normative.
+This section is informative.
 
 This section addresses the privacy considerations from [RFC6973](https://datatracker.ietf.org/doc/html/rfc6973) section 5.
 For privacy considerations related to web infrastructure, see [`did:web` privacy considerations](https://w3c-ccg.github.io/did-method-web/#security-and-privacy-considerations).

@@ -1,4 +1,5 @@
 ## DID Parameters
+This section is normative.
 
 This section describes the support of the `did:webs` method for certain DID parameters.
 

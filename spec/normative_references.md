@@ -7,10 +7,19 @@
 ~ The data integrity proof defined in the [[ref: Verifiable Credential Data Model]] spec. See https://www.w3.org/TR/vc-data-model/#data-integrity-proofs.
 
 [[def: JSON Serialization]]
-~ See https://datatracker.ietf.org/doc/html/rfc7515#section-3.2
+~ See https://datatracker.ietf.org/doc/html/rfc7515#section-3.2.
 
 [[def: multiformat multihash]]
-~ See https://github.com/multiformats/multihash
+~ See https://github.com/multiformats/multihash.
+
+[[def: RFC1035]]
+~ Domain names - implementation and specification. See https://www.rfc-editor.org/info/rfc1035.
+
+[[def: RFC1123]]
+~ Requirements for Internet Hosts -- Application and Support. See https://datatracker.ietf.org/doc/html/rfc1123.
+
+[[def: RFC2181]]
+~ Clarifications to the DNS Specification. See https://www.rfc-editor.org/info/rfc2181.
 
 [[def: Trust over IP - Authentic Chained Data Containers (ACDC) specification, ACDC specification, ACDC protocol]]
 ~ The [ACDC specification](https://trustoverip.github.io/tswg-acdc-specification/) details the core ACDC specification including the Issuance and Presentation Exchange (IPEX) Protocol and Public Transaction Event Log (PTEL) specification.
