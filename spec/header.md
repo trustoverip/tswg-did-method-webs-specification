@@ -21,7 +21,7 @@ In order to further validate and improve the specification and to demonstrate in
 - [Markus Sabadello](https://www.linkedin.com/in/markus-sabadello-353a0821/), [Danube Tech](https://danubetech.com/) and [DIF](https://identity.foundation)
 - [John Jordan](https://www.linkedin.com/in/johnjordandigitaltrust/), [Government of British Columbia](https://www2.gov.bc.ca/gov/content/home) and [Trust Over IP Foundation](https://trustoverip.org)
 - [Kevin Griffin](https://github.com/m00sey), [GLEIF](https://gleif.org)
-- [Charles Lanahan](https://github.com/daidoji), [Stealth Mode Startup Company](https://www.linkedin.com/in/charles-lanahan-a8a68b16/)
+- [Charles Lanahan](https://www.linkedin.com/in/charles-lanahan-a8a68b16/)
 - [Nuttawut Kongsuwan](https://github.com/nkongsuwan), [Finema](https://finema.co/) 
 - [Darrell O'Donnell](https://github.com/darrellodonnell), [Continuum Loop Inc.](https://www.continuumloop.com)
 
