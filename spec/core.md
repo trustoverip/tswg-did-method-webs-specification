@@ -63,7 +63,7 @@ This section is normative.
     1. The [[ref: KERI event stream]] MUST be [[ref: CESR]]-formatted (media type of application/cesr) and the KERI events must be verifiable using the KERI rules.
 1. The `did:web` version of the DIDs MUST be the same (minus the `s`) and point to the same `did.json` file, but have no knowledge of the `keri.cesr` file.
 
-For more information, see the following sections in the implementators guide:
+For more information, see the following sections in the implementors guide:
 * [[ref: the set of KERI features needed]] to support `did:webs`
 
 > A target system cannot forge or tamper with data protected by KERI, and if it deliberately serves an outdated copy, the duplicity is often detectable. Thus, any given target system in isolation can be viewed by this method as a dumb, untrusted server of content. It is the combination of target systems and some KERI mechanisms, _together_, that constitutes this method's verifiable data registry. In short, verifying the DID document by processing the [[ref: KERI event stream]] using KERI puts the "s" of "security" in `did:webs`.
