@@ -3,7 +3,7 @@ ToIP `did:webs` Method Specification v0.9.15
 
 **Specification Status**: Implementors Draft
 
-In order to further validate and improve the specification and to demonstrate interoperability between multiple implementations of did:webs, we encourage additional did:webs implementations to the [hyperledger-labs python reference implementation](https://github.com/hyperledger-labs/did-webs-resolver) of did:webs.
+In order to further validate and improve the specification and to demonstrate interoperability between multiple implementations of did:webs, we encourage additional did:webs implementations to the original [[ref: did:webs Reference Implementation]].
 
 **Latest Draft:**
 

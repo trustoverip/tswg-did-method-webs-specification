@@ -44,7 +44,7 @@ Unlike a blockchain with a distributed consensus mechanism, witnesses do not coo
 
 ### Transaction Event Log (TEL)
 
-[[ref: KERI]] supports an official verifiable data structure, called the [[ref: transaction event log (TEL)]], that binds an [[ref: AID]] to important, non-repudiable actions that must relate with deterministic order to the [[ref: key event]] history in the [[ref: KEL]]. Transactions that are recorded in a TEL include, for instance, issuance and revocation of verifiable credentials, or the starting or stopping of listeners on a service endpoint. Like KELs, TELs are self-certifying and may also be published by witnesses to enhance discoverability and accountability.
+[[ref: KERI]] supports an official verifiable data structure, called the [[ref: transaction event log (TEL)]], that binds an [[ref: AID]] to important, non-repudiable actions that must relate with deterministic order to the [[ref: key event]] history in the [[ref: KEL]]. Transactions that are recorded in a TEL include, for instance, issuance and revocation of verifiable credentials, or the starting or stopping of listeners on a service endpoint. Like KELs, TELs are self-certifying and may also be published by witnesses to enhance discoverability and accountability. For example see how we anchor [[ref: designated aliases]] as [[ref: verifiable data on a TEL]]. 
 
 ### Web Independence
 

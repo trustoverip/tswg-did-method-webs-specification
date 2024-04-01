@@ -3,7 +3,7 @@ This section is normative.
 
 `did:webs` signed files combine the semantics of folders of files on web servers, and the [[ref: DID Specification]]'s [[ref: DID URL path]] semantics to enable the controller of the DID to publish documents cryptographically signed using the verification key(s) of the DID. This kind of signed file capability has been implemented in a variety of ways in the past, such as with [hashlinks](https://datatracker.ietf.org/doc/html/draft-sporny-hashlink). The value of including this as part of the `did:webs` DID method is that it ensures consistency in its application, including how the signed files can be verified when using a [[ref: multisig]]-enabled DID, and in the face of rotations of the DID's key(s).
 
-1. In publishing a file, the controller of the DID MAY use the KERI [[ref: TEL]] to record the signing event, prior to publishing the file. In that case, in processing the KERI Audit log, the publication event MUST be found, verified, and ordered relative to key state changes and other signing events.
+1. In publishing a file, the controller of the DID MAY use the KERI [[ref: TEL]] to record the signing event, prior to publishing the file. In that case, in processing the KERI Audit log, the publication event MUST be found, verified, and ordered relative to key state changes and other signing events. For example see how we anchor [[ref: designated aliases]] as [[ref: verifiable data on a TEL]].
 
 1. If the file is NOT [[ref: KEL backed data]] or if the controller would like to provide additional signature, the controller MUST do the following:
     1. The controller of the DID MAY place arbitrary files into the folder structure below the root did:webs folder.
