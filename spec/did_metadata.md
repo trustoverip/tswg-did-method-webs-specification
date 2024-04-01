@@ -63,9 +63,7 @@ Example:
 
 The `equivalentId` DID document metadata property indicates other DIDs that refer to the same subject and are logically equivalent to the DID that has been resolved. It is similar to the `alsoKnownAs` DID document property (see section [Also Known As](#also-known-as)), but it has even stronger semantics, insofar as the logical equivalence is guaranteed by the DID method itself.
 
-1. The `did:webs` `equivalentId` metadata property SHOULD contain a list of the controller AID [[ref: designated aliases]] `did:webs` DIDs that differ
-in the [[ref: host]] and/or port portion of the [[ref: method-specific identifier]]
-but share the same AID. Also see section [[ref: AID controlled identifiers]].
+1. The `did:webs` `equivalentId` metadata property SHOULD contain a list of the controller AID [[ref: designated aliases]] `did:webs` DIDs that differ in the [[ref: host]] and/or port portion of the [[ref: method-specific identifier]] but share the same AID. Also see section [[ref: AID controlled identifiers]].
 1. `equivalentId` depends on the controller AIDs array of [[ref: designated aliases]]. A `did:webs` identifier MUST not verify unless it is found in the `equivalentId` metadata that corresponds to the [[ref: designated aliases]].
 
 > Note that [[ref: AID controlled identifiers]] like `did:web` and `did:keri` identifiers with the same AID are not listed in `equivalentId` because they do not have the same DID method. A `did:web` identifier with the same domain and AID does not have the same security characteristics as the `did:webs` identifier. Conversely, a `did:keri` identifier with the same AID has the same security characterisitcs but not the same dependence on the web. For these reasons, they are not listed in `equivalentId`. 
@@ -74,18 +72,43 @@ Example:
 
 ```json
 {
-  "didDocument": {
-    "id": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
-    // ... other properties
-  },
-  "didResolutionMetadata": {
-  },
-  "didDocumentMetadata": {
-    "equivalentId": [
-      "did:webs:example.com%3A8080:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "did:webs:bar.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
-    ]    
-  }
+    "didDocument": {
+        "id": "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+        "verificationMethod": [
+            {
+                "id": "#DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+                "type": "JsonWebKey",
+                "controller": "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+                "publicKeyJwk": {
+                    "kid": "DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+                    "kty": "OKP",
+                    "crv": "Ed25519",
+                    "x": "evT4j6Yw3uHpwsw5NEmSR8-4x3S-BA-s6Thjd51oeOs"
+                }
+            }
+        ],
+        "service": [],
+        "alsoKnownAs": [
+            "did:web:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+        ]
+    },
+    "didResolutionMetadata": {
+        "contentType": "application/did+json",
+        "retrieved": "2024-04-01T17:43:24Z"
+    },
+    "didDocumentMetadata": {
+        "witnesses": [],
+        "versionId": "2",
+        "equivalentId": [
+            "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+        ],
+        "didDocUrl": "http://did-webs-service:7676/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe/did.json",
+        "keriCesrUrl": "http://did-webs-service:7676/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe/keri.cesr"
+    }
 }
 ```
