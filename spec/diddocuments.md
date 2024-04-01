@@ -580,6 +580,8 @@ This section defines an inverse transformation algorithm from a `did:web` DID do
 ### Full Example
 This section is informative.
 
+To walk through a real-world example, please see the GETTING STARTED example of the original [[ref: did:webs Reference Implementation]] as it walks users through many did:webs related examples (and associated KERI commands) to show how they work together.
+
 The following blocks contain fully annotated examples of a KERI AID with two events, an [[ref: inception event]] and an [[ref: interaction event]].
 * The [[ref: inception event]] designates some [[ref: witnesses]] in the `b` field.
 * The [[ref: inception event]] designates multiple public signing keys in the `k` field.
