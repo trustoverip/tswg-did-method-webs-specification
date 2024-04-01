@@ -97,7 +97,7 @@ URLs, based on the examples from the [[ref: did:web Specification]], but with th
 1. A `did:webs` MAY be a "stable" (long-lasting) identifier that can be put into documents such as verifiable credentials, to be useful for a very long time -- generations.
 1. When a `did:webs` is updated for another location the following rules MUST apply:
     1. Its AID MUST not change.
-    1. The same [[ref: KERI event stream]] MUST be used to verify the DID document, with the only change being the designated aliases list reflecting the new location identifier.
+    1. The same [[ref: KERI event stream]] MUST be used to verify the DID document, with the only change being the [[ref: designated aliases]] list reflecting the new location identifier.
     1. If a resolver can find a newly named DID that uses the same AID, and the [[ref: KERI event stream]] verifies the DID, then the resolver MAY consider the resolution to be successful and should note it in the resolution metadata. 
 
 1. The following resolution paths that `did:webs` identfiers SHALL leverage to help in the face of resolution uncertainty:
