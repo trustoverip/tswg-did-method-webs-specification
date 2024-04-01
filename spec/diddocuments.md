@@ -580,7 +580,14 @@ This section defines an inverse transformation algorithm from a `did:web` DID do
 ### Full Example
 This section is informative.
 
-The following blocks contain full annotated examples of a KERI AID with two events, an inception event and an interaction event, some witnesses, multiple public signing and rotation keys and an Agent with the resulting DID document that an implementation would generate assuming the implementation was running on the `example.com` domain with no unique port and no additional path defined:
+The following blocks contain fully annotated examples of a KERI AID with two events, an [[ref: inception event]] and an [[ref: interaction event]].
+* The [[ref: inception event]] designates some [[ref: witnesses]] in the `b` field.
+* The [[ref: inception event]] designates multiple public signing keys in the `k` field.
+* The [[ref: inception event]] designates multiple rotation keys in the `n` field.
+* The [[ref: interaction event]] cryptographically anchors data associated with the SAID `EoLNCdag8PlHpsIwzbwe7uVNcPE1mTr-e1o9nCIDPWgM`.
+* The reply 'rpy' events specify an Agent endpoint, etc.
+
+After the below KERI Event Stream we show the resulting DID document that an implementation would generate assuming the implementation was running on the `example.com` domain with no unique port and no additional path defined:
 
 ```json
 {
