@@ -6,7 +6,9 @@ This section is normative.
 1. `did:webs` DID documents MUST be pure JSON. They MAY be processed as JSON-LD by prepending an `@context` if consumers of the documents wish.
 1. All hashes, cryptographic keys, and signatures MUST be represented as [[ref: CESR]] strings. This is an approach similar to multibase, making them self-describing and terse.
 
-* See the implementors guide for more information about the [[def: KERI event stream chain of custody]]
+To better understand the cryptographic verifiable data structures used, see the implementors guide description of the [[def: KERI event stream chain of custody]]
+
+To understand the KERI AID commands, resulting [[ref: KERI Event Stream]], and the corresponding `did:webs` DID document see the original [[ref: did:webs Reference Implementation]] GETTING STARTED guide.
 
 In KERI the calculated values that result from processing the [[ref: KERI event stream]] are referred to as the "current key state" and expressed
 in the Key State Notice (KSN) record.  An example of a KERI KSN record can be seen here:
