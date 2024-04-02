@@ -6,7 +6,9 @@ This section is normative.
 1. `did:webs` DID documents MUST be pure JSON. They MAY be processed as JSON-LD by prepending an `@context` if consumers of the documents wish.
 1. All hashes, cryptographic keys, and signatures MUST be represented as [[ref: CESR]] strings. This is an approach similar to multibase, making them self-describing and terse.
 
-* See the implementors guide for more information about the [[def: KERI event stream chain of custody]]
+To better understand the cryptographically verifiable data structures used, see the implementors guide description of the [[def: KERI event stream chain of custody]]
+
+To understand the KERI AID commands resulting in the [[ref: KERI Event Stream]] and the corresponding `did:webs` DID document see the original [[ref: did:webs Reference Implementation]] [GETTING STARTED guide](https://github.com/hyperledger-labs/did-webs-resolver/blob/main/GETTING_STARTED.md).
 
 In KERI the calculated values that result from processing the [[ref: KERI event stream]] are referred to as the "current key state" and expressed
 in the Key State Notice (KSN) record.  An example of a KERI KSN record can be seen here:
@@ -580,7 +582,16 @@ This section defines an inverse transformation algorithm from a `did:web` DID do
 ### Full Example
 This section is informative.
 
-The following blocks contain full annotated examples of a KERI AID with two events, an inception event and an interaction event, some witnesses, multiple public signing and rotation keys and an Agent with the resulting DID document that an implementation would generate assuming the implementation was running on the `example.com` domain with no unique port and no additional path defined:
+To walk through a real-world example, please see the GETTING STARTED guide in the [[ref: did:webs Reference Implementation]] as it walks users through many did:webs related tasks (and associated KERI commands) to demonstrate how they work together.
+
+The following blocks contain fully annotated examples of a KERI AID with two events, an [[ref: inception event]] and an [[ref: interaction event]].
+* The [[ref: inception event]] designates some [[ref: witnesses]] in the `b` field.
+* The [[ref: inception event]] designates multiple public signing keys in the `k` field.
+* The [[ref: inception event]] designates multiple rotation keys in the `n` field.
+* The [[ref: interaction event]] cryptographically anchors data associated with the SAID `EoLNCdag8PlHpsIwzbwe7uVNcPE1mTr-e1o9nCIDPWgM`.
+* The reply 'rpy' events specify an Agent endpoint, etc.
+
+Below, we show the KERI Event Stream that will be associated with the resulting generated DID document. These documents were generated for the `example.com` domain with no associated port or additional path defined:
 
 ```json
 {
