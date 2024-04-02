@@ -11,7 +11,7 @@ There are multiple ways to establish key agreement in KERI. We detail common con
 * *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we specify endpoints, [[ref: host]] migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
 * *Key agreement from `k` field keys:* It is important to note that KERI is cryptographically agile and can support a variety of keys and signatures.
 * *Key agreement anchored in KEL:* It is always possible to anchor arbitrary data, like a key agreement key, to the KEL.
-  * Likely the best mechanism is to anchor an [[ref: ACDC]] to a [[ref: TEL]] which is anchored to the KEL.
+  * The best mechanism is to anchor an [[ref: ACDC]] to a [[ref: TEL]] which is anchored to the KEL. The data would be the basis of the key agreement information. The concept is similar to how we anchor [[ref: designated aliases]] as [[ref: verifiable data on a TEL]].
 
 ### Other Key Commitments
 [[def: Other Key Commitments]]
@@ -78,4 +78,200 @@ A `did:webs` could be moved to use another DID method that uses the AID for uniq
 ### KERI event stream chain of custody
 [[def: KERI event stream chain of custody]]
 ~ This section is informative.
-The [[ref: KERI event stream]] represents a cryptographic chain of custody from the [[ref: AID]] itself down to the current set of keys and the cryptographic commitment to the next rotation key(s). The [[ref: KERI event stream]] also contains events that do not alter the [[ref: AID]] key state, but are useful for the DID document, such as the supported [[ref: hosts]], current set of service endpoints, etc. A did:webs resolver produces the DID document by processing the [[ref: KERI event stream]] to determine the current key state. We detail the different events in "Basic KERI event details" and show how they change the DID Document. The mapping from [[ref: KERI event stream]] to the properties of the DID Document is the core of the did:webs resolver logic.  Understanding the optimal way to update and maintain the [[ref: KERI event stream]] (publish static keri.cesr files, dyanamically generate the keri.cesr resource, etc) is beyond the scope of the spec, but a reference implementation of the resolver that details these techniques is being developed alongside this spec. The important concepts are that the entire [[ref: KERI event stream]] is used to produce and verify the DID document.
+The [[ref: KERI event stream]] represents a cryptographic chain of trust originating from the [[ref: AID]] of the controller to the current operational set of keys (signing and otherwise) as well as the cryptographic commitments to the keys the controller will rotate to in the future. The [[ref: KERI event stream]] also contains events that do not alter the [[ref: AID]] key state, but are useful metadata for the DID document such as, the supported [[ref: hosts]], the current set of service endpoints, etc. A did:webs resolver produces the DID document by processing the [[ref: KERI event stream]] to determine the current key state. We detail the different events in "Basic KERI event details" and show how they change the DID Document. The mapping from the [[ref: KERI event stream]] to the DID Document properties compose the core of the did:webs resolver logic.  Understanding the optimal way to update and maintain the [[ref: KERI event stream]] (publish static keri.cesr files, dynamically generate the keri.cesr resource, etc) is beyond the scope of the spec, but the [[ref: did:webs Reference Implementation]] of the resolver demonstrate some of these techniques. The important concept is that the entire [[ref: KERI event stream]] is used to produce and verify the DID document.
+
+### Verifiable data on a TEL
+[[def: verifiable data on a TEL]]
+~ This section is informative.
+Below is an example highlighting how verifiable data is anchored to a [[ref: KEL]] using a [[ref: TEL]]. We use this spec's [[ref: designated aliases]] feature as a real-world example. You can walk through this example in the [[ref: did:webs Reference Implementation]].
+The attestation (self-issued credential) is as follows:
+```json
+{
+    "v": "ACDC10JSON0005f2_",
+    "d": "EIGWggWL2IHiUzj1P2YuPA0-Uh55LTIu14KTvVQGrfvT",
+    "i": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "ri": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx",
+    "s": "EN6Oh5XSD5_q2Hgu-aqpdfbVepdpYpFlgz6zvJL5b_r5",
+    "a": {
+        "d": "EJJjtYa6D4LWe_fqtm1p78wz-8jNAzNX6aPDkrQcz27Q",
+        "dt": "2023-11-13T17:41:37.710691+00:00",
+        "ids": [
+            "did:web:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+        ]
+    },
+    "r": {
+        "d": "EEVTx0jLLZDQq8a5bXrXgVP0JDP7j8iDym9Avfo8luLw",
+        "aliasDesignation": {
+            "l": "The issuer of this ACDC designates the identifiers in the ids field as the only allowed namespaced aliases of the issuer's AID."
+        },
+        "usageDisclaimer": {
+            "l": "This attestation only asserts designated aliases of the controller of the AID, that the AID controlled namespaced alias has been designated by the controller. It does not assert that the controller of this AID has control over the infrastructure or anything else related to the namespace other than the included AID."
+        },
+        "issuanceDisclaimer": {
+            "l": "All information in a valid and non-revoked alias designation assertion is accurate as of the date specified."
+        },
+        "termsOfUse": {
+            "l": "Designated aliases of the AID must only be used in a manner consistent with the expressed intent of the AID controller."
+        }
+    }
+}
+```
+
+Now we show that the information is anchored to the KEL in a way that allows for changes in key state while not invalidating it.  We will:
+* chain an interaction event on the KEL, to a registry we call a TEL
+* The TEL maintains the 'state' of issued or revoked for the attestation. If the controller wants to update the list they would revoke the attestation and issue a new attestation with the updated list of aliases that they want to designate.
+* The TEL must chain to the attestation itself.
+This is what forms the end-to-end verifiability from the attestation to the AID itself. Here is the [[ref: KERI Event Stream]] of each part:
+#### The interaction event on the KEL
+This interaction event connects the TEL registry to the KEL. Notice the `a` field with the nested `i` field that references the registry
+```json
+    "v": "KERI10JSON00013a_",
+    "t": "ixn",
+    "d": "ED-4iQIVxwMcrTOW6fVs9oPpLTIxtqh_vcvLmE999zsU",
+    "i": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "s": "1",
+    "p": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "a": [
+        {
+            "i": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx",
+            "s": "0",
+            "d": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx"
+        }
+    ]
+```
+#### The TEL registry
+This TEL registry connects the KEL interaction event to the registry status. Notice the `d` field matches the nested `i` field of the `a` field of the interaction event demonstrating that they are cryptographically chained together.
+```json
+    "v": "KERI10JSON000113_",
+    "t": "vcp",
+    "d": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx",
+    "i": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx",
+    "ii": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "s": "0",
+    "c": [
+        "NB"
+    ],
+    "bt": "0",
+    "b": [],
+    "n": "AAfqHwMDdBoIWk_4Z6hvVJuhtvjA_gk8Y9bEUoP_rC_p"
+  ```
+#### The attestation status
+The current status of the attestation is in the `t` field. `iss` means issued. Notice the `ri` field cryptographically binds this issued status to the registry above. Likewise, the `i` field cryptographically binds to the attestation `d` field.
+```json
+    "v": "KERI10JSON0000ed_",
+    "t": "iss",
+    "d": "EJQvCZQYn8oO1z3_f8qhxXjk7TcLol4G3RdHVTwfGV3L",
+    "i": "EIGWggWL2IHiUzj1P2YuPA0-Uh55LTIu14KTvVQGrfvT",
+    "s": "0",
+    "ri": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx",
+    "dt": "2023-11-13T17:41:37.710691+00:00"
+```
+#### The full KERI Event Stream
+This snippet demonstrates how these events occur in the full keri.cesr file. Notice the CESR encoded verifiable signatures that are interleaved between events.
+```json
+{
+    "v": "KERI10JSON00012b_",
+    "t": "icp",
+    "d": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "i": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "s": "0",
+    "kt": "1",
+    "k": [
+        "DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr"
+    ],
+    "nt": "1",
+    "n": [
+        "ELa775aLyane1vdiJEuexP8zrueiIoG995pZPGJiBzGX"
+    ],
+    "bt": "0",
+    "b": [],
+    "c": [],
+    "a": []
+}-VAn-AABAADjfOjbPu9OWce59OQIc-y3Su4kvfC2BAd_e_NLHbXcOK8-3s6do5vBfrxQ1kDyvFGCPMcSl620dLMZ4QDYlvME-EAB0AAAAAAAAAAAAAAAAAAAAAAA1AAG2024-04-01T17c40c48d329209p00c00{
+    "v": "KERI10JSON00013a_",
+    "t": "ixn",
+    "d": "ED-4iQIVxwMcrTOW6fVs9oPpLTIxtqh_vcvLmE999zsU",
+    "i": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "s": "1",
+    "p": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "a": [
+        {
+            "i": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx",
+            "s": "0",
+            "d": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx"
+        }
+    ]
+}-VAn-AABAACNra5mDg7YHFtBeXiwIGqnHkyq7F55FGNYG1wH95akjSWCb1HzNI3E05ufT0HffClDxnJF_DmAUW2SBb0EJeoO-EAB0AAAAAAAAAAAAAAAAAAAAAAB1AAG2024-04-01T17c42c37d704426p00c00{
+    "v": "KERI10JSON00013a_",
+    "t": "ixn",
+    "d": "EBjw0a_L8M0F4xYND99dvahlrkpxODi9Wc9VzUvkhD0t",
+    "i": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "s": "2",
+    "p": "ED-4iQIVxwMcrTOW6fVs9oPpLTIxtqh_vcvLmE999zsU",
+    "a": [
+        {
+            "i": "EIGWggWL2IHiUzj1P2YuPA0-Uh55LTIu14KTvVQGrfvT",
+            "s": "0",
+            "d": "EJQvCZQYn8oO1z3_f8qhxXjk7TcLol4G3RdHVTwfGV3L"
+        }
+    ]
+}-VAn-AABAABo_okwAmWIYWI93EtUONZiEvsGuSRkKnj0mopX_RoXwWHZ_1V5hQ0BxcntsmAi21DbusyCmK-fHwTNtSxUSsoN-EAB0AAAAAAAAAAAAAAAAAAAAAAC1AAG2024-04-01T17c42c39d995867p00c00{
+    "v": "KERI10JSON000113_",
+    "t": "vcp",
+    "d": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx",
+    "i": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx",
+    "ii": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "s": "0",
+    "c": [
+        "NB"
+    ],
+    "bt": "0",
+    "b": [],
+    "n": "AAfqHwMDdBoIWk_4Z6hvVJuhtvjA_gk8Y9bEUoP_rC_p"
+}-VAS-GAB0AAAAAAAAAAAAAAAAAAAAAABED-4iQIVxwMcrTOW6fVs9oPpLTIxtqh_vcvLmE999zsU{
+    "v": "KERI10JSON0000ed_",
+    "t": "iss",
+    "d": "EJQvCZQYn8oO1z3_f8qhxXjk7TcLol4G3RdHVTwfGV3L",
+    "i": "EIGWggWL2IHiUzj1P2YuPA0-Uh55LTIu14KTvVQGrfvT",
+    "s": "0",
+    "ri": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx",
+    "dt": "2023-11-13T17:41:37.710691+00:00"
+}-VAS-GAB0AAAAAAAAAAAAAAAAAAAAAACEBjw0a_L8M0F4xYND99dvahlrkpxODi9Wc9VzUvkhD0t{
+    "v": "ACDC10JSON0005f2_",
+    "d": "EIGWggWL2IHiUzj1P2YuPA0-Uh55LTIu14KTvVQGrfvT",
+    "i": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "ri": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx",
+    "s": "EN6Oh5XSD5_q2Hgu-aqpdfbVepdpYpFlgz6zvJL5b_r5",
+    "a": {
+        "d": "EJJjtYa6D4LWe_fqtm1p78wz-8jNAzNX6aPDkrQcz27Q",
+        "dt": "2023-11-13T17:41:37.710691+00:00",
+        "ids": [
+            "did:web:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+        ]
+    },
+    "r": {
+        "d": "EEVTx0jLLZDQq8a5bXrXgVP0JDP7j8iDym9Avfo8luLw",
+        "aliasDesignation": {
+            "l": "The issuer of this ACDC designates the identifiers in the ids field as the only allowed namespaced aliases of the issuer's AID."
+        },
+        "usageDisclaimer": {
+            "l": "This attestation only asserts designated aliases of the controller of the AID, that the AID controlled namespaced alias has been designated by the controller. It does not assert that the controller of this AID has control over the infrastructure or anything else related to the namespace other than the included AID."
+        },
+        "issuanceDisclaimer": {
+            "l": "All information in a valid and non-revoked alias designation assertion is accurate as of the date specified."
+        },
+        "termsOfUse": {
+            "l": "Designated aliases of the AID must only be used in a manner consistent with the expressed intent of the AID controller."
+        }
+    }
+}-VA0-FABENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe0AAAAAAAAAAAAAAAAAAAAAAAENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe-AABAADQOX208DAmZEPb2v0XXF0N6WgxOdOxB3AsCBJds_vbAr7v1PQBA4MWNsXc8unk5UykbB8j538XGkzLtujekvIP
+```
+
