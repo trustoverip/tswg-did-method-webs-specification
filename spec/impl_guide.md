@@ -83,7 +83,7 @@ The [[ref: KERI event stream]] represents a cryptographic chain of trust origina
 ### Verifiable data on a TEL
 [[def: verifiable data on a TEL]]
 ~ This section is informative.
-Below is an example that highlights how verifiable data is anchored to a [[ref: KEL]] using a [[ref: TEL]]. We use the spec [[ref: designated aliases]] feature as a real-world example. You can walk through this real-world example in the [[ref: did:webs Reference Implementation]].
+Below is an example highlighting how verifiable data is anchored to a [[ref: KEL]] using a [[ref: TEL]]. We use this spec's [[ref: designated aliases]] feature as a real-world example. You can walk through this example in the [[ref: did:webs Reference Implementation]].
 In that section we showed the attestation (self-issued credential) as follows:
 ```json
 {
