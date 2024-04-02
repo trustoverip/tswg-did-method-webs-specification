@@ -144,7 +144,7 @@ This interaction event connects the TEL registry to the KEL. Notice the `a` fiel
     ]
 ```
 #### The TEL registry
-This TEL registry connects the KEL interaciton event to the registry status. Notice the `d` field matches the nested `i` field of the `a` field of the interaction event making them cryptographically chained together.
+This TEL registry connects the KEL interaction event to the registry status. Notice the `d` field matches the nested `i` field of the `a` field of the interaction event demonstrating that they are cryptographically chained together.
 ```json
     "v": "KERI10JSON000113_",
     "t": "vcp",
