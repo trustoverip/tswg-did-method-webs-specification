@@ -121,7 +121,7 @@ The attestation (self-issued credential) is as follows:
 }
 ```
 
-Now lets show how that information is anchored to the KEL in a way that allows for changes in key state to not invalidate it. Put simply we need to:
+Now we show that the information is anchored to the KEL in a way that allows for changes in key state while not invalidating it.  We will:
 * chain an interaction event on the KEL, to a registry we call a TEL
 * The TEL maintains the 'state' of issued or revoked for the attestation
 * The TEL must chain to the attestation itself.
