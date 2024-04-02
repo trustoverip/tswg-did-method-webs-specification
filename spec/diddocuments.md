@@ -591,7 +591,7 @@ The following blocks contain fully annotated examples of a KERI AID with two eve
 * The [[ref: interaction event]] cryptographically anchors data associated with the SAID `EoLNCdag8PlHpsIwzbwe7uVNcPE1mTr-e1o9nCIDPWgM`.
 * The reply 'rpy' events specify an Agent endpoint, etc.
 
-After the below KERI Event Stream we show the resulting DID document that an implementation would generate assuming the implementation was running on the `example.com` domain with no unique port and no additional path defined:
+Below, we show the KERI Event Stream that will be associated with the resulting generated DID document. These documents were generated for the `example.com` domain with no associated port or additional path defined:
 
 ```json
 {
