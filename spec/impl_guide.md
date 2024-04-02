@@ -171,7 +171,7 @@ The current status of the attestation is in the `t` field. `iss` means issued. N
     "dt": "2023-11-13T17:41:37.710691+00:00"
 ```
 #### The full KERI Event Stream
-This is the above sections as they trully are in the keri.cesr file. Notice the CESR verifiable signatures between events.
+This snippet demonstrates how these events occur in the full keri.cesr file. Notice the CESR encoded verifiable signatures that are interleaved between events.
 ```json
 {
     "v": "KERI10JSON00012b_",
