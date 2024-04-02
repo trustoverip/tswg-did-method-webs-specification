@@ -6,7 +6,7 @@ This section is normative.
 1. `did:webs` DID documents MUST be pure JSON. They MAY be processed as JSON-LD by prepending an `@context` if consumers of the documents wish.
 1. All hashes, cryptographic keys, and signatures MUST be represented as [[ref: CESR]] strings. This is an approach similar to multibase, making them self-describing and terse.
 
-To better understand the cryptographic verifiable data structures used, see the implementors guide description of the [[def: KERI event stream chain of custody]]
+To better understand the cryptographically verifiable data structures used, see the implementors guide description of the [[def: KERI event stream chain of custody]]
 
 To understand the KERI AID commands, resulting [[ref: KERI Event Stream]], and the corresponding `did:webs` DID document see the original [[ref: did:webs Reference Implementation]] GETTING STARTED guide.
 
