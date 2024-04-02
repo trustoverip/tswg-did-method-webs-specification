@@ -125,7 +125,7 @@ Now we show that the information is anchored to the KEL in a way that allows for
 * chain an interaction event on the KEL, to a registry we call a TEL
 * The TEL maintains the 'state' of issued or revoked for the attestation. If the controller wants to update the list they would revoke the attestation and issue a new attestation with the updated list of aliases that they want to designate.
 * The TEL must chain to the attestation itself.
-This is what forms the end-to-end verifiablity all the way from the attestation to the AID itself. Here is the [[ref: KERI Event Stream]] of each part:
+This is what forms the end-to-end verifiability from the attestation to the AID itself. Here is the [[ref: KERI Event Stream]] of each part:
 #### The interaction event on the KEL
 This interaction event connects the TEL registry to the KEL. Notice the `a` field with the nested `i` field that references the registry
 ```json
