@@ -11,7 +11,7 @@ There are multiple ways to establish key agreement in KERI. We detail common con
 * *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we specify endpoints, [[ref: host]] migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
 * *Key agreement from `k` field keys:* It is important to note that KERI is cryptographically agile and can support a variety of keys and signatures.
 * *Key agreement anchored in KEL:* It is always possible to anchor arbitrary data, like a key agreement key, to the KEL.
-  * Likely the best mechanism is to anchor an [[ref: ACDC]] to a [[ref: TEL]] which is anchored to the KEL. The data would be the key agreement information, but the concept is similar to how we anchor [[ref: designated aliases]] as [[ref: verifiable data on a TEL]].
+  * The best mechanism is to anchor an [[ref: ACDC]] to a [[ref: TEL]] which is anchored to the KEL. The data would be the basis of the key agreement information. The concept is similar to how we anchor [[ref: designated aliases]] as [[ref: verifiable data on a TEL]].
 
 ### Other Key Commitments
 [[def: Other Key Commitments]]
