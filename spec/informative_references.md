@@ -1,7 +1,7 @@
 ### Informative References
 
 [[def: did:webs Reference Implementation]]
-~ See the [python reference implementation of did:webs](https://github.com/hyperledger-labs/did-webs-resolver) that was developed as this specification was being created. Especially useful is the [GETTING STARTED guide](https://github.com/hyperledger-labs/did-webs-resolver/blob/main/GETTING_STARTED.md) which many of the examples were copied from.
+~ See the [python reference implementation of did:webs](https://github.com/hyperledger-labs/did-webs-resolver).   The [GETTING STARTED guide](https://github.com/hyperledger-labs/did-webs-resolver/blob/main/GETTING_STARTED.md) was created for new users and is the source that many of the examples in this specification were copied from.
 
 [[def: Hyperledger AnonCreds, anoncreds]]
 ~ See https://www.hyperledger.org/projects/anoncreds. And [Setting up to publish AnonCreds verifiable credential](https://hyperledger.github.io/anoncreds-spec/#anoncreds-setup-data-flow).
