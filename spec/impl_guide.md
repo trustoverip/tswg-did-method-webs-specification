@@ -160,7 +160,7 @@ This TEL registry connects the KEL interaction event to the registry status. Not
     "n": "AAfqHwMDdBoIWk_4Z6hvVJuhtvjA_gk8Y9bEUoP_rC_p"
   ```
 #### The attestation status
-The current status of the attestation is in the `t` field. `iss` means issued. Notice the `ri` field cryptographically binds this issued status to the registry above. Notice the `i` field cryptographically binds to the attestation `d` field.
+The current status of the attestation is in the `t` field. `iss` means issued. Notice the `ri` field cryptographically binds this issued status to the registry above. Likewise, the `i` field cryptographically binds to the attestation `d` field.
 ```json
     "v": "KERI10JSON0000ed_",
     "t": "iss",
