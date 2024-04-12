@@ -417,23 +417,11 @@ For more information, see the [[ref: key agreement]] and [[ref: other key commit
     }
     ```
 
-1. KERI service endpoints roles beyond `witness` SHOULD be defined using Location Scheme and Endpoint Authorization records in KERI.
+1. KERI service endpoints roles beyond `witness` SHOULD be defined using Location Scheme and Endpoint Authorization records in KERI. See the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/#oobi-url-iurl) For more information about KERI roles.
 
-The following table contains the current set of endpoint roles in KERI and maps the current roles in KERI to service `type` values in the resulting DID documentsis:
-| Role | Description |
-|:-----|:------------|
-|`controller` | The association of the key controller of an AID.  These are always self-referential. |
-|`witness` | A witness for an AID.  This role is already cryptographically committed to the KEL of the source AID and thus does not require and explicit `rpy` authroization event.|
-|`registrar` | Currently unused.|
-| `watcher` | A componenet serving as a Watcher as defined by the KERI protocol (beyond the scope of this document).|
-|`judge` | Currently unused. |
-|`juror` | Currently unused. |
-|`peer` | Currently unused. |
-|`mailbox` | A component authorized to serve as a store and forward mailbox for the source identifier.  This component usually provides a persistent internet connection for AID controllers that are usually off line.|
-|`agent` | A component authorized to serve as an agent running with persistent internet connection.  Provides more funcitonality than a `mailbox`|
-
-TODO: Detail the transformation with an example, for example:
-```json
+This section is informative.
+* A hypothetical new role that could be submitted to KERI would be the DIDCommMessaging role. It could be specified 
+* ```json
 {
   "service": [
       {
@@ -452,9 +440,7 @@ TODO: Detail the transformation with an example, for example:
   ]
 }
 ```
-TODO:  Propose a new role in KERI to map to the existing [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging) service type declared in DID Specification Registries.
-
-> In KERI, service endpoints are defined by 2 sets of signed data using Best Available Data - Read, Update, Nullify ([[ref: BADA-RUN]]) rules for data processing.  The protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
+* In KERI, service endpoints are defined by 2 sets of signed data using Best Available Data - Read, Update, Nullify ([[ref: BADA-RUN]]) rules for data processing.  The protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
 
 ### Transformation to `did:web` DID Document
 
