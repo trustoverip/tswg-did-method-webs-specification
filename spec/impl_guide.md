@@ -275,3 +275,25 @@ This snippet demonstrates how these events occur in the full keri.cesr file. Not
 }-VA0-FABENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe0AAAAAAAAAAAAAAAAAAAAAAAENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe-AABAADQOX208DAmZEPb2v0XXF0N6WgxOdOxB3AsCBJds_vbAr7v1PQBA4MWNsXc8unk5UykbB8j538XGkzLtujekvIP
 ```
 
+### Adding service endpoint roles in KERI
+
+* A hypothetical new role that could be submitted to KERI, would be the DIDCommMessaging role. It could be specified 
+```json
+{
+  "service": [
+      {
+        "id":"#Bgoq68HCmYNUDgOz4Skvlu306o_NY-NrYuKAVhk3Zh9c",
+        "type": "DIDCommMessaging", 
+        "serviceEndpoint": "https://bar.example.com"
+      }
+      {
+        "id":"#BuyRFMideczFZoapylLIyCjSdhtqVb31wZkRKvPfNqkw",
+        "type": "KERIAgent", 
+        "serviceEndpoint": {
+          "tcp": "tcp://bar.example.com:5542",
+          "https": "https://bar.example.com" 
+        }
+      }
+  ]
+}
+```

@@ -419,28 +419,7 @@ For more information, see the [[ref: key agreement]] and [[ref: other key commit
 
 1. KERI service endpoints roles beyond `witness` SHOULD be defined using Location Scheme and Endpoint Authorization records in KERI. See the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/#oobi-url-iurl) For more information about KERI roles.
 
-This section is informative.
-* A hypothetical new role that could be submitted to KERI would be the DIDCommMessaging role. It could be specified 
-```json
-{
-  "service": [
-      {
-        "id":"#Bgoq68HCmYNUDgOz4Skvlu306o_NY-NrYuKAVhk3Zh9c",
-        "type": "DIDCommMessaging", 
-        "serviceEndpoint": "https://bar.example.com"
-      }
-      {
-        "id":"#BuyRFMideczFZoapylLIyCjSdhtqVb31wZkRKvPfNqkw",
-        "type": "KERIAgent", 
-        "serviceEndpoint": {
-          "tcp": "tcp://bar.example.com:5542",
-          "https": "https://bar.example.com" 
-        }
-      }
-  ]
-}
-```
-* In KERI, service endpoints are defined by 2 sets of signed data using Best Available Data - Read, Update, Nullify ([[ref: BADA-RUN]]) rules for data processing.  The protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
+> In KERI, service endpoints are defined by 2 sets of signed data using Best Available Data - Read, Update, Nullify ([[ref: BADA-RUN]]) rules for data processing.  The protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
 
 ### Transformation to `did:web` DID Document
 

@@ -22,7 +22,7 @@ See also: decentralized identifier, [[ref: self-certifying identifier (SCID)]].
 ### Terminology
 
 [[def: AID controlled identifiers, AID controlled identifier]]
-~ Any identifier, including `did:webs` DIDs, that have the same AID are by definition referencing the same identity. As defined by [KERI]() TODO: Add link to KERI documentation here.
+~ Any identifier, including `did:webs` DIDs, that have the same AID are by definition referencing the same identity. As defined in the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/#controller-application)
 
 [[def: authentic chained data container (ACDC), ACDC, ACDCs]]
 ~ a variant of [[ref: the Verifiable Credential (VC) specification]] that inherits the security model derived from [[ref: KERI]], as defined by the [[ref:  ACDC specification]]. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/authentic-chained-data-container) for more detail.
