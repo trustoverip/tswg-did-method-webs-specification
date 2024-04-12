@@ -421,7 +421,7 @@ For more information, see the [[ref: key agreement]] and [[ref: other key commit
 
 This section is informative.
 * A hypothetical new role that could be submitted to KERI would be the DIDCommMessaging role. It could be specified 
-* ```json
+```json
 {
   "service": [
       {
