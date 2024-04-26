@@ -3,11 +3,23 @@
 
 ### Normative References
 
+[[def: Data Integrity Proof]]
+~ The data integrity proof defined in the [[ref: Verifiable Credential Data Model]] spec. See https://www.w3.org/TR/vc-data-model/#data-integrity-proofs.
+
 [[def: JSON Serialization]]
-~ See https://datatracker.ietf.org/doc/html/rfc7515#section-3.2
+~ See https://datatracker.ietf.org/doc/html/rfc7515#section-3.2.
 
 [[def: multiformat multihash]]
-~ See https://github.com/multiformats/multihash
+~ See https://github.com/multiformats/multihash.
+
+[[def: RFC1035]]
+~ Domain names - implementation and specification. See https://www.rfc-editor.org/info/rfc1035.
+
+[[def: RFC1123]]
+~ Requirements for Internet Hosts -- Application and Support. See https://datatracker.ietf.org/doc/html/rfc1123.
+
+[[def: RFC2181]]
+~ Clarifications to the DNS Specification. See https://www.rfc-editor.org/info/rfc2181.
 
 [[def: Trust over IP - Authentic Chained Data Containers (ACDC) specification, ACDC specification, ACDC protocol]]
 ~ The [ACDC specification](https://trustoverip.github.io/tswg-acdc-specification/) details the core ACDC specification including the Issuance and Presentation Exchange (IPEX) Protocol and Public Transaction Event Log (PTEL) specification.
@@ -24,7 +36,7 @@
 [[def: W3C - did:web Method Specification, did:web specification, did:web method]]
 ~ The [did:web specification](https://w3c-ccg.github.io/did-method-web/) details the did:web method specification.
 
-[[def: W3C - Decentralized Identifiers (DIDs), did specification]]
+[[def: W3C - Decentralized Identifiers (DIDs), did specification, did-core]]
 ~ The [DIDs specification](https://w3c.github.io/did-core/) details the core Decentralized Identifiers (DIDs) specification.
 
 [[def: W3C - DID spec registries, DID spec registries, DID registry]]
@@ -33,5 +45,11 @@
 [[def: W3C - DID URL path, DID URL path, DID URL path specification]]
 ~ See https://www.w3.org/TR/did-core/#path.
 
-[[def: W3C - Verifiable Credentials Data Model (VCDM), vcdm specification]]
+[[def: W3C - Verifiable Credentials Data Model (VCDM), vcdm specification, verifiable credential data model]]
 ~ The [W3C - Verifiable Credentials Data Model (VCDM)](https://www.w3.org/TR/vc-data-model/) details the the core Verifiable Credentials Data Model (VCDM) specification.
+
+[[def: W3C - verifiable presentation, verifiable presentation, verifiable presentations]]
+~ See (https://www.w3.org/TR/vc-data-model/#presentations-0).
+
+[[def: ACDC IPEX, IPEX]]
+~ ACDC Verifiable Credential Issuance and Presentation Excchange as defined in the KERI ACDC spec https://trustoverip.github.io/tswg-acdc-specification/#ipex-validation.

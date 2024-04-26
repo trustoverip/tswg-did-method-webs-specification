@@ -1,12 +1,14 @@
 ## DID Documents
+This section is normative.
 
-1. `did:webs` DID documents MUST be generated or derived from the [[ref:Keri event stream]] of the corresponding AID.
-    1. Processing the [[ref: KERI event stream]] of the AID, the generation algorithm will be reading the AID [[ref: KEL]] and any anchored [[ref: TELs]] to produce the DID document. 
+1. `did:webs` DID documents MUST be generated or derived from the [[ref: Keri event stream]] of the corresponding AID.
+    1. Processing the [[ref: KERI event stream]] of the AID, the generation algorithm MUST read the AID [[ref: KEL]] and any anchored [[ref: TELs]] to produce the DID document. 
 1. `did:webs` DID documents MUST be pure JSON. They MAY be processed as JSON-LD by prepending an `@context` if consumers of the documents wish.
 1. All hashes, cryptographic keys, and signatures MUST be represented as [[ref: CESR]] strings. This is an approach similar to multibase, making them self-describing and terse.
 
-> The [[ref: KERI event stream]] represents a cryptographic chain of custody from the [[ref: AID]] itself down to the current set of keys and the cryptographic commitment to the next rotation key(s). The [[ref: KERI event stream]] also contains events that do not alter the [[ref: AID]] key state, but are useful for the DID document, such as the supported [[ref: hosts]], current set of service endpoints, etc. A did:webs resolver produces the DID document by processing the [[ref: KERI event stream]] to determine the current key state. We detail the different events in (KERI event details)[#KERI-event-details] below and show how they change the DID Document. The mapping from [[ref: KERI event stream]] to the properties of the DID Document is the core of the did:webs resolver logic.  Understanding the optimal way to update and maintain the [[ref: KERI event stream]] (publish static keri.cesr files, dyanamically generate the keri.cesr resource, etc) is beyond the scope of the spec, but a reference implementation of the resolver that details these techniques is being developed alongside this spec. The important concepts are that the entire [[ref: KERI event stream]] is used to produce and verify the DID document.
-> The [[ref: KERI event stream]] represents a cryptographic chain of custody from the [[ref: AID]] itself down to the current set of keys and the cryptographic commitment to the next rotation key(s). The [[ref: KERI event stream]] also contains events that do not alter the [[ref: AID]] key state, but are useful for the DID document, such as the supported [[ref: hosts]], current set of service endpoints, etc. A did:webs resolver produces the DID document by processing the [[ref: KERI event stream]] to determine the current key state. We detail the different events in (KERI event details)[#KERI-event-details] below and show how they change the DID Document. The mapping from [[ref: KERI event stream]] to the properties of the DID Document is the core of the did:webs resolver logic.  Understanding the optimal way to update and maintain the [[ref: KERI event stream]] (publish static keri.cesr files, dyanamically generate the keri.cesr resource, etc) is beyond the scope of the spec, but a reference implementation of the resolver that details these techniques is being developed alongside this spec. The important concepts are that the entire [[ref: KERI event stream]] is used to produce and verify the DID document.
+To better understand the cryptographically verifiable data structures used, see the implementors guide description of the [[def: KERI event stream chain of custody]]
+
+To understand the KERI AID commands resulting in the [[ref: KERI Event Stream]] and the corresponding `did:webs` DID document see the original [[ref: did:webs Reference Implementation]] [GETTING STARTED guide](https://github.com/hyperledger-labs/did-webs-resolver/blob/main/GETTING_STARTED.md).
 
 In KERI the calculated values that result from processing the [[ref: KERI event stream]] are referred to as the "current key state" and expressed
 in the Key State Notice (KSN) record.  An example of a KERI KSN record can be seen here:
@@ -70,7 +72,7 @@ sections detail the algorithm to follow for each case.
 ```
 
 ### DID Controller
-The value of the `controller` property MUST be a single string that is the same as the `id` (the DID Subject).
+1. The value of the `controller` property MUST be a single string that is the same as the `id` (the DID Subject).
 
 ```json
 {
@@ -83,17 +85,19 @@ The value of the `controller` property MUST be a single string that is the same 
 1. The `alsoKnownAs` property in the root of the DID document MAY contain any DID that has the same AID. See the [[ref: designated aliases]] section for information on how an AID anchors the `alsoKnownAs` identifiers to their [[ref: KERI event stream]].
 1. `did:webs` DIDs MUST serve the `did:webs` and corresponding `did:web`as an `alsoKnownAs` identifier.
 1. `did:webs` DIDs MUST provide the corresponding `did:keri` as an `alsoKnownAs` identifier.
-1. The same AID MAY be associated with multiple `did:webs` DIDs, each with a different [[ref:host]] and/or path, but with the same AID.
+1. The same AID MAY be associated with multiple `did:webs` DIDs, each with a different [[ref: host]] and/or path, but with the same AID.
 1. `did:webs` DIDs MUST be listed in the [[ref: designated aliases]] attestation of the AID.
 1. For each [[ref: AID controlled identifier]] DID defined above, an entry in the `alsoKnownAs` array in the DID document MUST be created.
 
-For the example DID `did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M` the following `alsoKnownAs` entries could be created:
+For the example DID `did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe` the following `alsoKnownAs` entries could be created:
 ```json
 {
   "alsoKnownAs": [
-    "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-    "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+    "did:web:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "did:web:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+    "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
   ]
 }
 ```
@@ -109,14 +113,19 @@ For the example DID `did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq
 
 > At the time of this writing, KERI currently supports public key generation for Ed25519, Secp256k1 and Secp256r1 keys, and the protocol allows for others to be added at any time.
 
-For example, the key `DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK` in the DID document for the AID `EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2` becomes:
+For example, the key `DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr` in the DID document for the AID `ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe` becomes:
 
 ```json
   "verificationMethod": [
-    {
-      "id": "#DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK",
-      "controller": "did:webs:example.com:EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
-      ...
+    {"id": "#DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+    "type": "JsonWebKey",
+    "controller": "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe", 
+    "publicKeyJwk": {
+      "kid": "DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr", 
+      "kty": "OKP", 
+      "crv": "Ed25519", 
+      "x": "evT4j6Yw3uHpwsw5NEmSR8-4x3S-BA-s6Thjd51oeOs"
+      }
     }
   ]
 ```
@@ -127,31 +136,32 @@ For example, the key `DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK` in the DID d
 For example, a KERI AID with only the following inception event in its KEL:
 ```json
 {
-  "v": "KERI10JSON0001ad_",
-  "t": "icp",
-  "d": "EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
-  "i": "EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
-  "s": "0",
-  "kt": "1",
-  "k": [
-    "DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK",
-  ]
-  // ...
+  "v":"KERI10JSON00012b_",
+  "t":"icp",
+  "d":"ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe","i":"ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+  "s":"0",
+  "kt":"1",
+  "k":["DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr"],
+  "nt":"1",
+  "n":["ELa775aLyane1vdiJEuexP8zrueiIoG995pZPGJiBzGX"],
+  "bt":"0",
+  "b":[],
+  "c":[],
+  "a":[]
 }
 ```
 would result in a DID document with the following verification methods array:
 ```json
   "verificationMethod": [
     {
-      "id": "#DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK",
-      "type": "JsonWebKey",
-      "controller": "did:webs:example.com:EDP1vHcw_wc4M__Fj53-cJaBnZZASd-aMTaSyWEQ-PC2",
-      "publicKeyJwk": {
-        "kid": "DFkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwK",
-        "kty": "OKP",
-        "crv": "Ed25519",
-        "x": "FkI8OSUd9fnmdDM7wz9o6GT_pJIvw1K_S21AKZg4VwI"
-      }
+      "id": "#DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr", 
+      "type": "JsonWebKey", 
+      "controller": "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe", "publicKeyJwk": {
+        "kid": "DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr", 
+        "kty": "OKP", 
+        "crv": "Ed25519", 
+        "x": "evT4j6Yw3uHpwsw5NEmSR8-4x3S-BA-s6Thjd51oeOs"
+        }
     }
   ]
 ```
@@ -195,14 +205,14 @@ would result in a DID document with the following verification methods array:
 
 #### Thresholds
 1. If the current signing keys threshold (the value of the `kt` field) is a string containing a number that is greater than 1, or if it is an array containing fractionally weighted thresholds, then in addition to the verification methods generated according to the rules in the previous sections, another verification method with a type of `ConditionalProof2022` MUST be generated in the DID document. This verification method type is defined [here](https://w3c-ccg.github.io/verifiable-conditions/).
-    1. It is constructed according to the following rules:
+    1. It MUST be constructed according to the following rules:
         1. The `id` property of the verification method MUST be a relative DID URL and use the AID as the value of the fragment component, e.g., `"id": "#<aid>"`.
         1. The `controller` property of the verification method MUST be the value of the `id` property of the DID document. (Does the method spec need to specify this?)
-        1. If the value of the `kt` field is a string containing a number that is greater than 1:
+        1. If the value of the `kt` field is a string containing a number that is greater than 1 then the following rules MUST be applied:
             1. The `threshold` property of the verification method MUST be the integer value of the `kt` field in the current key state.
             1. The `conditionThreshold` property of the verification method MUST contain an array. For each key listed in the array value of the `k` field in the key state:
                 1. The relative DID URL corresponding to the key MUST be added to the array value of the `conditionThreshold` property.
-        1. If the value of the `kt` field is an array containing fractionally weighted thresholds:
+        1. If the value of the `kt` field is an array containing fractionally weighted thresholds then the following rules MUST be applied:
             1. The `threshold` property of the verification method MUST be half of the lowest common denominator (LCD) of all the fractions in the `kt` array.
             1. The `conditionWeightedThreshold` property of the verification method MUST contain an array. For each key listed in the array value of the `k` field in the key state, and for each corresponding fraction listed in the array value of the `kt` field:
                 1. A JSON object MUST be added to the array value of the `conditionWeightedThreshold` property.
@@ -348,36 +358,19 @@ would result in a DID document with the following verification methods array:
         ```
 
 ### Verification Relationships
-1. If the value of `kt` == 1:
+1. If the value of `kt` == 1 then the following rules MUST be applied:
     1. For each public key in `k` and its corresponding verification method, two verification relationships MUST be generated in the DID document. One verification relationship of type `authentication` and one verification relationship of type `assertionMethod`.
-        1. The `authentication` verification relationship defines that the DID controller can authenticate using each key.
-        1. The `assertionMethod` verification relationship defines that the DID controller can express claims using each key.
-1. If the value of `kt` > 1 or if the value of `kt` is an array containing fractionally weighted thresholds:
+        1. The `authentication` verification relationship SHALL define that the DID controller can authenticate using each key.
+        1. The `assertionMethod` verification relationship SHALL define that the DID controller can express claims using each key.
+1. If the value of `kt` > 1 or if the value of `kt` is an array containing fractionally weighted thresholds then the following rules MUST be applied:
     1. For the verification method of type `ConditionalProof2022` (see section [Thresholds](#thresholds)), two verification relationships MUST be generated in the DID document. One verification relationship of type `authentication` and one verification relationship of type `assertionMethod`.
-        1. The `authentication` verification relationship defines that the DID controller can authenticate using a combination of multiple keys above the threshold.
-        1. The `assertionMethod` verification relationship defines that the DID controller can express claims using a combination of multiple keys above the threshold.
+        1. The `authentication` verification relationship SHALL define that the DID controller can authenticate using a combination of multiple keys above the threshold.
+        1. The `assertionMethod` verification relationship SHALL define that the DID controller can express claims using a combination of multiple keys above the threshold.
 1. References to verification methods in the DID document MUST use the relative form of the identifier, e.g., `"authentication": ["#<identifier>"]`.
 
 > Private keys of a KERI AID can be used to sign a variety of data.  This includes but is not limited to logging into a website, challenge-response exchanges, credential issuances, etc.
 
-#### Key Agreement
-This section is non-normative:
-
-There are multiple ways to establish key agreement in KERI. We detail common considerations and techniques:
-* If the 'k' field references a Ed25519 key, then key agreement MAY be established using the corresponding x25519 key for Diffie-Helman key exchange.
-* If the key is an ECDSA or other NIST algorithms key then it will be the same key for signatures and encryption and can be used for key agreement.
-
-* *BADA-RUN for key agreement:* Normally in KERI we would use [[ref: BADA-RUN]], similar to how we specify endpoints, [[ref: host]] migration info, etc. This would allow the controller to specify any Key Agreement key, without unnecessarily adding KERI events to their [[ref: KEL]].
-* *Key agreement from `k` field keys:* It is important to note that KERI is cryptographically agile and can support a variety of keys and signatures.
-* *Key agreement anchored in KEL:* It is always possible to anchor arbitrary data, like a key agreement key, to the KEL.
-  * Likely the best mechanism is to anchor an [[ref: ACDC]] to a [[ref: TEL]] which is anchored to the KEL.
-
-#### Other Key Commitments
-This section is non-normative:
-
-Data structures similar to Location Scheme and Endpoint Authorizations and managed in KERI using [[ref: BADA-RUN]] MAY be created and used for declaring other types of keys, for example encryption keys, etc
-
-To support new data structures, propose them in KERI and detail the transformation in the spec.
+For more information, see the [[ref: key agreement]] and [[ref: other key commitments]] section in the Implementors Guide.
 
 ### Service Endpoints
 1. `did:webs` DIDs MUST support service endpoints, including types declared in the DID Specification Registries, such as [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging).
@@ -388,7 +381,7 @@ To support new data structures, propose them in KERI and detail the transformati
 
 
 #### KERI Service Endpoints as DID Document Metadata
-1. `did:webs` endpoints must be specified using the two data sets KERI uses to define service endpoints; Location Schemes and Endpoint Role Authorizations.
+1. `did:webs` endpoints MUST be specified using the two data sets KERI uses to define service endpoints; Location Schemes and Endpoint Role Authorizations.
     1. Both MUST be expressed in KERI `rpy` events.
     1. For URL scheme endpoints that an AID has exposed, `did:webs` DIDs MUST use Location Schemes URLs.
     1. For endpoints that relate a role of one AID to another, `did:webs` DIDs MUST use KERI Endpoint Role Authorizations.
@@ -424,42 +417,7 @@ To support new data structures, propose them in KERI and detail the transformati
     }
     ```
 
-1. KERI service endpoints roles beyond `witness` SHOULD be defined using Location Scheme and Endpoint Authorization records in KERI.
-
-The following table contains the current set of endpoint roles in KERI and maps the current roles in KERI to service `type` values in the resulting DID documentsis:
-| Role | Description |
-|:-----|:------------|
-|`controller` | The association of the key controller of an AID.  These are always self-referential. |
-|`witness` | A witness for an AID.  This role is already cryptographically committed to the KEL of the source AID and thus does not require and explicit `rpy` authroization event.|
-|`registrar` | Currently unused.|
-| `watcher` | A componenet serving as a Watcher as defined by the KERI protocol (beyond the scope of this document).|
-|`judge` | Currently unused. |
-|`juror` | Currently unused. |
-|`peer` | Currently unused. |
-|`mailbox` | A component authorized to serve as a store and forward mailbox for the source identifier.  This component usually provides a persistent internet connection for AID controllers that are usually off line.|
-|`agent` | A component authorized to serve as an agent running with persistent internet connection.  Provides more funcitonality than a `mailbox`|
-
-TODO: Detail the transformation with an example, for example:
-```json
-{
-  "service": [
-      {
-        "id":"#Bgoq68HCmYNUDgOz4Skvlu306o_NY-NrYuKAVhk3Zh9c",
-        "type": "DIDCommMessaging", 
-        "serviceEndpoint": "https://bar.example.com"
-      }
-      {
-        "id":"#BuyRFMideczFZoapylLIyCjSdhtqVb31wZkRKvPfNqkw",
-        "type": "KERIAgent", 
-        "serviceEndpoint": {
-          "tcp": "tcp://bar.example.com:5542",
-          "https": "https://bar.example.com" 
-        }
-      }
-  ]
-}
-```
-TODO:  Propose a new role in KERI to map to the existing [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging) service type declared in DID Specification Registries.
+1. KERI service endpoints roles beyond `witness` SHOULD be defined using Location Scheme and Endpoint Authorization records in KERI. See the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/#oobi-url-iurl) For more information about KERI roles.
 
 > In KERI, service endpoints are defined by 2 sets of signed data using Best Available Data - Read, Update, Nullify ([[ref: BADA-RUN]]) rules for data processing.  The protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
 
@@ -467,34 +425,60 @@ TODO:  Propose a new role in KERI to map to the existing [DIDCommMessaging](http
 
 The DID document that exists as a resource on a webserver is compatible with the `did:web` DID method and therefore necessarily different from a `did:webs` DID document with regard to the `id`, `controller`, and `alsoKnownAs` properties.
 1. To transform the `did:web` form of the DID Document to a `did:webs` the transformation MUST do the following:
-    1. In the values of the top-level `id` and `controller` properties of the DID document, replace the `did:webs` prefix string with `did:web`.
-    1. In the value of the top-level `alsoKnownAs` property, replace the entry that is now the new value of the `id` property (using `did:web`) with the old value of the `id` property (using `did:webs`).
+    1. In the values of the top-level `id` and `controller` properties of the DID document, the transformation MUST replace the `did:webs` prefix string with `did:web`.
+    1. In the value of the top-level `alsoKnownAs` property, the transformation MUST replace the entry that is now the new value of the `id` property (using `did:web`) with the old value of the `id` property (using `did:webs`).
     1. All other content of the DID document MUST not be modified.
 
     For example, this transformation is used during the [Create](#create) DID method operation, given the following `did:webs` DID document:
     ```json
     {
-      "id": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "alsoKnownAs": [
-        "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-        "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-        "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
-      ],
-      ...
+        "id": "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+        "verificationMethod": [
+            {
+                "id": "#DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+                "type": "JsonWebKey",
+                "controller": "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+                "publicKeyJwk": {
+                    "kid": "DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+                    "kty": "OKP",
+                    "crv": "Ed25519",
+                    "x": "evT4j6Yw3uHpwsw5NEmSR8-4x3S-BA-s6Thjd51oeOs"
+                }
+            }
+        ],
+        "service": [],
+        "alsoKnownAs": [
+            "did:web:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+        ]
     }
     ```
     the result of the transformation algorithm is the following `did:web` DID document:
     ```json
     {
-      "id": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "controller": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "alsoKnownAs": [
-        "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-        "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-        "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+      "id": "did:web:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+      "verificationMethod": [
+          {
+              "id": "#DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+              "type": "JsonWebKey",
+              "controller": "did:web:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+              "publicKeyJwk": {
+                  "kid": "DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+                  "kty": "OKP",
+                  "crv": "Ed25519",
+                  "x": "evT4j6Yw3uHpwsw5NEmSR8-4x3S-BA-s6Thjd51oeOs"
+              }
+          }
       ],
-      ...
+      "service": [],
+      "alsoKnownAs": [
+          "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+          "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+          "did:web:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+          "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+      ]
     }
     ``` 
 
@@ -510,34 +494,69 @@ This section defines an inverse transformation algorithm from a `did:web` DID do
     For example, given the following `did:web` DID document:
     ```json
     {
-      "id": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "controller": "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "alsoKnownAs": [
-        "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-        "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-        "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
+      "id": "did:web:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+      "verificationMethod": [
+          {
+              "id": "#DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+              "type": "JsonWebKey",
+              "controller": "did:web:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+              "publicKeyJwk": {
+                  "kid": "DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+                  "kty": "OKP",
+                  "crv": "Ed25519",
+                  "x": "evT4j6Yw3uHpwsw5NEmSR8-4x3S-BA-s6Thjd51oeOs"
+              }
+          }
       ],
-      ...
+      "service": [],
+      "alsoKnownAs": [
+          "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+          "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+          "did:web:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+          "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+      ]
     }
     ```
     the result of the transformation algorithm is the following `did:webs` DID document:
     ```json
     {
-      "id": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "controller": "did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-      "alsoKnownAs": [
-        "did:web:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-        "did:webs:foo.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M",
-        "did:keri:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M"
-      ],
-      ...
+        "id": "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+        "verificationMethod": [
+            {
+                "id": "#DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+                "type": "JsonWebKey",
+                "controller": "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+                "publicKeyJwk": {
+                    "kid": "DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+                    "kty": "OKP",
+                    "crv": "Ed25519",
+                    "x": "evT4j6Yw3uHpwsw5NEmSR8-4x3S-BA-s6Thjd51oeOs"
+                }
+            }
+        ],
+        "service": [],
+        "alsoKnownAs": [
+            "did:web:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+        ]
     }
     ```
 
 ### Full Example
-> This section is non-normative
+This section is informative.
 
-The following blocks contain full annotated examples of a KERI AID with two events, an inception event and an interaction event, some witnesses, multiple public signing and rotation keys and an Agent with the resulting DID document that an implementation would generate assuming the implementation was running on the `example.com` domain with no unique port and no additional path defined:
+To walk through a real-world example, please see the GETTING STARTED guide in the [[ref: did:webs Reference Implementation]] as it walks users through many did:webs related tasks (and associated KERI commands) to demonstrate how they work together.
+
+The following blocks contain fully annotated examples of a KERI AID with two events, an [[ref: inception event]] and an [[ref: interaction event]].
+* The [[ref: inception event]] designates some [[ref: witnesses]] in the `b` field.
+* The [[ref: inception event]] designates multiple public signing keys in the `k` field.
+* The [[ref: inception event]] designates multiple rotation keys in the `n` field.
+* The [[ref: interaction event]] cryptographically anchors data associated with the SAID `EoLNCdag8PlHpsIwzbwe7uVNcPE1mTr-e1o9nCIDPWgM`.
+* The reply 'rpy' events specify an Agent endpoint, etc.
+
+Below, we show the KERI Event Stream that will be associated with the resulting generated DID document. These documents were generated for the `example.com` domain with no associated port or additional path defined:
 
 ```json
 {
@@ -730,21 +749,21 @@ Resulting DID document:
 #### Key state events
 1. When processing the [[ref: KERI event stream]] `did:webs` MUST account for two broad types of key state events (KERI parlance is 'establishment events') that can alter the key state of the AID.
 1. Any change in key state of the AID MUST be reflected in the DID document.
-1. If a key state event does not commit to a future set of rotation key hashes, then the AID can't be rotated to new keys in the future (KERI parlance is that the key state of the AID becomes 'non-transferrable').
+1. If a key state event does not commit to a future set of rotation key hashes, then the AID SHALL NOT be rotated to new keys in the future (KERI parlance is that the key state of the AID becomes 'non-transferrable').
 1. If a key state event does commit to a future set of rotation key hashes, then any future key state rotation MUST be to those commitment keys. This foundation of [[ref: pre-rotation]] is post-quantum safe and allows the `did:webs` controller to recover from key compromise.
 1. The [[ref: Inception event]] MUST be the first event in the [[ref: KEL]] that establishes the AID.  
-    1. This defines the initial key set
+    1. This MUST define the initial key set
     1. If the controller(s) desire future key rotation (transfer) then the inception event MUST commit to a set of future rotation key hashes.
-    1. When processing the [[ref: KERI event stream]], if there are no rotation events after the inception event, then this is the current key state of the AID and will be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). 
+    1. When processing the [[ref: KERI event stream]], if there are no rotation events after the inception event, then this is the current key state of the AID and MUST be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships). 
 1. [[ref: Rotation events]] MUST come after inception events.
-1. If the controller(s) desires future key rotation (transfer) then the rotation event must commit to a set of future rotation key hashes.
+1. If the controller(s) desires future key rotation (transfer) then the rotation event MUST commit to a set of future rotation key hashes.
 1. [[ref: Rotation events]] MUST only change the key state to the previously committed to rotation keys.
 1. The last rotation event is the current key state of the AID and MUST be reflected in the DID Document as specified in [Verification Methods](#verification-methods) and [Verification Relationships](#verification-relationships).
 
 > You can learn more about the inception event in the [[ref: KERI specification]] and you can see an example inception event.
 > To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [[ref: KERI specification]].
 
-> You can learn more about rotation events in the [[ref:KERI specification]] and you can see an example rotation event.
+> You can learn more about rotation events in the [[ref: KERI specification]] and you can see an example rotation event.
 > To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [[ref: KERI specification]].
 
 ### Delegation KERI event details
@@ -771,20 +790,23 @@ TODO:  Define and detail the service endpoint events
 
 #### Designated Aliases event details
 
-This is an example [[ref: designated aliases]] [[ref: ACDC]] attestation showing two designated aliases:
+This is an example [[ref: designated aliases]] [[ref: ACDC]] attestation showing five designated aliases:
 ```json
 {
-    "v": "ACDC10JSON000514_",
-    "d": "EMVnFMfhcw67coSNnH5nqi5fWtFreCNuw6pGVGdMFuSx",
+    "v": "ACDC10JSON0005f2_",
+    "d": "EIGWggWL2IHiUzj1P2YuPA0-Uh55LTIu14KTvVQGrfvT",
     "i": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-    "ri": "EFfjfmq3DiHAbVWiF4VA24fP5OEIV1EhWoO-v3ZqmVG6",
+    "ri": "EAtQJEQMkkvlWxyfLbcLyv4kNeAI5Qsqe65vKIWnHKpx",
     "s": "EN6Oh5XSD5_q2Hgu-aqpdfbVepdpYpFlgz6zvJL5b_r5",
     "a": {
-        "d": "EHQgqNNSueVmVjlErrGtzjl-HJya9rMUiNadDSkZQ1kV",
+        "d": "EJJjtYa6D4LWe_fqtm1p78wz-8jNAzNX6aPDkrQcz27Q",
         "dt": "2023-11-13T17:41:37.710691+00:00",
         "ids": [
-            "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-            "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+            "did:web:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
         ]
     },
     "r": {
@@ -809,22 +831,46 @@ The resulting DID document based on the [[ref: designated aliases]] attestation 
 * Three `alsoKnownAs` identifiers:
   * the did:webs:foo.com identifier is a [[ref: designated alias]] which is also in the equivalentId did document metadata.
   * the did:web:example.com is a [[ref: designated alias]]
-  * the did:keri identifier is automatically generated based on the AID
+  * NOTE: if the did:keri identifier were automatically generated and included from the AID then that would be a valid designated alias and alsoKnownAs value based on the AID
 ```json
 {
-  "didDocument": {
-    "id": "did:webs:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-    "alsoKnownAs": [
-      "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-      "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-      "did:keri:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
-    ],
-    "verificationMethod": [...
-  }
-  "didDocumentMetadata": {
-    "equivalentId": [
-      "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-    ]
-  }
+    "didDocument": {
+        "id": "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+        "verificationMethod": [
+            {
+                "id": "#DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+                "type": "JsonWebKey",
+                "controller": "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+                "publicKeyJwk": {
+                    "kid": "DHr0-I-mMN7h6cLMOTRJkkfPuMd0vgQPrOk4Y3edaHjr",
+                    "kty": "OKP",
+                    "crv": "Ed25519",
+                    "x": "evT4j6Yw3uHpwsw5NEmSR8-4x3S-BA-s6Thjd51oeOs"
+                }
+            }
+        ],
+        "service": [],
+        "alsoKnownAs": [
+            "did:web:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:example.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:web:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+        ]
+    },
+    "didResolutionMetadata": {
+        "contentType": "application/did+json",
+        "retrieved": "2024-04-01T17:43:24Z"
+    },
+    "didDocumentMetadata": {
+        "witnesses": [],
+        "versionId": "2",
+        "equivalentId": [
+            "did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
+            "did:webs:foo.com:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+        ],
+        "didDocUrl": "http://did-webs-service:7676/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe/did.json",
+        "keriCesrUrl": "http://did-webs-service:7676/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe/keri.cesr"
+    }
 }
 ```

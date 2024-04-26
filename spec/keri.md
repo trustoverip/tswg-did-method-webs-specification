@@ -1,5 +1,5 @@
 ## KERI Fundamentals
-This section is non-normative.
+This section is informative.
 
 [[ref: Key Event Receipt Infrastructure (KERI)]] is a protocol for managing cryptographic keys, identifiers, and associated verifiable data structures. KERI was first described in an [academic paper](https://arxiv.org/abs/1907.02143), and its [specification](https://github.com/trustoverip/tswg-keri-specification) is currently incubated under [Trust Over IP Foundation](https://trustoverip.org/). The open source community that develops KERI-related technologies can be found at https://github.com/WebOfTrust. This section outlines the fundamentals and components of the KERI protocol that are related to the `did:webs` method.
 
@@ -13,8 +13,8 @@ The binding between an [[ref: AID]] and its cryptographic keys is proved by a da
 
 A KEL is a hash-chain append-only log and can be considered a variant of blockchain. However, a KEL differs from the traditional blockchain technology in at least two important ways:
 
-1.  It records the [[ref: key event]] history of a single AID with a single [[ref: controller]], instead of an arbitrarily large collection updated by other participants in the network. This makes a KEL memory-efficient, fast, cheap, and trivially scalable.
-2.  It is fully [[ref: self-certifying]], meaning its correctness can be proved by direct inspection, without a distributed consensus algorithm or assumptions about trust in an external data source or its governance.
+* It records the [[ref: key event]] history of a single AID with a single [[ref: controller]], instead of an arbitrarily large collection updated by other participants in the network. This makes a KEL memory-efficient, fast, cheap, and trivially scalable.
+* It is fully [[ref: self-certifying]], meaning its correctness can be proved by direct inspection, without a distributed consensus algorithm or assumptions about trust in an external data source or its governance.
 
 These properties allows a KEL to be published anywhere, without special guarantees from its storage mechanism. For example, a KEL of an AID could be published and migrated between different KERI-compatible blockchain networks that use different DID methods. A KEL also records changes to key types and cryptographic algorithms, providing the AID portability and adaptability to multiple ecosystems throughout its lifecycle.
 
@@ -44,7 +44,7 @@ Unlike a blockchain with a distributed consensus mechanism, witnesses do not coo
 
 ### Transaction Event Log (TEL)
 
-[[ref: KERI]] supports an official verifiable data structure, called the [[ref: transaction event log (TEL)]], that binds an [[ref: AID]] to important, non-repudiable actions that must relate with deterministic order to the [[ref: key event]] history in the [[ref: KEL]]. Transactions that are recorded in a TEL include, for instance, issuance and revocation of verifiable credentials, or the starting or stopping of listeners on a service endpoint. Like KELs, TELs are self-certifying and may also be published by witnesses to enhance discoverability and accountability.
+The [[ref: KERI]] protocol supports a verifiable data structure, called the [[ref: transaction event log (TEL)]], that binds an [[ref: AID]] to non-repudiable data that is deterministically bound to the [[ref: key event]] history in the [[ref: KEL]]. Transactions that are recorded in a TEL may include things like the issuance and revocation of verifiable credentials or the fact that listeners on various service endpoints started or stopped. Like KELs, TELs are self-certifying and may also be published by KERI witnesses to enhance discoverability and provide watcher networks the ability to detect duplicity. For example, we demonstrate that in this spec in how we anchor [[ref: designated aliases]] as [[ref: verifiable data on a TEL]]. 
 
 ### Web Independence
 
