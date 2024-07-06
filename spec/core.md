@@ -94,19 +94,19 @@ URLs, based on the examples from the [[ref: did:web Specification]], but with th
 
 ### Handling Web Redirection
 
-1. A `did:webs` MAY be a "stable" (long-lasting) identifier that can be put into documents such as verifiable credentials, to be useful for a very long time -- generations.
-1. When a `did:webs` is updated for another location the following rules MUST apply:
+1. A `did:webs` DID MAY be a "stable" (long-lasting) identifier that can be put into documents such as verifiable credentials, to be useful for a very long time -- generations.
+1. When a `did:webs` DID is updated for another location the following rules MUST apply:
     1. Its AID MUST not change.
     1. The same [[ref: KERI event stream]] MUST be used to verify the DID document, with the only change being the [[ref: designated aliases]] list reflecting the new location identifier.
     1. If a resolver can find a newly named DID that uses the same AID, and the [[ref: KERI event stream]] verifies the DID, then the resolver MAY consider the resolution to be successful and should note it in the resolution metadata. 
 
-1. The following resolution paths that `did:webs` identfiers SHALL leverage to help in the face of resolution uncertainty:
+1. The following resolution paths that `did:webs` identfiers SHALL leverage to help in the face of resolution uncertainty includes:
     1. The `did:webs` DID SHALL provide other [[ref: designated aliases]] DID(s) that are anchored to the [[ref: KERI event stream]].
-    1. When a `did:webs` is permanently moved to some other location the resolver MAY redirect to any other `equivalentId` [[ref: designated aliases]].
+    1. When a `did:webs` DID is permanently moved to some other location the resolver MAY redirect to any other `equivalentId` [[ref: designated aliases]].
         1. The `id` in the DID document MUST be set to the new location.
-        1. An `equivalentId` entry of the old location SHOULD remain for historical purposes and anchored to the [[ref: KERI event stream]] using [[ref: designated aliases]]. See section [Use of `equivalentId`](#use-of-equivalentid) for more details.
+        1. An `equivalentId` entry of the old location SHOULD remain for historical purposes and be anchored to the [[ref: KERI event stream]] using [[ref: designated aliases]]. See section [Use of `equivalentId`](#use-of-equivalentid) for more details.
         1. If possible, the controller of the DID MAY use web redirects to allow resolution of the old location of the DID to the new location.
-    1. If the previously published location of a `did:webs` is not redirected, an entity trying to resolve the DID MAY be able to find the data for the DID somewhere else using just the AID.
+    1. If the previously published location of a `did:webs` DID is not redirected, an entity trying to resolve the DID MAY be able to find the data for the DID somewhere else using just the AID.
 
 * The implementors guide contains more information about `did:webs` [[ref: stable identifiers on an unstable web]]. 
 

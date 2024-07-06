@@ -32,7 +32,7 @@ Pre-rotation has profound security benefits. If a malicious party steals the _cu
 
 ### Weighted Multisig
 
-The [[ref: KERI]] protocol supports weighted multi-signature scheme that allows for [conditional proof](#thresholds) in the [Verification Methods](#verification-methods). A multisig [[ref: AID]] distribute its control among multiple key holders. This includes simple M-of-N rules such as "3 of 5 keys must sign to change the AID's [[ref: key state]]". More sophisticated configurations are also supported: "Acme Corp's AID is controlled by the keys of 4 of 7 board members, or by the keys of the CEO and 2 board members, or by the keys of the CEO and the Chief Counsel."
+The [[ref: KERI]] protocol supports weighted multi-signature scheme that allows for [conditional proof](#thresholds) in the [Verification Methods](#verification-methods). A multisig [[ref: AID]] distributes its control among multiple key holders. This includes simple M-of-N rules such as "3 of 5 keys must sign to change the AID's [[ref: key state]]". More sophisticated configurations are also supported: "Acme Corp's AID is controlled by the keys of 4 of 7 board members, or by the keys of the CEO and 2 board members, or by the keys of the CEO and the Chief Counsel."
 
 The security and recovery benefits of this feature are obvious when an AID references organizational identity. However, even individuals can benefit from this, when stakes are high. They simply store different keys on different devices, and then configure how their devices constitute a management quorum. This decreases risks from lost phones, for example.
 
