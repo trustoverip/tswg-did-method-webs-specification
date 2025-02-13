@@ -1,7 +1,7 @@
 ## DID Documents
 This section is normative.
 
-1. `did:webs` DID documents MUST be generated or derived from the [[ref: Keri event stream]] of the corresponding AID.
+1. `did:webs` DID documents MUST be generated or derived from the [[ref: KERI event stream]] of the corresponding AID.
     1. Processing the [[ref: KERI event stream]] of the AID, the generation algorithm MUST read the AID [[ref: KEL]] and any anchored [[ref: TELs]] to produce the DID document. 
 1. `did:webs` DID documents MUST be pure JSON. They MAY be processed as JSON-LD by prepending an `@context` if consumers of the documents wish.
 1. All hashes, cryptographic keys, and signatures MUST be represented as [[ref: CESR]] strings. This is an approach similar to multibase, making them self-describing and terse.
@@ -424,7 +424,7 @@ For more information, see the [[ref: key agreement]] and [[ref: other key commit
 ### Transformation to `did:web` DID Document
 
 The DID document that exists as a resource on a webserver is compatible with the `did:web` DID method and therefore necessarily different from a `did:webs` DID document with regard to the `id`, `controller`, and `alsoKnownAs` properties.
-1. To transform the `did:web` form of the DID Document to a `did:webs` the transformation MUST do the following:
+1. To transform the `did:webs` form of the DID Document to a `did:web` the transformation MUST do the following:
     1. In the values of the top-level `id` and `controller` properties of the DID document, the transformation MUST replace the `did:webs` prefix string with `did:web`.
     1. In the value of the top-level `alsoKnownAs` property, the transformation MUST replace the entry that is now the new value of the `id` property (using `did:web`) with the old value of the `id` property (using `did:webs`).
     1. All other content of the DID document MUST not be modified.
@@ -767,7 +767,7 @@ Resulting DID document:
 > To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [[ref: KERI specification]].
 
 ### Delegation KERI event details
-This section focuses on delegation relationships between KERI AIDs. [DID Document from KERI Events](#did-document-from-keri-events) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the basic types of KERI events and how they relate to the DID document. [Basic KERI event details](#basic-keri-event-details) provides additional details on the basic types of KERI events and how they relate to the DID document.
+This section focuses on delegation relationships between KERI AIDs. [DID Document from KERI Events](#did-document-from-keri-events) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the types of KERI delegation events and how they relate to the DID document. See [Basic KERI event details](#basic-keri-event-details) for further detail on basic KERI event types including how they relate to the DID document.
 
 #### Delegation key state events
 1. All delegation relationships MUST start with a delegated inception event.
