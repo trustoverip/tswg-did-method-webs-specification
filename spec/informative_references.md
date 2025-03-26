@@ -13,7 +13,7 @@
 ~ See https://www.rfc-editor.org/info/rfc5895.
 
 [[def: StatusList2021]]
-~ See https://w3c.github.io/vc-status-list-2021/.
+~ See https://github.com/w3c-ccg/vc-status-list-2021.
 
 [[def: UTS-46]]
 ~ See https://unicode.org/reports/tr46/.
