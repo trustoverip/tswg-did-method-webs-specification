@@ -1,7 +1,7 @@
 ## DID Metadata
 This section is normative.
 
-This section describes the support of the `did:webs` method for metadata, including [[ref: DID resolution metadata]] and [[ref: DID document metadata]]. This metadata is returned by a DID Resolver in addition to the DID document. Also see the [DID Resolution](https://w3c-ccg.github.io/did-resolution/) specification for further details.
+This section describes the support of the `did:webs` method for metadata, including [[ref: DID resolution metadata]] and [[ref: DID document metadata]]. This metadata is returned by a DID Resolver in addition to the DID document. Also see the [DID Resolution](https://w3c.github.io/did-resolution/) specification for further details.
 
 ### DID Resolution Metadata
 
