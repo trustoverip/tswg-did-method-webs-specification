@@ -105,7 +105,7 @@ For the example DID `did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW
 ### Verification Methods
 1. For each key listed in the array value of the `k` field of the KSN, a corresponding verification method MUST be generated in the DID document.
 1. The 'type' property in the verification method for each public key MUST be determined by the algorithm used to generate the public key.
-1. The verification method types used MUST be registered in the [DID Specification Registries](https://w3c.github.io/did-spec-registries/#verification-method-types) and added to this specification.
+1. The verification method types used MUST be registered in the [DID Specification Registries](https://www.w3.org/TR/did-extensions-properties/#verification-relationships) and added to this specification.
 1. The `id` property of the verification method MUST be a relative DID URL and use the KERI key [[ref: CESR]] value as the value of the fragment component, e.g., `"id": "#<identifier>"`.
 1. The `controller` property of the verification method MUST be the value of the `id` property of the DID document.
 
@@ -373,7 +373,7 @@ would result in a DID document with the following verification methods array:
 For more information, see the [[ref: key agreement]] and [[ref: other key commitments]] section in the Implementors Guide.
 
 ### Service Endpoints
-1. `did:webs` DIDs MUST support service endpoints, including types declared in the DID Specification Registries, such as [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging).
+1. `did:webs` DIDs MUST support service endpoints, including types declared in the DID Specification Registries, such as [DIDCommMessaging](https://www.w3.org/TR/did-extensions-properties/#didcommmessaging).
 
 > For additional details about the mapping between KERI events and the Service Endpoints in the DID Document, see [Service Endpoint KERI events](#service-endpoint-event-details).
 

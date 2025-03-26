@@ -40,7 +40,7 @@
 ~ The [DIDs specification](https://w3c.github.io/did-core/) details the core Decentralized Identifiers (DIDs) specification.
 
 [[def: W3C - DID spec registries, DID spec registries, DID registry]]
-~ The [DID Spec Registries](https://w3c.github.io/did-spec-registries/) detail the specs for each registred DID method.
+~ The [DID Spec Registries](https://www.w3.org/TR/did-extensions/) detail the specs for each registred DID method.
 
 [[def: W3C - DID URL path, DID URL path, DID URL path specification]]
 ~ See https://www.w3.org/TR/did-core/#path.
