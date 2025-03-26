@@ -8,7 +8,7 @@ This section is normative.
 
 To better understand the cryptographically verifiable data structures used, see the implementors guide description of the [[def: KERI event stream chain of custody]]
 
-To understand the KERI AID commands resulting in the [[ref: KERI Event Stream]] and the corresponding `did:webs` DID document see the original [[ref: did:webs Reference Implementation]] [GETTING STARTED guide](https://github.com/hyperledger-labs/did-webs-resolver/blob/main/GETTING_STARTED.md).
+To understand the KERI AID commands resulting in the [[ref: KERI Event Stream]] and the corresponding `did:webs` DID document see the original [[ref: did:webs Reference Implementation]] [GETTING STARTED guide](https://github.com/GLEIF-IT/did-webs-resolver/blob/main/GETTING_STARTED.md).
 
 In KERI the calculated values that result from processing the [[ref: KERI event stream]] are referred to as the "current key state" and expressed
 in the Key State Notice (KSN) record.  An example of a KERI KSN record can be seen here:
