@@ -14,7 +14,7 @@ This section is normative.
 ### Method-Specific Identifier
 
 1. The `did:webs` [[ref: method-specific identifier]] MUST have two parts, a [[ref: host]] with an optional path (identical to `did:web`), plus a KERI AID (autonomic identifier) that is always the final component of the path.
-1. The [[ref: ABNF]] definition of a `did:webs` DID MUST be as follows:
+1. The ABNF definition of a `did:webs` DID MUST be as follows:
 
     ```abnf
     webs-did = "did:webs:" host [pct-encoded-colon port] *(":" path) ":" aid
@@ -118,7 +118,7 @@ URLs, based on the examples from the [[ref: did:web Specification]], but with th
     1. MUST choose the web URL where the DID document for the DID will be published, excluding the last element that will be the AID, once defined.
     1. MUST create a KERI AID and add it as the last element of the web URL for the DID.
     1. MUST add the appropriate KERI events to the AID's KERI logs that will correspond to properties of the DID document, such as verification methods and service endpoints.
-    1. MUST derive the `did:webs` [[ref: DID document]] by processing the [[ref: KERI event stream]] according to section [DID Document from KERI Events](#did-document-from-keri-events).
+    1. MUST derive the `did:webs` [[ref: DID document]] by processing the [[ref: KERI event stream]] according to section [DID Documents](#did-documents).
     1. For compatibility reasons, transformation of the derived `did:webs` DID document to the corresponding `did:web` DID document MUST be according to section [Transformation to did:web DID Document](#transformation-to-didweb-did-document).
     1. MUST create the AID folder on the web server at the selected location, and place the `did:web` DID document resource (`did.json`) and the [[ref: KERI event stream]] resource (`keri.cesr`) into that folder. See section [Target System(s)](#target-systems) for further details about the locations of these resources.
 
@@ -131,7 +131,7 @@ URLs, based on the examples from the [[ref: did:web Specification]], but with th
 1. Resolving a `did:webs` DID MUST follow these steps:
     1. MUST convert the `did:webs` DID back to HTTPS URLs as described in section [Target System(s)](#target-systems).
     1. MUST execute HTTP GET requests on both the URL for the DID document (ending in `/did.json`) and the URL for the [[ref: KERI event stream]] (ending in `/keri.cesr`).
-    1. MUST process the [[ref: KERI event stream]] using [KERI Rules] to verify it, then derive the `did:webs` [[ref: DID document]] by processing the [[ref: KERI event stream]] according to section [DID Document from KERI Events](#did-document-from-keri-events).
+    1. MUST process the [[ref: KERI event stream]] using [KERI Rules] to verify it, then derive the `did:webs` [[ref: DID document]] by processing the [[ref: KERI event stream]] according to section [DID Documents](#did-documents).
     1. MUST transform the retrieved `did:web` DID document to the corresponding `did:webs` DID document according to section [Transformation to did:webs DID Document](#transformation-to-didwebs-did-document).
     1. MUST verify that the derived `did:webs` DID document equals the transformed DID document.
     1. KERI-aware applications MAY use the [[ref: KERI event stream]] to make use of additional capabilities enabled by the use of KERI.

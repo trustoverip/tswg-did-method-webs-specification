@@ -1,7 +1,7 @@
 ## Abstract
 
 This document specifies a [DID
-Method](https://w3c.github.io/did-core/#dfn-did-schemes),
+Method](https://www.w3.org/TR/did-1.0/#methods),
 `did:webs`, that is web-based but innovatively secure. Like its
 interoperable cousin, [`did:web`](https://w3c-ccg.github.io/did-method-web/), the
 `did:webs` method uses traditional web infrastructure to publish DIDs and

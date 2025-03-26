@@ -744,7 +744,7 @@ Resulting DID document:
 ```
 
 ### Basic KERI event details
-[DID Document from KERI Events](#did-document-from-keri-events) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the basic types of KERI events and how they relate to the DID document.
+[DID Documents](#did-documents) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the basic types of KERI events and how they relate to the DID document.
 
 #### Key state events
 1. When processing the [[ref: KERI event stream]] `did:webs` MUST account for two broad types of key state events (KERI parlance is 'establishment events') that can alter the key state of the AID.
@@ -767,7 +767,7 @@ Resulting DID document:
 > To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [[ref: KERI specification]].
 
 ### Delegation KERI event details
-This section focuses on delegation relationships between KERI AIDs. [DID Document from KERI Events](#did-document-from-keri-events) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the types of KERI delegation events and how they relate to the DID document. See [Basic KERI event details](#basic-keri-event-details) for further detail on basic KERI event types including how they relate to the DID document.
+This section focuses on delegation relationships between KERI AIDs. [DID Documents](#did-documents) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the types of KERI delegation events and how they relate to the DID document. See [Basic KERI event details](#basic-keri-event-details) for further detail on basic KERI event types including how they relate to the DID document.
 
 #### Delegation key state events
 1. All delegation relationships MUST start with a delegated inception event.
