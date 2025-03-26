@@ -83,7 +83,7 @@ URLs, based on the examples from the [[ref: did:web Specification]], but with th
 
 
 ### AID controlled identifiers
-1. [[ref: AID controlled identifiers]] MAY vary in how quickly they reflect the current identity information, DID document and [[ref: KERI event stream]]. Notably, as defined in section [Identifiers in a `did:webs` DID document](#identifiers-in-a-didwebs-did-document), the `id` property in the DID document will differ based on the web location of the DID document.
+1. [[ref: AID controlled identifiers]] MAY vary in how quickly they reflect the current identity information, DID document and [[ref: KERI event stream]]. Notably, as defined in section [Stable Identifiers On An Unstable Web](#stable-identifiers-on-an-unstable-web), the `id` property in the DID document will differ based on the web location of the DID document.
 1. Different versions of the DID document and [[ref: KERI event stream]] MAY reside in different locations depending on the replication capabilities of the controlling entity.
 1. If the [[ref: KERI event streams]] differ for `did:webs` DIDs with the same AID, the smaller [[ref: KERI event stream]] MUST be a prefix of the larger [[ref: KERI event stream]] (e.g., the only difference in the [[ref: KERI event streams]] being the extra events in one of the [[ref: KERI event streams]], not yet reflected in the other).
 1. If the [[ref: KERI event streams]] diverge from one other (e.g., one is not a subset of the other), both the [[ref: KERI event streams]] and the DIDs MUST be considered invalid.
