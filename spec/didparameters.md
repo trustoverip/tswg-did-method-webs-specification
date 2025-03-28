@@ -13,7 +13,7 @@ This allows clients to instruct a DID Resolver to return a specific version of a
 1. When a `did:webs` DID is resolved with this DID parameter, a `did:webs` resolver MUST construct the DID document based on an AID's associated KERI events from the [[ref: KERI event stream]] only up to (and including) the event with the sequence
 number (i.e. the `s` field) that corresponds to the value of the `versionId` DID parameter.
 
-> See section [DID Document from KERI Events](#did-document-from-keri-events) for details.
+> See section [DID Documents](#did-documents) for details.
 
 Example:
 

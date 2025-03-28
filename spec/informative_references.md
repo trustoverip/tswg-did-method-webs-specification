@@ -1,7 +1,7 @@
 ### Informative References
 
 [[def: did:webs Reference Implementation]]
-~ See the [python reference implementation of did:webs](https://github.com/hyperledger-labs/did-webs-resolver).   The [GETTING STARTED guide](https://github.com/hyperledger-labs/did-webs-resolver/blob/main/GETTING_STARTED.md) was created for new users and is the source that many of the examples in this specification were copied from.
+~ See the [python reference implementation of did:webs](https://github.com/GLEIF-IT/did-webs-resolver).   The [GETTING STARTED guide](https://github.com/GLEIF-IT/did-webs-resolver/blob/main/GETTING_STARTED.md) was created for new users and is the source that many of the examples in this specification were copied from.
 
 [[def: Hyperledger AnonCreds, anoncreds]]
 ~ See https://www.hyperledger.org/projects/anoncreds. And [Setting up to publish AnonCreds verifiable credential](https://hyperledger.github.io/anoncreds-spec/#anoncreds-setup-data-flow).
@@ -13,7 +13,7 @@
 ~ See https://www.rfc-editor.org/info/rfc5895.
 
 [[def: StatusList2021]]
-~ See https://w3c.github.io/vc-status-list-2021/.
+~ See https://github.com/w3c-ccg/vc-status-list-2021.
 
 [[def: UTS-46]]
 ~ See https://unicode.org/reports/tr46/.

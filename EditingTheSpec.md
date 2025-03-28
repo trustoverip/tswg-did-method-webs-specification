@@ -2,8 +2,8 @@
 
 To contribute changes to the specification, please 
 
-- Review the [Contributions policy](6._Contributing.md) for this specification and ensure that you and your organization are willing to abide by the policy.
-  - **Pull requests submitted to this repository imply acceptance of the [Contributions policy](6._Contributing.md).**
+- Review the [Contributions policy](Contributing.md) for this specification and ensure that you and your organization are willing to abide by the policy.
+  - **Pull requests submitted to this repository imply acceptance of the [Contributions policy](Contributing.md).**
 - Submit a pull request by:
   - forking this repo
   - editing the appropriate markdown files in the [`/spec`](/spec) folder

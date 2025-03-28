@@ -8,7 +8,7 @@ This section is normative.
 
 To better understand the cryptographically verifiable data structures used, see the implementors guide description of the [[def: KERI event stream chain of custody]]
 
-To understand the KERI AID commands resulting in the [[ref: KERI Event Stream]] and the corresponding `did:webs` DID document see the original [[ref: did:webs Reference Implementation]] [GETTING STARTED guide](https://github.com/hyperledger-labs/did-webs-resolver/blob/main/GETTING_STARTED.md).
+To understand the KERI AID commands resulting in the [[ref: KERI Event Stream]] and the corresponding `did:webs` DID document see the original [[ref: did:webs Reference Implementation]] [GETTING STARTED guide](https://github.com/GLEIF-IT/did-webs-resolver/blob/main/GETTING_STARTED.md).
 
 In KERI the calculated values that result from processing the [[ref: KERI event stream]] are referred to as the "current key state" and expressed
 in the Key State Notice (KSN) record.  An example of a KERI KSN record can be seen here:
@@ -105,7 +105,7 @@ For the example DID `did:webs:did-webs-service%3a7676:ENro7uf0ePmiK3jdTo2YCdXLqW
 ### Verification Methods
 1. For each key listed in the array value of the `k` field of the KSN, a corresponding verification method MUST be generated in the DID document.
 1. The 'type' property in the verification method for each public key MUST be determined by the algorithm used to generate the public key.
-1. The verification method types used MUST be registered in the [DID Specification Registries](https://w3c.github.io/did-spec-registries/#verification-method-types) and added to this specification.
+1. The verification method types used MUST be registered in the [DID Specification Registries](https://www.w3.org/TR/did-extensions-properties/#verification-relationships) and added to this specification.
 1. The `id` property of the verification method MUST be a relative DID URL and use the KERI key [[ref: CESR]] value as the value of the fragment component, e.g., `"id": "#<identifier>"`.
 1. The `controller` property of the verification method MUST be the value of the `id` property of the DID document.
 
@@ -373,7 +373,7 @@ would result in a DID document with the following verification methods array:
 For more information, see the [[ref: key agreement]] and [[ref: other key commitments]] section in the Implementors Guide.
 
 ### Service Endpoints
-1. `did:webs` DIDs MUST support service endpoints, including types declared in the DID Specification Registries, such as [DIDCommMessaging](https://www.w3.org/TR/did-spec-registries/#didcommmessaging).
+1. `did:webs` DIDs MUST support service endpoints, including types declared in the DID Specification Registries, such as [DIDCommMessaging](https://www.w3.org/TR/did-extensions-properties/#didcommmessaging).
 
 > For additional details about the mapping between KERI events and the Service Endpoints in the DID Document, see [Service Endpoint KERI events](#service-endpoint-event-details).
 
@@ -744,7 +744,7 @@ Resulting DID document:
 ```
 
 ### Basic KERI event details
-[DID Document from KERI Events](#did-document-from-keri-events) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the basic types of KERI events and how they relate to the DID document.
+[DID Documents](#did-documents) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the basic types of KERI events and how they relate to the DID document.
 
 #### Key state events
 1. When processing the [[ref: KERI event stream]] `did:webs` MUST account for two broad types of key state events (KERI parlance is 'establishment events') that can alter the key state of the AID.
@@ -767,7 +767,7 @@ Resulting DID document:
 > To learn about future rotation key commitment, see the sections about [pre-rotation](#pre-rotation) and the [[ref: KERI specification]].
 
 ### Delegation KERI event details
-This section focuses on delegation relationships between KERI AIDs. [DID Document from KERI Events](#did-document-from-keri-events) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the types of KERI delegation events and how they relate to the DID document. See [Basic KERI event details](#basic-keri-event-details) for further detail on basic KERI event types including how they relate to the DID document.
+This section focuses on delegation relationships between KERI AIDs. [DID Documents](#did-documents) introduced the core [[ref: KERI event stream]] and related DID Document concepts. This section provides additional details regarding the types of KERI delegation events and how they relate to the DID document. See [Basic KERI event details](#basic-keri-event-details) for further detail on basic KERI event types including how they relate to the DID document.
 
 #### Delegation key state events
 1. All delegation relationships MUST start with a delegated inception event.
