@@ -21,7 +21,7 @@ In order to further validate and improve the specification and to demonstrate in
 - [Markus Sabadello](https://www.linkedin.com/in/markus-sabadello-353a0821/), [Danube Tech](https://danubetech.com/) and [DIF](https://identity.foundation)
 - [Kevin Griffin](https://github.com/m00sey), [GLEIF](https://gleif.org)
 - [Charles Lanahan](https://www.linkedin.com/in/charles-lanahan-a8a68b16/)
-- [Nuttawut Kongsuwan](https://github.com/nkongsuwan), [Finema](https://finema.co/) 
+- [Nuttawut Kongsuwan](https://github.com/nkongsuwan), [Finema](https://finema.co/)
 - [Darrell O'Donnell](https://github.com/darrellodonnell), [Continuum Loop Inc.](https://www.continuumloop.com)
 - [Jonathan Rayback](https:/github.com/jrayback), [Future Forge Innovation LLC](https://futureforg.ing)
 
