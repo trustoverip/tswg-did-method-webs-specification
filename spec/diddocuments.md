@@ -57,6 +57,7 @@ in the DID document.  The following table lists the values from the example KSN 
 |       `i`       | The AID value                          | The DID Subject and DID Controller                                                           |
 |       `k`       | The current set of public signing keys | Verification Methods with associated authentication and assertion verification relationships |
 |      `kt`       | The current signing keys threshold     | The threshold in a Verification Method of type `ConditionalProof2022`                        |
+|      `di`       | The delegator (if any) for this AID    | Verification method with associated `capabilityDelegation` verification relationships          |
 
 In several cases above, the value from the key state is not enough by itself to populate the DID document.  The following
 sections detail the algorithm to follow for each case.
@@ -366,6 +367,103 @@ would result in a DID document with the following verification methods array:
     1. For the verification method of type `ConditionalProof2022` (see section [Thresholds](#thresholds)), two verification relationships MUST be generated in the DID document. One verification relationship of type `authentication` and one verification relationship of type `assertionMethod`.
         1. The `authentication` verification relationship SHALL define that the DID controller can authenticate using a combination of multiple keys above the threshold.
         1. The `assertionMethod` verification relationship SHALL define that the DID controller can express claims using a combination of multiple keys above the threshold.
+1. If the value of `di` is not empty then the following MUST be applied:
+    1. A verification relationship of type `capabilityDelegation` SHALL define that the DID controller's  identifier is a delegated identifier and provide the delegator's current key state.
+
+      For example, a KERI AID with the following `icp`, `ixn`, and `dip` events:
+      
+      `icp`:
+      ```json
+      {
+        "v": "KERI10JSON00012b_",
+        "t": "icp", // inception event for delegator...
+        "d": "EM0v8tEza5NnAxEC2Ohno2vjqoJmdoeTHLFz_j7FlAcY",
+        "i": "EM0v8tEza5NnAxEC2Ohno2vjqoJmdoeTHLFz_j7FlAcY", // delegator aid
+        "s": "0", // first event in sequence for delegator
+        "kt": "1",
+        "k": ["DLFsdZe9DkSc_irGnVvPwCTjiG0UHIMFXQk1By1lR5NC"], // current key state of delegator
+        "n": ["EBC3wESsVMjte9pDOsxi3qqw2YdFIhP0aDJCdGiy01ua"],
+        "bt": "0",
+        "b": [],
+        "c": [],
+        "a": [],
+      }
+      ```
+      `ixn`:
+      ```json
+      {
+        "v": "KERI10JSON00013a_",
+        "t": "ixn", // interaction event
+        "d": "EGYHF4pJVULp2mJp-pLEhTV2Y50AejwIQQzxq7esJ4Al",
+        "i": "EM0v8tEza5NnAxEC2Ohno2vjqoJmdoeTHLFz_j7FlAcY",
+        "s": "1", // second event in sequence for delegator.
+        "p": "EM0v8tEza5NnAxEC2Ohno2vjqoJmdoeTHLFz_j7FlAcY",
+         // anchor information - seals external information to this event stream
+        "a": [
+          {
+            "i": "EAeTw37tF4CZ33Zry1SrGdUEA-dOuGJBnGjeUKBvCINy", // delegate aid
+            "s": "0",
+            "d": "EAeTw37tF4CZ33Zry1SrGdUEA-dOuGJBnGjeUKBvCINy",
+          },
+        ],
+      }
+      ```
+      `dip`:
+      ```json
+      {
+        "v": "KERI10JSON00015f_",
+        "t": "dip", // delegation event for delegate
+        "d": "EAeTw37tF4CZ33Zry1SrGdUEA-dOuGJBnGjeUKBvCINy",
+        "i": "EAeTw37tF4CZ33Zry1SrGdUEA-dOuGJBnGjeUKBvCINy", // delegate aid
+        "s": "0",
+        "kt": "1",
+        "k": ["DFl61PVNLsQ6Jo3c1Eu6H6vMDzdrXirdDHSVh86PD5Kp"], // current key state of delegate
+        "nt": "1",
+        "n": ["EL0fKE9YzQ4MH-mH_KyLlkxwYEXUFNP5-Q3CUk6CcBVJ"],
+        "bt": "0",
+        "b": [],
+        "c": [],
+        "a": [],
+        "di": "EM0v8tEza5NnAxEC2Ohno2vjqoJmdoeTHLFz_j7FlAcY", // delegator aid
+      }
+      ```
+      would result in a DID document with the following verification methods array:
+      ```json
+      {
+        "id": "did:webs:example.com:dids:EAeTw37tF4CZ33Zry1SrGdUEA-dOuGJBnGjeUKBvCINy",
+        "verificationMethod": [
+          {
+            "id": "#DFl61PVNLsQ6Jo3c1Eu6H6vMDzdrXirdDHSVh86PD5Kp",
+            "type": "Ed25519VerificationKey2020",
+            "controller": "did:webs:example.com:EAeTw37tF4CZ33Zry1SrGdUEA-dOuGJBnGjeUKBvCINy",
+            "publicKeyMultibase": "zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV",
+          },
+        ],
+        "authentication": ["#DFl61PVNLsQ6Jo3c1Eu6H6vMDzdrXirdDHSVh86PD5Kp"],
+        "assertionMethod": ["#DFl61PVNLsQ6Jo3c1Eu6H6vMDzdrXirdDHSVh86PD5Kp"],
+        // DELAGATOR INFORMATION------------------ 
+        "capabilityDelegation": [
+          // delagator key id
+          "#DLFsdZe9DkSc_irGnVvPwCTjiG0UHIMFXQk1By1lR5NC",
+          {
+            // delegator cesr encoded key (external)
+            "id": "DLFsdZe9DkSc_irGnVvPwCTjiG0UHIMFXQk1By1lR5NC",
+            "type": "Ed25519VerificationKey2020",
+            // delegator did (external) - delegator event stream available here
+            "controller": "did:foo.com:EM0v8tEza5NnAxEC2Ohno2vjqoJmdoeTHLFz_j7FlAcY",
+            // decoded delegator key (external)
+            "publicKeyMultibase": "z6MkiM9xB5h6QgW5v8Qb1T9Z1a2FsT6Pvu8VkJnZC75La",
+          },
+        ],
+        //----------------------------------------
+        "service": [],
+        "alsoKnownAs": [
+          "did:web:foo.com:dids:EAeTw37tF4CZ33Zry1SrGdUEA-dOuGJBnGjeUKBvCINy",
+          "did:keri:EAeTw37tF4CZ33Zry1SrGdUEA-dOuGJBnGjeUKBvCINy",
+        ],
+      }
+      ```
+
 1. References to verification methods in the DID document MUST use the relative form of the identifier, e.g., `"authentication": ["#<identifier>"]`.
 
 > Private keys of a KERI AID can be used to sign a variety of data.  This includes but is not limited to logging into a website, challenge-response exchanges, credential issuances, etc.
@@ -772,6 +870,7 @@ This section focuses on delegation relationships between KERI AIDs. [DID Documen
 #### Delegation key state events
 1. All delegation relationships MUST start with a delegated inception event.
 1. Any change to the [[ref: Delegated inception event]] key state or delegated rotation event key state MUST be the result of a delegated rotation event.
+1. See [Verification Relationships](#verification-relationships) for a detailed description of how KERI delegation is reflected in the DID document.
 
 > Delegated [[ref: inception event]]: Establishes a delegated identifier. Either the delegator or the delegate can end the delegation commitment.
 
