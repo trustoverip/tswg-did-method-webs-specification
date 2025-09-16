@@ -5,7 +5,7 @@
       "spec_directory": "./spec",
       "output_path": "./docs",
       "markdown_paths": [
-        "header.md",
+        "abstract.md",
         "status_copyright_toc.md",
         "introduction.md",
         "requirements_notations_conventions.md",
@@ -39,7 +39,26 @@
       "author": "Trust over IP Foundation",
       "description": "Create technical specifications in markdown. Based on the original Spec-Up, extended with Terminology tooling",
       "spec_terms_directory": "terms-definitions",
-      "external_specs": []
+      "external_specs": [
+        {
+          "external_spec": "keri1",
+          "gh_page": "https://trustoverip.github.io/kerisuite-glossary/",
+          "url": "https://github.com/trustoverip/kerisuite-glossary",
+          "terms_dir": "spec/terms-definitions"
+        },
+        {
+          "external_spec": "toip1",
+          "gh_page": "https://trustoverip.github.io/ctwg-main-glossary/",
+          "url": "https://github.com/trustoverip/ctwg-main-glossary",
+          "terms_dir": "spec/terms-definitions"
+        },
+        {
+          "external_spec": "toip2",
+          "gh_page": "https://trustoverip.github.io/ctwg-general-glossary/",
+          "url": "https://github.com/trustoverip/ctwg-general-glossary",
+          "terms_dir": "spec/terms-definitions"
+        }
+      ]
     }
   ]
 }

@@ -1,25 +1,29 @@
 ## Appendix
 
-### Trust Over IP Glossary - Controlled Terms 
+### Terminology
 
-[[def: autonomous identifier]] 
-~ Another term for [[ref: self-certifying identifier (SCID)]]. 
+[[def: autonomous-identifier, autonomous identifier]] 
+~ Another term for [[ref: self-certifying identifier]] (SCID). 
 
 [[def: cryptographically verifiable]]
 ~ A property of a data structure that has been digitally signed using a private key such that the digital signature can be verified using the public key. Verifiable data, verifiable messages, verifiable credentials, and verifiable data registries are all cryptographically verifiable. Cryptographic verifiability is a primary goal of the ToIP Technology Stack.
 
 [[def: identifier]]
-~ A single attribute—typically a character string—that uniquely identifies an entity within a specific context (which may be a global context). Examples include the name of a party, the URL of an organization, or a serial number for a man-made thing. Supporting definitions: eSSIF-Lab: a character string that is being used for the identification of some entity (yet may refer to 0, 1, or more entities, depending on the context within which it is being used).
+~ A single attribute—typically a character string—that uniquely identifies an entity within a specific context (which may be a global context). Examples include the name of a party, the URL of an organization, or a serial number for a man-made thing. 
 
-[[def: self-certifying identifier (SCID), SCID, SCIDs]]
-~ A subclass of verifiable identifier ([[ref: VID]]) that is [[ref: cryptographically verifiable]] without the need to rely on any third party for verification because the [[ref: identifier]] is cryptographically bound to the cryptographic keys from which it was generated. Also known as: [[ref: autonomous identifier]].
+~ Supporting definitions: 
+- ToIP general IT glossary [[xref:toip2, identifier]]
+- ToIP main glossary [[xref:toip1, self-certifying identifier]]
+- KERI Suite glossary [[xref:keri1, self-certifying-identifier ]]
 
-[[def: verifiable identifier (VID), VID, VIDs]]
+~ eSSIF-Lab: a character string that is being used for the identification of some entity (yet may refer to 0, 1, or more entities, depending on the context within which it is being used).
+
+[[tref: toip1, self-certifying-identifier, self-certifying identifier, SCID, SCIDs]]
+
+[[def: verifiable-identifier, verifiable identifier, VID, VIDs]]
 ~ An identifier over which the controller can provide cryptographic proof of control.
-See also: decentralized identifier, [[ref: self-certifying identifier (SCID)]].
+See also: decentralized identifier, [[ref: self-certifying identifier]] (SCID).
 
-
-### Terminology
 
 [[def: AID controlled identifiers, AID controlled identifier]]
 ~ Any identifier, including `did:webs` DIDs, that have the same AID are by definition referencing the same identity. As defined in the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/#controller-application)
@@ -27,8 +31,8 @@ See also: decentralized identifier, [[ref: self-certifying identifier (SCID)]].
 [[def: authentic chained data container (ACDC), ACDC, ACDCs]]
 ~ a variant of [[ref: the Verifiable Credential (VC) specification]] that inherits the security model derived from [[ref: KERI]], as defined by the [[ref:  ACDC specification]]. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/authentic-chained-data-container) for more detail.
 
-[[def: autonomic identifier (AID), AID, AIDs]]
-~ A [[ref: self-certifying identifier (SCID)]] that is cryptographically bound cryptographically bound to a [[ref: key event log]] ([[ref: KEL]]), as defined by the [[ref: KERI specification]]. An AID is either non-transferable or transferable. A non-transferable AID does not support key rotation while a transferable AID supports key rotation using a key [[ref: pre-rotation]] mechanism that enables the AID to persist in spite of the evolution of its key state. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/autonomic-identifier) for more detail.
+[[def: autonomic identifier, AID, AIDs]]
+~ A [[ref: self-certifying identifier]] (SCID) that is cryptographically bound cryptographically bound to a [[ref: key event log]] ([[ref: KEL]]), as defined by the [[ref: KERI specification]]. An AID is either non-transferable or transferable. A non-transferable AID does not support key rotation while a transferable AID supports key rotation using a key [[ref: pre-rotation]] mechanism that enables the AID to persist in spite of the evolution of its key state. See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/autonomic-identifier) for more detail.
 
 [[def: BADA-RUN]]
 ~ Best available data acceptance - Read/Update/Nullify provides a medium level of security because events are ordered in a consistent way, using a combination of date-time and a key state. The latest event is the one with the latest date-time for the latest key state. See [The KERI spec](https://trustoverip.github.io/tswg-keri-specification/#bada-best-available-data-acceptance-policy) for more detail.
@@ -125,3 +129,4 @@ See also: decentralized identifier, [[ref: self-certifying identifier (SCID)]].
 
 [[def: witness, witnesses]]
 ~ An entity that is designated by the [[ref: controller]] of an [[ref: AID]] to verify, sign, and keep the key events associated with the AID, as defined by the [KERI whitepaper](https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf). See [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/witness) for more detail.
+
