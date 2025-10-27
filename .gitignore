@@ -79,7 +79,6 @@ dist
 nbproject/
 # VSCode
 .vscode/
-docs/index.html
 node_modules
 *.bak
 *.tmp
