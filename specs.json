@@ -17,6 +17,7 @@
         "whois.md",
         "keri.md",
         "iana_considerations.md",
+        "terms-and-definitions-intro.md",
         "security_considerations.md",
         "privacy_considerations.md",
         "interop_profiles.md",
@@ -26,7 +27,7 @@
         "impl_guide.md",
         "acknowledgements_authors.md",
         "glossary-intro-created-by-split-tool.md",
-        "terms-and-definitions-intro.md"
+        "abstract.md"
       ],
       "logo": "https://raw.githubusercontent.com/trustoverip/logo-assets/master/logos/ToIP-Logo-Color-SolidDimensional-Horizontal-LightOnDark.svg",
       "logo_link": "https://github.com/trustoverip/tswg-did-method-webs-specification",

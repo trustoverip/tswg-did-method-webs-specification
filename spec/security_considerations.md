@@ -74,5 +74,5 @@ The above considerations have lead us to focus on [[ref: KEL]] backed DID docume
 
 See the implementors guide for more details about KEL backed, BADA-RUN, and KRAM:
 * [[ref: On-Disk Storage]]
-* [[ref: Alignment of Information to Security Posture]]
+* [Alignment of Information to Security Posture](#alignment-of-information-to-security-posture)
 * [[ref: Applying the concepts of KEL, BADA-RUN, and KRAM]]
