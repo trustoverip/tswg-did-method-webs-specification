@@ -9,14 +9,18 @@
 [[iref: RFC1035]]
 [[iref: RFC1123]]
 [[iref: RFC2181]]
-[[iref: Trust over IP - Authentic Chained Data Containers (ACDC) specification]]
-[[iref: Trust over IP - Composable Event Streaming Representation (CESR)]]
-[[iref: Trust over IP - CESR Proof Signatures]]
-[[iref: Trust over IP - Key Event Receipt Infrastructure (KERI)]]
-[[iref: W3C - did:web Method Specification]]
-[[iref: W3C - Decentralized Identifiers (DIDs)]]
-[[iref: W3C - DID spec registries]]
-[[iref: W3C - DID URL path]]
-[[iref: W3C - Verifiable Credentials Data Model (VCDM)]]
-[[iref: W3C - verifiable presentation]]
+
+#### Trust-over-IP
+[[iref: ACDC specification]] 
+[[iref: CESR specification]]
+[[iref: CESR Proof Signatures]]
+[[iref: Key Event Receipt Infrastructure]] (KERI)
 [[iref: ACDC IPEX]]
+
+#### W3C
+[[iref: did:web Method Specification]]
+[[iref: Decentralized Identifiers (DIDs)]]
+[[iref: DID spec registries]]
+[[iref: DID URL path]]
+[[iref: Verifiable Credentials Data Model (VCDM)]]
+[[iref: verifiable presentation]]
