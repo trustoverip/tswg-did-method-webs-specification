@@ -6,6 +6,7 @@
       "output_path": "./docs",
       "markdown_paths": [
         "header.md",
+        "abstract.md",
         "status_copyright_toc.md",
         "introduction.md",
         "requirements_notations_conventions.md",
@@ -25,9 +26,7 @@
         "informative_references.md",
         "appendix.md",
         "impl_guide.md",
-        "acknowledgements_authors.md",
-        "glossary-intro-created-by-split-tool.md",
-        "abstract.md"
+        "acknowledgements_authors.md"
       ],
       "logo": "https://raw.githubusercontent.com/trustoverip/logo-assets/master/logos/ToIP-Logo-Color-SolidDimensional-Horizontal-LightOnDark.svg",
       "logo_link": "https://github.com/trustoverip/tswg-did-method-webs-specification",

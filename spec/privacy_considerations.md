@@ -6,6 +6,7 @@ For privacy considerations related to web infrastructure, see [`did:web` privacy
 Below we discuss privacy considerations related the KERI infrastructure.
 
 ### Surveillance
+
 In KERI, a robust witness network along with consistent witness rotation provides protection from monitoring and association of
 an individual's activity inside a KERI network.
 
