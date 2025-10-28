@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spec-Up-T Project Health Check</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <style>
+    body {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+      background-color: #f8f9fa;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    .report-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid #dee2e6;
+    }
+    .report-header h1 {
+      color: #212529;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .report-header h1 i {
+      margin-right: 0.5rem;
+    }
+    .timestamp {
+      color: #6c757d;
+      font-size: 0.95rem;
+    }
+    .timestamp i {
+      margin-right: 0.25rem;
+    }
+    .repo-info {
+      color: #6c757d;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .repo-info i {
+      margin-right: 0.25rem;
+    }
+    .filter-toggle {
+      margin-bottom: 1.5rem;
+    }
+    .hidden-item {
+      display: none !important;
+    }
+    .status-icon {
+      font-size: 1.1em;
+      margin-right: 0.25rem;
+    }
+    .health-score {
+      font-size: 2.5rem;
+      font-weight: bold;
+      line-height: 1;
+    }
+    .summary-card {
+      border: none;
+      box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    .results-card {
+      border: none;
+      box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .card-header {
+      border-bottom: 1px solid #dee2e6;
+      background-color: #fff;
+      padding: 1rem 1.25rem;
+    }
+    .card-header h5 {
+      font-weight: 600;
+      color: #212529;
+    }
+    .card-header i {
+      margin-right: 0.5rem;
+    }
+    .card-body {
+      padding: 1.5rem;
+    }
+    .table th {
+      border-top: none;
+      font-weight: 600;
+      background-color: #f8f9fa;
+      color: #495057;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 0.75rem;
+    }
+    .table td {
+      padding: 0.75rem;
+      vertical-align: top;
+    }
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+    .table-hover tbody tr:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+    .status-badge {
+      white-space: nowrap;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .overall-status-pass {
+      color: #198754;
+      font-size: 1.1rem;
+    }
+    .overall-status-warning {
+      color: #fd7e14;
+      font-size: 1.1rem;
+    }
+    .overall-status-fail {
+      color: #dc3545;
+      font-size: 1.1rem;
+    }
+    .text-success {
+      color: #198754 !important;
+    }
+    .text-danger {
+      color: #dc3545 !important;
+    }
+    .text-warning {
+      color: #fd7e14 !important;
+    }
+    .text-info {
+      color: #17a2b8 !important;
+    }
+    .text-muted {
+      color: #6c757d !important;
+    }
+    .detail-errors ul,
+    .detail-warnings ul,
+    .detail-info ul,
+    .detail-success ul {
+      padding-left: 1.25rem;
+      margin-top: 0.5rem;
+    }
+    .detail-errors li,
+    .detail-warnings li,
+    .detail-info li,
+    .detail-success li {
+      margin-bottom: 0.25rem;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .health-score {
+        font-size: 2rem;
+      }
+      .card-body {
+        padding: 1rem;
+      }
+      .table td,
+      .table th {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="report-header">
+    <h1>
+      <i class="bi bi-heart-pulse text-primary"></i>
+      Spec-Up-T Project Health Check
+    </h1>
+    <p class="timestamp">
+      <i class="bi bi-clock"></i>
+      Generated: 10/28/2025, 10:44:02 AM
+    </p>
+    <p class="repo-info">
+      <i class="bi bi-folder"></i>
+      Repository: /Users/henkvancann/repos/tswg-did-method-webs-specification
+    </p><p class="repo-info">
+      <i class="bi bi-link-45deg"></i>
+      URL: <a href="file:///Users/henkvancann/repos/tswg-did-method-webs-specification" target="_blank">file:///Users/henkvancann/repos/tswg-did-method-webs-specification</a>
+    </p>
+  </div>
+    <div class="card summary-card mb-4">
+    <div class="card-header bg-danger text-white">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="bi bi-bar-chart"></i>
+          Health Check Summary
+        </h5>
+        <div class="filter-toggle form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="togglePassingChecks">
+          <label class="form-check-label" for="togglePassingChecks">
+            Show passing checks
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-6 col-md-3 text-center mb-3">
+              <div class="h4 mb-1">8</div>
+              <small class="text-muted">Total</small>
+            </div>
+            <div class="col-6 col-md-3 text-center mb-3">
+              <div class="h4 mb-1 text-success">
+                <i class="bi bi-check-circle-fill"></i> 2
+              </div>
+              <small class="text-muted">Passed</small>
+            </div>
+            <div class="col-6 col-md-3 text-center mb-3">
+              <div class="h4 mb-1 text-danger">
+                <i class="bi bi-x-circle-fill"></i> 4
+              </div>
+              <small class="text-muted">Failed</small>
+            </div>
+            <div class="col-6 col-md-3 text-center mb-3">
+              <div class="h4 mb-1 text-warning">
+                <i class="bi bi-exclamation-triangle-fill"></i> 2
+              </div>
+              <small class="text-muted">Warnings</small>
+            </div>
+          </div>
+          <hr class="my-3">
+          <div class="overall-status-fail">
+            <i class="bi bi-x-circle-fill status-icon"></i>
+            <strong>Overall Status: FAILED</strong>
+          </div>
+        </div>
+        <div class="col-md-4 text-center d-flex flex-column justify-content-center align-items-center">
+          <div class="health-score text-danger">25%</div>
+          <small class="text-muted mt-2">Health Score</small>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="card results-card" data-section="health-check-results">
+    <div class="card-header">
+      <h5 class="mb-0">
+        <i class="bi bi-list-check"></i>
+        Detailed Results
+      </h5>
+    </div>
+    <div class="card-body">
+      <table class="table table-striped table-hover mb-0">
+        <thead>
+          <tr>
+            <th style="width: 120px;">Status</th>
+            <th style="width: 200px;">Check</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-status="warn" class="check-row table-warning">
+      <td class="text-warning status-badge">
+        <i class="bi bi-exclamation-triangle-fill status-icon"></i>
+        <span>Warning</span>
+      </td>
+      <td>package.json</td>
+      <td>
+        spec-up-t dependency found, but could not verify version against starter pack (network issue); Could not verify npm scripts against spec-up-t reference (network issue)
+        
+      </td>
+    </tr><tr data-status="pass" class="check-row table-success">
+      <td class="text-success status-badge">
+        <i class="bi bi-check-circle-fill status-icon"></i>
+        <span>Pass</span>
+      </td>
+      <td>.gitignore</td>
+      <td>
+        .gitignore file is valid and contains all required entries
+        
+      </td>
+    </tr><tr data-status="fail" class="check-row table-danger">
+      <td class="text-danger status-badge">
+        <i class="bi bi-x-circle-fill status-icon"></i>
+        <span>Fail</span>
+      </td>
+      <td>specs.json</td>
+      <td>
+        specs.json has 2 error(s)
+        <div class="mt-2 detail-errors"><strong class="text-danger">Errors:</strong><ul class="mb-0 mt-1"><li class="text-danger">logo URL is not accessible: logo is not accessible: ENOTFOUND</li><li class="text-danger">logo_link URL is not accessible: logo_link is not accessible: ENOTFOUND</li></ul></div><div class="mt-2 detail-warnings"><strong class="text-warning">Warnings:</strong><ul class="mb-0 mt-1"><li class="text-warning">Recommended field &quot;favicon&quot; is missing</li><li class="text-warning">Source field &quot;branch&quot; is missing or empty</li></ul></div><div class="mt-2 detail-success"><strong class="text-success">Success:</strong><ul class="mb-0 mt-1"><li class="text-success">Required field &quot;title&quot; is present and valid</li><li class="text-success">Required field &quot;description&quot; is present and valid</li><li class="text-success">Required field &quot;author&quot; is present and valid</li><li class="text-success">Required field &quot;spec_directory&quot; is present and valid</li><li class="text-success">Required field &quot;spec_terms_directory&quot; is present and valid</li><li class="text-success">Required field &quot;output_path&quot; is present and valid</li><li class="text-success">Required field &quot;markdown_paths&quot; is present and valid</li><li class="text-success">Required field &quot;logo&quot; is present and valid</li><li class="text-success">Required field &quot;logo_link&quot; is present and valid</li><li class="text-success">Required field &quot;source&quot; is present and valid</li><li class="text-success">Optional field &quot;katex&quot; is present</li><li class="text-success">Field &quot;markdown_paths&quot; contains valid string array</li><li class="text-success">Source object structure is valid</li><li class="text-success">External specs array contains 3 entries</li><li class="text-success">Markdown file &quot;header.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;status_copyright_toc.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;introduction.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;requirements_notations_conventions.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;core.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;diddocuments.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;didparameters.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;did_metadata.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;signed_files.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;whois.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;keri.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;iana_considerations.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;terms-and-definitions-intro.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;security_considerations.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;privacy_considerations.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;interop_profiles.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;normative_references.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;informative_references.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;appendix.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;impl_guide.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;acknowledgements_authors.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;glossary-intro-created-by-split-tool.md&quot; exists in spec_directory</li><li class="text-success">Markdown file &quot;abstract.md&quot; exists in spec_directory</li></ul></div><div class="mt-2 detail-info"><strong class="text-info">Info:</strong><ul class="mb-0 mt-1"><li class="text-muted">Optional field &quot;anchor_symbol&quot; is not set (this is acceptable)</li></ul></div>
+      </td>
+    </tr><tr data-status="warn" class="check-row table-warning">
+      <td class="text-warning status-badge">
+        <i class="bi bi-exclamation-triangle-fill status-icon"></i>
+        <span>Warning</span>
+      </td>
+      <td>Specification Directory and Files</td>
+      <td>
+        Spec directories are valid but 1 recommended file(s) are missing
+        <div class="mt-2 detail-warnings"><strong class="text-warning">Warnings:</strong><ul class="mb-0 mt-1"><li class="text-warning">Missing 2 recommended markdown file(s) in ./spec: spec-head.md, spec-body.md</li></ul></div><div class="mt-2 detail-success"><strong class="text-success">Success:</strong><ul class="mb-0 mt-1"><li class="text-success">spec_directory exists: ./spec</li><li class="text-success">spec_terms_directory exists: terms-definitions</li><li class="text-success">Required file exists: spec/terms-and-definitions-intro.md</li><li class="text-success">spec_terms_directory contains 63 markdown file(s)</li></ul></div>
+      </td>
+    </tr><tr data-status="pass" class="check-row table-success">
+      <td class="text-success status-badge">
+        <i class="bi bi-check-circle-fill status-icon"></i>
+        <span>Pass</span>
+      </td>
+      <td>Specification Files Discovery</td>
+      <td>
+        Found 23 specification files in organized spec/ directory
+        
+      </td>
+    </tr><tr data-status="fail" class="check-row table-danger">
+      <td class="text-danger status-badge">
+        <i class="bi bi-x-circle-fill status-icon"></i>
+        <span>Fail</span>
+      </td>
+      <td>External Specs URL Validation</td>
+      <td>
+        Found 6 error(s) in external specs
+        <div class="mt-2 detail-errors"><strong class="text-danger">Errors:</strong><ul class="mb-0 mt-1"><li class="text-danger">keri1: gh_page is not accessible: ENOTFOUND</li><li class="text-danger">keri1: url is not accessible: ENOTFOUND</li><li class="text-danger">toip1: gh_page is not accessible: ENOTFOUND</li><li class="text-danger">toip1: url is not accessible: ENOTFOUND</li><li class="text-danger">toip2: gh_page is not accessible: ENOTFOUND</li><li class="text-danger">toip2: url is not accessible: ENOTFOUND</li></ul></div><div class="mt-2 detail-success"><strong class="text-success">Success:</strong><ul class="mb-0 mt-1"><li class="text-success">keri1: Field &quot;gh_page&quot; exists</li><li class="text-success">keri1: Field &quot;gh_page&quot; has valid URL structure</li><li class="text-success">keri1: Field &quot;url&quot; exists</li><li class="text-success">keri1: Field &quot;url&quot; has valid GitHub repository structure</li><li class="text-success">toip1: Field &quot;gh_page&quot; exists</li><li class="text-success">toip1: Field &quot;gh_page&quot; has valid URL structure</li><li class="text-success">toip1: Field &quot;url&quot; exists</li><li class="text-success">toip1: Field &quot;url&quot; has valid GitHub repository structure</li><li class="text-success">toip2: Field &quot;gh_page&quot; exists</li><li class="text-success">toip2: Field &quot;gh_page&quot; has valid URL structure</li><li class="text-success">toip2: Field &quot;url&quot; exists</li><li class="text-success">toip2: Field &quot;url&quot; has valid GitHub repository structure</li></ul></div>
+      </td>
+    </tr><tr data-status="fail" class="check-row table-danger">
+      <td class="text-danger status-badge">
+        <i class="bi bi-x-circle-fill status-icon"></i>
+        <span>Fail</span>
+      </td>
+      <td>Link checker</td>
+      <td>
+        Found 92 broken link(s) out of 94 total links. First broken: https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css (Error) and 91 more
+        
+      </td>
+    </tr><tr data-status="fail" class="check-row table-danger">
+      <td class="text-danger status-badge">
+        <i class="bi bi-x-circle-fill status-icon"></i>
+        <span>Fail</span>
+      </td>
+      <td>Terms & Definitions (errors)</td>
+      <td>
+        Found 12 error(s) in console output
+        <div class="mt-2"><strong class="text-danger">Errors:</strong><div class="table-responsive mt-2"><table class="table-sm" style="width: 100%; background-color: transparent;"><thead><tr><th class="d-none" style="background-color: transparent">Message</th></tr></thead><tbody><tr><td><small>Could not get commit hash from main branch: getaddrinfo ENOTFOUND api.github.com [[object Object]]</small></td></tr><tr><td><small>Error fetching term: getaddrinfo ENOTFOUND trustoverip.github.io [[object Object]]</small></td></tr><tr><td><small>Could not fetch terms from repository trustoverip/kerisuite-glossary [[object Object]]</small></td></tr><tr><td><small>Could not get commit hash from main branch: getaddrinfo ENOTFOUND api.github.com [[object Object]]</small></td></tr><tr><td><small>Error fetching term: getaddrinfo ENOTFOUND trustoverip.github.io [[object Object]]</small></td></tr><tr><td><small>Could not fetch terms from repository trustoverip/ctwg-general-glossary [[object Object]]</small></td></tr><tr><td><small>Could not get commit hash from main branch: getaddrinfo ENOTFOUND api.github.com [[object Object]]</small></td></tr><tr><td><small>Error fetching term: getaddrinfo ENOTFOUND trustoverip.github.io [[object Object]]</small></td></tr><tr><td><small>Could not fetch terms from repository trustoverip/ctwg-main-glossary [[object Object]]</small></td></tr><tr><td><small>External spec fetch failed [[object Object]]</small></td></tr><tr><td><small>External spec fetch failed [[object Object]]</small></td></tr><tr><td><small>External spec fetch failed [[object Object]]</small></td></tr></tbody></table></div></div>
+        
+      </td>
+    </tr><tr data-status="warn" class="check-row table-warning">
+      <td class="text-warning status-badge">
+        <i class="bi bi-exclamation-triangle-fill status-icon"></i>
+        <span>Warning</span>
+      </td>
+      <td>Terms & Definitions (warnings)</td>
+      <td>
+        Found 3 warning(s) in console output
+        <div class="mt-2"><strong class="text-warning">Warnings:</strong><div class="table-responsive mt-2"><table class="table-sm" style="width: 100%; background-color: transparent;"><thead><tr><th class="d-none" style="background-color: transparent">Message</th></tr></thead><tbody><tr><td><small>No GitHub Personal Access Token (PAT) found. Running without authentication [[object Object]]</small></td></tr><tr><td><small>Unresolved References: the set of KERI features needed,stable identifiers on an unstable web,KERI event stream chain of custody,key agreement,other key commitments,Delegated inception event,verifiable data on a TEL,Verifiable Credentials Data Model,JSON Web Token Verifiable Presentation,Key Event Receipt Infrastructure (KERI),autonomic identifier (AID),AID,key event log (KEL),self-certifying,transaction event log (TEL),Composable Event Streaming Representation ([[ref: CESR,the Verifiable Credential (VC) specification,CESR Proof Signature specification,On-Disk Storage,Applying the concepts of KEL,did:web Method Specification,Decentralized Identifiers (DIDs),Verifiable Credentials Data Model (VCDM) [[object Object]]</small></td></tr><tr><td><small>Dangling Definitions: authentic-chained-data-container,autonomic-identifier,autonomous-identifier,compact-event-streaming-representation,cryptographically-verifiable,decentralized-identifier,identifier,KERI-request-authentication-mechanism,key-event-receipt-infrastructure,key-event-receipt-log,out-of-band-introduction,rfc5895,self-addressing-identifier,toip-acdc-spec,toip-cesr-proof-sigs-spec,toip-cesr-spec,toip-keri-spec,UTS-46,verifiable-identifier,W3C - Verifiable Credentials Data Model (VCDM),w3c-verifiable-presentation [[object Object]]</small></td></tr></tbody></table></div></div>
+        
+      </td>
+    </tr><tr data-status="pass" class="check-row table-success">
+      <td class="text-success status-badge">
+        <i class="bi bi-check-circle-fill status-icon"></i>
+        <span>Pass</span>
+      </td>
+      <td>Terms & Definitions (operations)</td>
+      <td>
+        10 successful operations (1 highlight, 3 debug, 6 success)
+        <div class="mt-3"><div class="table-responsive"><table class="table-sm table-striped" style="width: 100%;"><thead class="table-light"><tr><th class="d-none">Message</th></tr></thead><tbody><tr><td><small>Grouped 7 terms into 3 repositories</small></td></tr><tr><td><small>Network issues with URL:</small></td></tr><tr><td><small>Network issues with URL:</small></td></tr><tr><td><small>Network issues with URL:</small></td></tr><tr><td><small>All keys are present. No errors found. Continuing…</small></td></tr><tr><td><small>Term index created with 63 terms. Output: .cache/term-index.json</small></td></tr><tr><td><small>Ensured directory is ready: ./docs/</small></td></tr><tr><td><small>Index file created at docs/versions/index.html</small></td></tr><tr><td><small>Merged xref terms: 0 matched, 0 skipped (not referenced). Total entries: 7</small></td></tr><tr><td><small>Successfully wrote docs/index.html</small></td></tr></tbody></table></div></div>
+      </td>
+    </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Toggle function for passing checks
+    document.getElementById('togglePassingChecks').addEventListener('change', function() {
+      const showPassing = this.checked;
+      // Select only fully passing checks (status="pass")
+      // Warnings (status="warn") should always remain visible as they indicate potential issues
+      const passingRows = document.querySelectorAll('tr[data-status="pass"]');
+      
+      // Hide/show passing rows
+      passingRows.forEach(row => {
+        if (showPassing) {
+          row.classList.remove('hidden-item');
+        } else {
+          row.classList.add('hidden-item');
+        }
+      });
+      
+      // Also hide/show success details within all checks
+      // When focusing on issues, we don't need to see successful validations
+      const successDetails = document.querySelectorAll('.detail-success');
+      successDetails.forEach(detail => {
+        if (showPassing) {
+          detail.classList.remove('hidden-item');
+        } else {
+          detail.classList.add('hidden-item');
+        }
+      });
+      
+      // Check each results card to see if it should be hidden
+      document.querySelectorAll('.results-card').forEach(card => {
+        const visibleRows = card.querySelectorAll('tr.check-row:not(.hidden-item)');
+        
+        if (visibleRows.length === 0) {
+          // If no visible rows, hide the entire card
+          card.classList.add('hidden-item');
+        } else {
+          // Otherwise show it
+          card.classList.remove('hidden-item');
+        }
+      });
+    });
+    
+    // Initialize the filter state
+    document.getElementById('togglePassingChecks').dispatchEvent(new Event('change'));
+  </script>
+</body>
+</html>

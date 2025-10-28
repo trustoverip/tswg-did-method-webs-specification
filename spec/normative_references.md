@@ -14,13 +14,13 @@
 [[iref: ACDC specification]] 
 [[iref: CESR specification]]
 [[iref: CESR Proof Signatures]]
-[[iref: Key Event Receipt Infrastructure]] (KERI)
+[[iref: Key Event Receipt Infrastructure]]
 [[iref: ACDC IPEX]]
 
 #### W3C
-[[iref: did:web Method Specification]]
-[[iref: Decentralized Identifiers (DIDs)]]
+[[iref: didweb specification]]
+[[iref: Decentralized Identifiers]]
 [[iref: DID spec registries]]
 [[iref: DID URL path]]
-[[iref: Verifiable Credentials Data Model (VCDM)]]
+[[iref: Verifiable Credentials Data Model]]
 [[iref: verifiable presentation]]
