@@ -112,7 +112,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:authentic-chained-data-container",
-      "lastUpdated": "2025-10-28T15:55:35.922Z"
+      "lastUpdated": "2025-10-28T21:07:09.299Z"
     },
     {
       "externalSpec": "keri1",
@@ -143,7 +143,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:key-event-log",
-      "lastUpdated": "2025-10-28T15:55:35.922Z"
+      "lastUpdated": "2025-10-28T21:07:09.299Z"
     },
     {
       "externalSpec": "toip2",
@@ -171,7 +171,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:identifier",
-      "lastUpdated": "2025-10-28T15:55:35.922Z"
+      "lastUpdated": "2025-10-28T21:07:09.299Z"
     },
     {
       "externalSpec": "toip1",
@@ -199,7 +199,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:identifier",
-      "lastUpdated": "2025-10-28T15:55:35.922Z"
+      "lastUpdated": "2025-10-28T21:07:09.299Z"
     },
     {
       "externalSpec": "keri1",
@@ -249,7 +249,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:witness",
-      "lastUpdated": "2025-10-28T15:55:35.922Z"
+      "lastUpdated": "2025-10-28T21:07:09.299Z"
     }
   ]
 };</script>
@@ -464,6 +464,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
                     </div>
                     <div id="toc" class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
                         <ul class="toc">
+<li><a href="#abstract">Abstract</a></li>
 <li><a href="#status-of-this-memo">Status of This Memo</a></li>
 <li><a href="#copyright-notice">Copyright Notice</a></li>
 <li><a href="#introduction">Introduction</a></li>
@@ -655,30 +656,61 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
             <main class="col-md-8 ms-sm-auto col-lg-9 px-md-4 pt-5">
                 <article id="content" class="">
                     <div id="terminology-section-utility-container" class="d-print-none alert alert-primary p-3"></div>
-                    <h1 id="toip-didwebs-method-specification-v0915"><a class="toc-anchor d-print-none" href="#toip-didwebs-method-specification-v0915">§</a> ToIP did:webs Method Specification v0.9.15</h1>
-<p>Specification Status: Implementors Draft</p>
-<p>In order to further validate and improve the specification and to demonstrate interoperability between multiple implementations of did:webs, we encourage additional did:webs implementations to the original did:webs Reference Implementation.
-Latest Draft:
-<a href="https://github.com/trustoverip/tswg-did-method-webs-specification">https://github.com/trustoverip/tswg-did-method-webs-specification</a>
-Editors:
-•	Phil Feairheller, GLEIF
-•	Daniel Hardman, Provenant, Inc
-•	Sam Smith, Prosapien
-•	Lance Byrd, GLEIF and RootsID
-Contributors:
-•	Markus Sabadello, Danube Tech and DIF
-•	Kevin Griffin, GLEIF
-•	Charles Lanahan
-•	Nuttawut Kongsuwan, Finema
-•	Darrell O’Donnell, Continuum Loop Inc.
-•	Jonathan Rayback, Future Forge Innovation LLC
-•	Henk van Cann, Blockchainbird</p>
-<p>Participate:</p>
+                    <h1 id="toip-didwebs-method-specification-v0916"><a class="toc-anchor d-print-none" href="#toip-didwebs-method-specification-v0916">§</a> ToIP <code>did:webs</code> Method Specification v0.9.16</h1>
+<p><strong>Specification Status</strong>: Implementors Draft</p>
+<p>In order to further validate and improve the specification and to demonstrate interoperability between multiple implementations of did:webs, we encourage additional did:webs implementations to the original <a class="term-reference" href="#term:didwebs-reference-implementation">didwebs Reference Implementation</a>.</p>
+<p><strong>Latest Draft:</strong></p>
+<p><a href="https://github.com/trustoverip/tswg-did-method-webs-specification">https://github.com/trustoverip/tswg-did-method-webs-specification</a></p>
+<p><strong>Editors:</strong></p>
 <ul>
-<li>GitHub repo</li>
-<li>Commit history</li>
+<li><a href="https://github.com/pfeairheller">Phil Feairheller</a>, <a href="https://gleif.org">GLEIF</a></li>
+<li><a href="https://www.linkedin.com/in/danielhardman/">Daniel Hardman</a>, <a href="https://provenant.net">Provenant, Inc</a></li>
+<li><a href="https://github.com/SmithSamuelM">Sam Smith</a>, <a href="https://prosapien.com/">Prosapien</a></li>
+<li><a href="https://github.com/2byrds">Lance Byrd</a>, <a href="https://gleif.org">GLEIF</a> and <a href="https://rootsid.com/">RootsID</a></li>
 </ul>
+<p><strong>Contributors:</strong></p>
+<ul>
+<li><a href="https://www.linkedin.com/in/markus-sabadello-353a0821/">Markus Sabadello</a>, <a href="https://danubetech.com/">Danube Tech</a> and <a href="https://identity.foundation">DIF</a></li>
+<li><a href="https://github.com/m00sey">Kevin Griffin</a>, <a href="https://gleif.org">GLEIF</a></li>
+<li><a href="https://www.linkedin.com/in/charles-lanahan-a8a68b16/">Charles Lanahan</a></li>
+<li><a href="https://github.com/nkongsuwan">Nuttawut Kongsuwan</a>, <a href="https://finema.co/">Finema</a></li>
+<li><a href="https://github.com/darrellodonnell">Darrell O’Donnell</a>, <a href="https://www.continuumloop.com">Continuum Loop Inc.</a></li>
+<li><a href="https:/github.com/jrayback">Jonathan Rayback</a>, <a href="https://futureforg.ing">Future Forge Innovation LLC</a></li>
+<li><a href="https:/github.com/henkvancann">Henk van Cann</a>, <a href="https://blockchainbird.org">Blockchainbird</a></li>
+</ul>
+<!-- -->
+<dl>
+<dt data-sourcefile="header.md"><strong>Participate:</strong></dt>
+<dd><a href="https://github.com/trustoverip/tswg-did-method-webs-specification">GitHub repo</a></dd>
+<dd><a href="https://github.com/trustoverip/tswg-did-method-webs-specification/commits/main">Commit history</a></dd>
+</dl>
 <!-- file: abstract.md -->
+<h2 id="abstract"><a class="toc-anchor d-print-none" href="#abstract">§</a> Abstract</h2>
+<p>This document specifies a <a href="https://www.w3.org/TR/did-1.0/#methods">DID
+Method</a>,
+<code>did:webs</code>, that is web-based but innovatively secure. Like its
+interoperable cousin, <a href="https://w3c-ccg.github.io/did-method-web/"><code>did:web</code></a>, the
+<code>did:webs</code> method uses traditional web infrastructure to publish DIDs and
+make them discoverable. Unlike <code>did:web</code>, this method’s trust is not rooted in
+DNS, webmasters, X509, and certificate authorities. Instead, it uses <a class="term-reference" href="#term:keri">KERI</a> to provide a secure chain of cryptographic key events by those who
+control the identifier.</p>
+<p>The <code>did:webs</code> method does not need blockchains to establish trust. However, its use of
+KERI allows for arbitrary blockchains to be referenced as an extra, optional
+publication mechanism. This offers a potentital interoperability bridge from (or between)
+blockchain ecosystems. Also, without directly supporting environments where the
+web is not practical (e.g., IOT, Lo-Ra, Bluetooth, NFC), the method builds on a
+foundation that can fully support those environments, making future interop of
+identifiers between web and non-web a manageable step for users of <code>did:webs</code> identifiers.</p>
+<p>All DID methods make tradeoffs. The ones in <code>did:webs</code> result in a method that
+is cheap, easy to implement, and scalable. No exotic or unproven cryptography is
+required. Deployment is straightforward. Cryptographic trust is strongly
+decentralized and governance is transparent. Regulatory challenges around the issue of
+blockchains vanish. Any tech community or legal jurisdiction can use it. However,
+<code>did:webs</code> <em>does</em> depend on the web for publication and discovery. This may
+color its decentralization and privacy. For its security, it adds <a class="term-reference" href="#term:keri">KERI</a>,
+imposing a modest - to significant learning curve as a result. For users, the method also raises
+the bar of accountability, thoughtfulness, and autonomy; this can be viewed as
+either a drawback or a benefit (or both).</p>
 <!-- file: status_copyright_toc.md -->
 <h2 id="status-of-this-memo"><a class="toc-anchor d-print-none" href="#status-of-this-memo">§</a> Status of This Memo</h2>
 <p>This document contains the specification for the <code>did:webs</code> DID method.</p>
@@ -3077,7 +3109,7 @@ This is what forms the end-to-end verifiability from the attestation to the AID 
     </ul></div>
             </div>
             <hr>
-            <p class="ps-3 pe-3" id="w3c-state">W3C Recommendation, 28 October 2025</p>
+            <p class="ps-3 pe-3" id="w3c-state">W3C Recommendation, 29 October 2025</p>
         </div>
     </div>
 
