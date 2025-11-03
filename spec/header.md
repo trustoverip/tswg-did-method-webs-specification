@@ -3,7 +3,7 @@ ToIP `did:webs` Method Specification v0.9.16
 
 **Specification Status**: Implementors Draft
 
-In order to further validate and improve the specification and to demonstrate interoperability between multiple implementations of did:webs, we encourage additional did:webs implementations to the original [[ref: didwebs Reference Implementation]].
+In order to further validate and improve the specification and to demonstrate interoperability between multiple implementations of did:webs, we encourage additional did:webs implementations to the original [[ref: did:webs Reference Implementation]].
 
 **Latest Draft:**
 
