@@ -777,6 +777,29 @@ This section focuses on delegation relationships between KERI AIDs. [DID Documen
 
 > See the [[ref: KERI specification]] for an example of a delegated inception and rotation events.
 
+#### Delegator service endpoint
+
+1. A delegated AID MAY include a service endpoint in its DID document that references its delegator.
+1. When a delegator service endpoint is present, it MUST conform to the following requirements:
+    1. The service `type` property MUST be set to `DelegatorOOBI`.
+    1. The service `id` property MUST be the [[ref: SAID]] of the seal (anchor block) in the delegator's [[ref: KEL]] that commits to the delegate's [[ref: delegated inception event]].
+    1. The service `serviceEndpoint` property MUST be a valid [[ref: OOBI]] URL that resolves to the delegator's AID.
+1. The delegator service endpoint enables verifiers to discover and validate the delegation relationship by retrieving the delegator's [[ref: KEL]].
+
+For example, a delegated AID service array MAY include the following delegator service endpoint:
+
+```json
+{
+  "service": [{
+    "id": "EDEvmKvGFjuip-J5dDw7sbVHxXA22s-pBO764CivsFt4",
+    "type": "DelegatorOOBI",
+    "serviceEndpoint": "http://keria:3902/oobi/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
+  }]
+}
+```
+
+In this example, the `id` field contains the [[ref: SAID]] of the seal in the delegator's [[ref: KEL]] that anchors the delegation commitment, and the `serviceEndpoint` provides the [[ref: OOBI]] URL to retrieve the delegator's key state.
+
 ### Service Endpoint event details
 TODO:  Define and detail the service endpoint events
 
