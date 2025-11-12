@@ -112,7 +112,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:authentic-chained-data-container",
-      "lastUpdated": "2025-11-03T15:18:07.090Z"
+      "lastUpdated": "2025-11-12T13:34:18.674Z"
     },
     {
       "externalSpec": "keri1",
@@ -143,7 +143,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:key-event-log",
-      "lastUpdated": "2025-11-03T15:18:07.090Z"
+      "lastUpdated": "2025-11-12T13:34:18.674Z"
     },
     {
       "externalSpec": "toip2",
@@ -171,7 +171,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:identifier",
-      "lastUpdated": "2025-11-03T15:18:07.090Z"
+      "lastUpdated": "2025-11-12T13:34:18.675Z"
     },
     {
       "externalSpec": "toip1",
@@ -199,7 +199,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:identifier",
-      "lastUpdated": "2025-11-03T15:18:07.090Z"
+      "lastUpdated": "2025-11-12T13:34:18.674Z"
     },
     {
       "externalSpec": "keri1",
@@ -249,7 +249,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:witness",
-      "lastUpdated": "2025-11-03T15:18:07.090Z"
+      "lastUpdated": "2025-11-12T13:34:18.674Z"
     }
   ]
 };</script>
@@ -2764,9 +2764,9 @@ See also: decentralized identifier, <a class="term-reference" href="#term:self-c
 <p>Often, DID methods have focused on features that erode security characteristics. The paper <a href="https://github.com/WebOfTrustInfo/rwot11-the-hague/blob/master/final-documents/taking-out-the-crud-five-fabulous-did-attacks.pdf">Five DID Attacks</a> highlights some attacks to which <code>did:webs</code> should NOT be vulnerable. So when a pull request exposes <code>did:webs</code> to a known attack, it should not be accepted.</p>
 <h3 id="alignment-of-information-to-security-posture"><a class="toc-anchor d-print-none" href="#alignment-of-information-to-security-posture">§</a> Alignment of Information to Security Posture</h3>
 <div id="alignment-of-information-to-security-posture" class="notice informative"><a class="notice-link" href="#alignment-of-information-to-security-posture">INFORMATIVE SECTION</a><p>Alignment of Information to Security Posture</p>
-<p>This section is informative: As a general security principle each block of information should have the same security posture for all the sub-blocks. One should not attempt to secure a block of information that mixes security postures across is constituent sub-blocks. The reason is that the security of the block can be no stronger than the weakest security posture of any sub-block in the block. Mixing security postures forces all to have the lowest common denominator security. The only exception to this rule is if the block of information is purely informational for discovery purposes and where it is expected that each constituent sub-block is meant to be verified independently.</p>
+<p>This section is informative: As a general security principle each block of information should have the same security posture for all the sub-blocks. One should not attempt to secure a block of information that mixes security postures across its constituent sub-blocks. The reason is that the security of the block can be no stronger than the weakest security posture of any sub-block in the block. Mixing security postures forces all to have the lowest common denominator security. The only exception to this rule is if the block of information is purely informational for discovery purposes and where it is expected that each constituent sub-block is meant to be verified independently.</p>
 </div>
-<p>This means that any recipient of such a block information with mixed security postures across its constituent sub-blocks must explode the block into sub-blocks and then independently verify the security of each sub-block. However, this is only possible if the authentication factors for each sub-block are provided independently. Usually when information is provided in a block of sub-blocks, only one set of authentication factors are provided for the block as a whole and therefore there is no way to independently verify each sub-block of information.</p>
+<p>This means that any recipient of such a block of information with mixed security postures across its constituent sub-blocks must explode the block into sub-blocks and then independently verify the security of each sub-block. However, this is only possible if the authentication factors for each sub-block are provided independently. Usually when information is provided in a block of sub-blocks, only one set of authentication factors are provided for the block as a whole and therefore there is no way to independently verify each sub-block of information.</p>
 <p>Unfortunately, what happens in practice is that users are led into a false sense of security because they assume that they don’t have to explode and re-verify, but merely may accept the lowest common denominator verification on the whole block of information. This creates a pernicious problem for downstream use of the data. A downstream use of a constituent sub-block doesn’t know that it was not independently verified to its higher level of security. This widens the attack surface to any point of down-stream usage. This is a root cause of the most prevalent type of attack called a BOLA.</p>
 <h3 id="applying-the-concepts-of-kel-bada-run-and-kram-to-didwebs"><a class="toc-anchor d-print-none" href="#applying-the-concepts-of-kel-bada-run-and-kram-to-didwebs">§</a> Applying the concepts of KEL, BADA-RUN, and KRAM to <code>did:webs</code></h3>
 <div id="applying-the-concepts-of-kel" class="notice informative"><a class="notice-link" href="#applying-the-concepts-of-kel">INFORMATIVE SECTION</a><p>Applying the concepts of KEL, BADA-RUN, and KRAM to <code>did:webs</code></p>
@@ -3107,7 +3107,7 @@ This is what forms the end-to-end verifiability from the attestation to the AID 
     </ul></div>
             </div>
             <hr>
-            <p class="ps-3 pe-3" id="w3c-state">W3C Recommendation, 03 November 2025</p>
+            <p class="ps-3 pe-3" id="w3c-state">W3C Recommendation, 12 November 2025</p>
         </div>
     </div>
 
