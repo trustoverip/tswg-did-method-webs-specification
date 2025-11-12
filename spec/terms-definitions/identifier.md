@@ -4,5 +4,4 @@
 
 ~ Supporting definitions:
 ~ * General IT: [[xref: toip2, identifier]],
-~ * Trust-over-IP: [[xref: toip1, identifier]],
-~ * KERISuite: [[xref: keri1, identifier]].
+~ * Trust-over-IP: [[xref: toip1, identifier]].
