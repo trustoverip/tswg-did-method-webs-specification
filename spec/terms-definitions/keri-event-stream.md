@@ -1,0 +1,5 @@
+[[def: KERI-event-stream, KERI event stream, KERI event streams]]
+
+~ A stream of verifiable KERI data, consisting of the [[ref: key event log]] ([[ref: KEL]]) and other data such as a [[ref: transaction event log]] ([[ref: TEL]]). This data is a [[ref: CESR]] event stream, with media type [application/cesr](https://www.iana.org/assignments/provisional-standard-media-types/provisional-standard-media-types.xml), and may be serialized in a file using [[ref: CESR]] encoding. We refer to these CESR stream resources as KERI event streams to simplify the vocabulary. 
+
+~ More detail: [WebOfTrust glossary](https://weboftrust.github.io/WOT-terms/docs/glossary/keri-event-stream).

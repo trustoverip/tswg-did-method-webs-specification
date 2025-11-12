@@ -6,4 +6,6 @@ The following interoperability profiles define the requirements necessary for a 
 ### Minimal interoperability profile
 This profile defines the absolute minimal implementation to create and interoperate with a did:webs identifier.
 
-1. Coming Soon
+::: todo Todo3
+Coming Soon
+:::

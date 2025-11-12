@@ -10,7 +10,7 @@ The `did:webs` DID method supports the `versionId` DID parameter. This DID param
 This allows clients to instruct a DID Resolver to return a specific version of a DID document, as opposed to the latest version. The `did:webs` DID method is ideally suited for this functionality, since a continuous, self-certifying stream of events lies at the heart of the DID method's design, see section [KERI Fundamentals](#keri-fundamentals).
 
 1. Valid values for this DID parameter MUST be the sequence numbers of events in the [[ref: KERI event stream]].
-1. When a `did:webs` DID is resolved with this DID parameter, a `did:webs` resolver MUST construct the DID document based on an AID's associated KERI events from the [[ref: KERI event stream]] only up to (and including) the event with the sequence
+1. When a `did:webs` DID is resolved with this DID parameter, a `did:webs` resolver MUST construct the DID document based on an AID's associated KERI events from the KERI event stream only up to (and including) the event with the sequence
 number (i.e. the `s` field) that corresponds to the value of the `versionId` DID parameter.
 
 > See section [DID Documents](#did-documents) for details.
@@ -38,7 +38,7 @@ did:webs:example.com:Ew-o5dU5WjDrxDBK4b4HrF82_rYb6MX6xsegjq4n0Y7M?transformKeys=
 This specification defines the following extensions to the DID document data model in accordance with the [[ref: DID Spec Registries]]:
 
 1. Extension verification method `type` `CesrKey` MAY be available in a `did:webs` DID document to express a public key encoded in [[ref: CESR]] format.
-1. Extension verification method property `publicKeyCesr` MAY be available in a `did:webs` DID document to provide a string value whose content is the [[ref: CESR]] representation of a public key.
+1. Extension verification method property `publicKeyCesr` MAY be available in a `did:webs` DID document to provide a string value whose content is the CESR representation of a public key.
 1. The verification method type `CesrKey` MAY be used as the value of the `transformKeys` DID parameter.
 
 For example, a KERI AID with only the following inception event in its KEL:

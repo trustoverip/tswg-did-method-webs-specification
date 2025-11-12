@@ -1,4 +1,4 @@
-ToIP `did:webs` Method Specification v0.9.15
+ToIP `did:webs` Method Specification v0.9.16
 ==================
 
 **Specification Status**: Implementors Draft
@@ -24,6 +24,7 @@ In order to further validate and improve the specification and to demonstrate in
 - [Nuttawut Kongsuwan](https://github.com/nkongsuwan), [Finema](https://finema.co/)
 - [Darrell O'Donnell](https://github.com/darrellodonnell), [Continuum Loop Inc.](https://www.continuumloop.com)
 - [Jonathan Rayback](https:/github.com/jrayback), [Future Forge Innovation LLC](https://futureforg.ing)
+- [Henk van Cann](https:/github.com/henkvancann), [Blockchainbird](https://blockchainbird.org)
 
 <!-- -->
 
@@ -31,5 +32,3 @@ In order to further validate and improve the specification and to demonstrate in
 
 ~ [GitHub repo](https://github.com/trustoverip/tswg-did-method-webs-specification)
 ~ [Commit history](https://github.com/trustoverip/tswg-did-method-webs-specification/commits/main)
-
-------------------------------------
