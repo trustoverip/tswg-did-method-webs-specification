@@ -33,7 +33,7 @@ The root of trust for KERI identifiers is entropy and therefore offers no direct
 two modes of communication, direct mode and indirect mode.  Direct mode allows for pairwise (n-wise as well) relationships that
 can be used to establish private relationships.
 
-See the KERI specification for [more information about direct and indirect modes](https://trustoverip.github.io/tswg-keri-specification/#introduction).
+See the KERI specification for [more information about direct and indirect modes](https://trustoverip.github.io/kswg-keri-specification/#introduction).
 
 ### Identification
 
@@ -41,7 +41,7 @@ The root of trust for KERI identifiers is entropy and therefore offers no direct
 two modes of communication, direct mode and indirect mode.  Direct mode allows for pairwise (n-wise as well) relationships that
 can be used to establish private relationships.
 
-See the KERI specification for [more information about secure bindings and prefix derivation](https://trustoverip.github.io/tswg-keri-specification/#keris-secure-bindings)
+See the KERI specification for [more information about secure bindings and prefix derivation](https://trustoverip.github.io/kswg-keri-specification/#keris-secure-bindings)
 
 ### Secondary Use
 

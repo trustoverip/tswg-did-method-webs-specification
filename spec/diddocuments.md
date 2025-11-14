@@ -415,7 +415,7 @@ For more information, see the [key agreement](#key-agreement) and [other key com
     }
     ```
 
-1. KERI service endpoints roles beyond `witness` SHOULD be defined using Location Scheme and Endpoint Authorization records in KERI. See the [KERI specification](https://trustoverip.github.io/tswg-keri-specification/#oobi-url-iurl) For more information about KERI roles.
+1. KERI service endpoints roles beyond `witness` SHOULD be defined using Location Scheme and Endpoint Authorization records in KERI. See the [KERI specification](https://trustoverip.github.io/kswg-keri-specification/#oobi-url-iurl) For more information about KERI roles.
 
 > In KERI, service endpoints are defined by 2 sets of signed data using Best Available Data - Read, Update, Nullify ([[ref: BADA-RUN]]) rules for data processing.  The protocol ensures that all data is signed in transport and at rest and versioned to ensure only the latest signed data is available.
 
