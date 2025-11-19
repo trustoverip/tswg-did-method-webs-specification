@@ -793,13 +793,12 @@ For example, a delegated AID service array MUST include the following delegator 
   "service": [{
     "id": "EDEvmKvGFjuip-J5dDw7sbVHxXA22s-pBO764CivsFt4",
     "type": "DelegatorOOBI",
-    "serviceEndpoint": "http://keria:3902/oobi/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-    "sn": "11"
+    "serviceEndpoint": "http://keria:3902/oobi/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
   }]
 }
 ```
 
-In this example, the `id` field contains the [[ref: SAID]] of the seal in the delegator's [[ref: KEL]] that anchors the delegation commitment, and the `serviceEndpoint` provides the [[ref: OOBI]] URL to retrieve the delegator's key state. The `sn` field shows the sequence number in the delegator's [[ref: KEL]] where the delegating event may be found.  
+In this example, the `id` field contains the [[ref: SAID]] of the seal in the delegator's [[ref: KEL]] that anchors the delegation commitment, and the `serviceEndpoint` provides the [[ref: OOBI]] URL to retrieve the delegator's key state.
 
 ### Service Endpoint event details
 TODO:  Define and detail the service endpoint events
