@@ -73,7 +73,7 @@ In addition, a DID doc can be a discovery mechanism for an ACDC caching server b
 ::: informative The set of KERI features needed
 The set of KERI features needed
 
-This section is informative: The set of KERI features needed for most `did:webs` use cases is modest, with limited dependencies. These basics are summarized in the [KERI Fundamentals](#keri-fundamentals) section of this specification. This specification assumes a working knowledge of the concepts there. The inclusion of KERI in `did:webs` enables a number of capabilities for securing a `did:webs` identifier, including multi-signature support and the creation of [[ref: pre-rotated]] keys to prevent loss of control of the identifier if the current private key were to be compromised.
+This section is informative: The set of KERI features needed for most `did:webs` use cases is modest, with limited dependencies. These basics are summarized in the [KERI Fundamentals](#keri-fundamentals) section of this specification. This specification assumes a working knowledge of the concepts there. The inclusion of KERI in `did:webs` enables a number of capabilities for securing a `did:webs` identifier, including multi-signature support, delegated identifier support for signing scalability, and the creation of [[ref: pre-rotated]] keys to prevent loss of control of the identifier if the current private key were to be compromised.
 You may find the [did:webs feature dependency diagram](https://github.com/trustoverip/tswg-did-method-webs-specification/blob/main/WEBS_FEATURE_DEPS.md) helpful as a visual guide to the features and dependencies of `did:webs`.
 :::
 

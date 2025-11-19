@@ -8,7 +8,7 @@ interoperable cousin, [`did:web`](https://w3c-ccg.github.io/did-method-web/), th
 make them discoverable. Unlike `did:web`, this method's trust is not rooted in
 DNS, webmasters, X509, and certificate authorities. Instead, it uses [[ref:
 KERI]] to provide a secure chain of cryptographic key events by those who
-control the identifier.
+control the identifier including any of its delegators.
 
 The `did:webs` method does not need blockchains to establish trust. However, its use of
 KERI allows for arbitrary blockchains to be referenced as an extra, optional
@@ -21,7 +21,8 @@ identifiers between web and non-web a manageable step for users of `did:webs` id
 All DID methods make tradeoffs. The ones in `did:webs` result in a method that
 is cheap, easy to implement, and scalable. No exotic or unproven cryptography is
 required. Deployment is straightforward. Cryptographic trust is strongly
-decentralized and governance is transparent. Regulatory challenges around the issue of
+decentralized and governance is transparent. Signing authority is scalable through the
+support of delegated identifiers. Regulatory challenges around the issue of
 blockchains vanish. Any tech community or legal jurisdiction can use it. However,
 `did:webs` _does_ depend on the web for publication and discovery. This may
 color its decentralization and privacy. For its security, it adds [[ref: KERI]],
