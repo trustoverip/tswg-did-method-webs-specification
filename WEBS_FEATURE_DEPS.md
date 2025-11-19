@@ -3,83 +3,75 @@ Here we detail the decision tree of the security related features that `did:webs
 ```mermaid
 %%{init: {'theme':'neutral'}}%%
 graph
+    %% legend
     subgraph graph legend
-    CORESEC[Core security features];
-    COREDISC[\Core discovery features\];
-    OPSEC([Optional security features]);
-    OPDISC{{Optional discovery features}};
+    CORESEC[Core security features]:::core;
+    COREDISC[\Core discovery features\]:::disc;
+    OPSEC([Optional security features]):::opts;
+    OPDISC{{Optional discovery features}}:::optd;
     end
 
+    %% Tree root
     DTREE{Graph of dependencies for did:webs feature choices} --> AROT;
     DTREE --> CROT;
-    AROT{Administrative Root-Of-Trust} --> WID{Web Identifier};
-    CROT{Cryptographic Root-Of-Trust} --> SCID{Self-Certifying Identifier};
-    WID --> DIDWEB[\did:web\];
-    DIDWEB --> X509[\X.509, TLS, CA/Browser Forum\];
-    SCID --> AID[KERI AID];
+    
+    %% did:web tree
+    AROT{Administrative Root-Of-Trust}:::disc --> WID{Web Identifier};
+    WID:::disc --> DIDWEB[\did:web\];
+    DIDWEB:::disc --> X509[\X.509, TLS, CA/Browser Forum\]:::disc;
+    
+    %% did:webs tree
+    CROT{Cryptographic Root-Of-Trust}:::core --> SCID{Self-Certifying Identifier};
+    SCID:::core --> AID[KERI AID];
     SCID --> DIDWS[did:webs];
-    DIDWS --> AID;
-    AID --> KEL[Key event log];
+    DIDWS:::core --> AID;
+    DIDWS --> AKA_DEF[\Also Known As\]:::disc;
+
+    %% AID to KEL
+    AID:::core --> KEL[Key event log];
+
+    %% Service Endpoints
     AID --> END{{Service Endpoints}};
-    KEL --> KHIST[Key History];
-    K -.-> ENCRYPT([Encryption]);
-    KHIST --> K[Current Keys];
-    K --> sK[Signature Key];
-    sK --> mK([Additional Signature Keys]);
-    KHIST --> nK([Next Keys]);
-    nK --> sK;
-    KEL --> BACK([Distributed Receipts]);
-    BACK --> WIT([Witnesses]);
-    mK --> sTHRESH([Thresholded]);
-    mK --> sWEIGHT([Weighted]);
+    END:::optd --> WIT_END{{Witness}}:::optd;
+    END --> MAIL{{Mailbox}}:::optd;
+    END --> AGENT{{Agent}}:::optd;  
+    END --> ENDOTHER{{Other}}:::optd;
+
+    %% Credentials - Designated aliases
     KEL --> THIST([Transaction History]);
-    THIST --> KOTHER([Other Keys]);
-    THIST --> CRED([Credentials]);
-    CRED([Credentials]) --> WHOIS([whois]);
-    CRED --> DALIAS([Designated Aliases]);
-    DALIAS --> EQUIVID([Equivalent Identifiers]);
-    DALIAS --> AKA([Also Known As]);
-    DALIAS --> REDIRECT([Redirects]);
-    END --> DIDCOMM{{DIDComm}};
-    END --> ENDOTHER{{Other Endpoints}};
-    END --> AGENT{{Agent}};
-    END --> MAIL{{Mailbox}};
+    THIST:::opts --> CRED([Credentials]);
+    CRED([Credentials]):::optd --> DALIAS([Designated Aliases]);
+    DALIAS:::optd --> AKA([Also Known As]):::optd;
+    DALIAS --> REDIRECT([Redirects]):::optd;
+    DALIAS --> EQUIVID([Equivalent Identifiers]):::optd;
 
-    style AROT fill:#FF6;
-    style X509 fill:#FF6;
-    style DIDWEB fill:#FF6;
-    style CROT fill:#080;
-    style WID fill:#FF6;
-    style SCID fill:#080;
-    style DIDWS fill:#080;
-    style KHIST fill:#080;
-    style THIST fill:#44F;
-    style AID fill:#080;
-    style KEL fill:#080;
-    style END fill:#FF6;
-    style K fill:#080;
-    style sK fill:#080;
-    style mK fill:#44F;
-    style nK fill:#44F;
-    style BACK fill:#44F;
-    style WIT fill:#44F;
-    style sTHRESH fill:#44F;
-    style sWEIGHT fill:#44F;
-    style CRED fill:#44F;
-    style DALIAS fill:#44F;
-    style AKA fill:#44F;
-    style EQUIVID fill:#44F;
-    style REDIRECT fill:#44F;
-    style WHOIS fill:#44F;
-    style DIDCOMM fill:#FF6;
-    style ENDOTHER fill:#FF6;
-    style AGENT fill:#FF6;
-    style MAIL fill:#FF6;
-    style ENCRYPT fill:#44F;
-    style KOTHER fill:#44F;
+    %% Key History
+    KEL:::core --> KHIST[Key History];
+    K:::core -.-> ENCRYPT([Encryption]):::opts;
+    KHIST:::core --> K[Current Keys];
+    KHIST:::core --> nK[Next Keys]:::core;
+    K:::core --> sK[Signature Key];    
+    nK:::core --> sK;
+    sK:::core --> mK([Additional Signature Keys]):::opts;
+    mK --> sTHRESH([Thresholded]):::opts;
+    mK --> sWEIGHT([Weighted]):::opts;
+    
+    %% receipts and 
+    KEL --> BACK([Duplicity Detection]);
+    BACK:::core --> WIT([Witnesses]):::core;
+    WIT --> RECPT([Receipts]):::core;
+    BACK --> WAT([Watchers]):::core;
 
-    style CORESEC fill:#080;
-    style COREDISC fill:#ff6;
-    style OPSEC fill:#44F;
-    style OPDISC fill:#ff6;
+    %% multisig
+    KEL --> MSIG([Multisig]);
+    MSIG:::opts --> MS_THRESH([Thresholded]):::opts;
+    MSIG --> MS_WEIGHT([Weighted]):::opts;
+
+    %% delegation
+    KEL --> DEL([Delegation]):::opts;
+    
+    classDef core fill:#080,color:white;
+    classDef disc fill:#FF6;
+    classDef opts fill:#44F,color:white;
+    classDef optd fill:#FF6;
 ```
